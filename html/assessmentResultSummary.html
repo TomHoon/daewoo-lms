@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/assessmentResultSummary.css" />
+    <script src="../js/assessmentResultSummary.js" defer></script>
+    <title>평가결과 집계표</title>
+  </head>
+  <body>
+    <div class="page">
+      <div class="toolbar">
+        <div class="group">
+          <button class="btn" onclick="window.print()">인쇄</button>
+          <button class="btn" onclick="resetForm()">초기화</button>
+        </div>
+        <div class="group">
+          <button class="btn" onclick="loadDraft()">임시저장 불러오기</button>
+          <button class="btn btn-primary" onclick="saveDraft()">
+            임시저장
+          </button>
+        </div>
+      </div>
+
+      <main class="sheet">
+        <header class="sheet-header">
+          <div class="header-top">
+            <div class="title-box">
+              <h1>평 가 결 과 집 계 표</h1>
+              <div class="sub">ASSESSMENT RESULT SUMMARY</div>
+            </div>
+
+            <div class="approval-wrap">
+              <table class="approval-table">
+                <thead>
+                  <tr>
+                    <th>담당</th>
+                    <th>팀장</th>
+                    <th>본부장</th>
+                    <th>원장</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="stamp">승인<br />담당</div>
+                    </td>
+                    <td><div class="approval-state">대기</div></td>
+                    <td><div class="approval-state">대기</div></td>
+                    <td>
+                      <button
+                        class="approve-btn"
+                        onclick="approve(this, '원장')"
+                      >
+                        결재
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-item">
+              <div class="meta-label">훈련기관명</div>
+              <input class="meta-input" data-save value="대우능력개발원" />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">교육과정명</div>
+              <input
+                class="meta-input"
+                data-save
+                value="AI 에이전트 클라우드·보안코딩 개발자 양성"
+              />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">평가명</div>
+              <input
+                class="meta-input"
+                data-save
+                value="자바프로그래밍 능력단위 평가"
+              />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">평가일</div>
+              <input
+                class="meta-input"
+                data-save
+                type="date"
+                value="2026-11-02"
+              />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">평가방법</div>
+              <input class="meta-input" data-save value="필기 + 실기평가" />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">합격기준</div>
+              <input
+                class="meta-input"
+                id="passScore"
+                data-save
+                type="number"
+                value="60"
+              />
+            </div>
+          </div>
+        </header>
+
+        <section class="section">
+          <div class="section-title" style="margin-bottom: 14px">
+            평가 결과 요약
+          </div>
+
+          <div class="summary-grid">
+            <div class="summary-item">
+              <div class="summary-label">대상자</div>
+              <div class="summary-value">
+                <input id="targetCount" readonly value="5" />명
+              </div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">응시자</div>
+              <div class="summary-value">
+                <input id="attendeeCount" readonly value="5" />명
+              </div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">합격자</div>
+              <div class="summary-value">
+                <input id="passCount" readonly value="4" />명
+              </div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">불합격자</div>
+              <div class="summary-value">
+                <input id="failCount" readonly value="1" />명
+              </div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">미응시자</div>
+              <div class="summary-value">
+                <input id="absentCount" readonly value="0" />명
+              </div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">평균점수</div>
+              <div class="summary-value">
+                <input id="averageScore" readonly value="78.0" />점
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-title">훈련생별 평가결과</div>
+            <div class="section-actions">
+              <button class="btn btn-small" onclick="copyLastRow()">
+                이전 행 복사
+              </button>
+              <button class="btn btn-small btn-primary" onclick="addRow()">
+                훈련생 추가
+              </button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 70px">순번</th>
+                  <th style="width: 130px">훈련생명</th>
+                  <th style="width: 130px">응시여부</th>
+                  <th style="width: 110px">필기점수</th>
+                  <th style="width: 110px">실기점수</th>
+                  <th style="width: 110px">과제점수</th>
+                  <th style="width: 110px">총점</th>
+                  <th style="width: 110px">평균</th>
+                  <th style="width: 120px">합격여부</th>
+                  <th>비고</th>
+                  <th style="width: 95px">관리</th>
+                </tr>
+              </thead>
+              <tbody id="resultBody"></tbody>
+            </table>
+          </div>
+
+          <div class="helper">
+            ※ 총점과 평균은 자동 계산되며, 합격기준 이상일 경우 합격으로
+            처리합니다. 미응시자는 통계 평균에서 제외합니다.
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title" style="margin-bottom: 14px">
+            평가 결과 종합 의견
+          </div>
+
+          <div class="notice-box">
+            <div class="notice-label">종 합 의 견</div>
+            <div class="notice-body">
+              <textarea data-save>
+전체적으로 학습목표 달성 수준은 양호하다. 일부 훈련생은 실기 수행에서 보완이 필요하며, 합격기준 미달자는 추가 학습 후 재평가를 진행할 예정이다.</textarea
+              >
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title" style="margin-bottom: 14px">
+            재평가 및 조치사항
+          </div>
+
+          <div class="notice-box">
+            <div class="notice-label">조 치 사 항</div>
+            <div class="notice-body">
+              <textarea data-save>
+불합격자 및 미응시자는 사유 확인 후 보충학습과 재평가 일정을 별도로 지정하며, 재평가 결과는 기존 평가결과와 함께 관리한다.</textarea
+              >
+            </div>
+          </div>
+        </section>
+
+        <div class="footer-status">
+          <div class="save-state">
+            <span id="saveDot" class="dot"></span>
+            <span id="saveText">저장되지 않은 변경사항이 있습니다.</span>
+          </div>
+          <div style="font-size: 12px; color: #8a94a3">
+            대우능력개발원 LMS · 평가결과 집계표
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

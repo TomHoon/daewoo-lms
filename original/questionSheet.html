@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>문제지</title>
+<style>
+:root{
+  --primary:#2f5fd0; --border:#d8e0eb; --line:#e9edf3;
+  --text:#263246; --muted:#768297; --bg:#f3f6fa;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.page{max-width:1220px;margin:26px auto 50px;padding:0 18px}
+.toolbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.group{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);padding:9px 14px;border-radius:9px;font-weight:700;font-size:14px}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn-small{padding:6px 10px;font-size:12px}
+.sheet{background:#fff;border:1px solid #e0e6ee;border-radius:18px;box-shadow:0 12px 34px rgba(31,45,79,.08);overflow:hidden}
+.sheet-header{padding:28px 34px 22px;border-bottom:1px solid var(--border);background:linear-gradient(#fff,#fcfdff)}
+.header-top{display:grid;grid-template-columns:1fr 390px;gap:30px;align-items:start}
+.title-box{text-align:center;padding-top:8px}
+.title-box h1{margin:0;font-size:30px;font-weight:800;letter-spacing:14px}
+.title-box .sub{margin-top:8px;color:var(--muted);font-size:12px}
+.approval-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+.approval-table th,.approval-table td{border:1px solid var(--border);text-align:center}
+.approval-table th{height:34px;background:#f7f9fc;color:#59667a}
+.approval-table td{height:76px}
+.approval-state{font-size:12px;color:#a0a9b7}
+.stamp{width:54px;height:54px;border-radius:50%;border:2px solid #d95858;color:#d95858;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:auto;font-size:11px;font-weight:800;line-height:1.2;transform:rotate(-7deg)}
+.approve-btn{border:1px solid #b7c1d0;background:#fff;border-radius:7px;padding:6px 9px;font-size:12px;font-weight:700}
+
+.meta-grid{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px}
+.meta-item{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center}
+.meta-label{color:#6e7a8f;font-size:13px;font-weight:800}
+.meta-input{width:100%;border:0;border-bottom:1px solid #dfe5ec;padding:7px 4px;outline:none;color:var(--text);font-weight:700;background:transparent}
+
+.section{padding:24px 34px;border-bottom:1px solid var(--line)}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.section-title{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800}
+.section-title:before{content:"";width:5px;height:18px;border-radius:3px;background:var(--primary)}
+.section-actions{display:flex;gap:7px;flex-wrap:wrap}
+
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.summary-item{border-right:1px solid var(--border);min-height:72px;display:grid;grid-template-rows:32px 1fr}
+.summary-item:last-child{border-right:0}
+.summary-label{display:flex;align-items:center;justify-content:center;background:#f7f9fc;color:#5f6b7f;font-size:12px;font-weight:800}
+.summary-value{display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--primary)}
+.summary-value input{width:80px;border:0;outline:none;background:transparent;text-align:center;font-weight:800;color:inherit}
+
+.question-list{display:flex;flex-direction:column;gap:16px}
+.question-card{border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#fff}
+.question-head{display:grid;grid-template-columns:80px 150px 1fr 100px 150px;align-items:center;background:#f7f9fc;border-bottom:1px solid var(--border)}
+.qcell{padding:10px;border-right:1px solid var(--border);font-size:13px}
+.qcell:last-child{border-right:0}
+.qno{text-align:center;font-weight:800}
+.question-head input,.question-head select{width:100%;border:0;background:transparent;outline:none}
+.question-body{padding:16px}
+.question-body textarea{width:100%;min-height:90px;border:1px solid var(--border);border-radius:10px;padding:12px;resize:vertical;outline:none;line-height:1.6}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.option-item{display:grid;grid-template-columns:36px 1fr;align-items:center;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.option-no{height:100%;display:flex;align-items:center;justify-content:center;background:#f7f9fc;font-weight:800;color:#5f6b7f}
+.option-item input{width:100%;border:0;outline:none;padding:10px}
+.answer-area{display:grid;grid-template-columns:160px 1fr;gap:10px;margin-top:12px}
+.answer-label{background:#f7f9fc;border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.answer-area input{width:100%;border:1px solid var(--border);border-radius:9px;padding:10px;outline:none}
+.question-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:12px}
+.row-btn{border:1px solid var(--border);background:#fff;border-radius:7px;padding:6px 9px;font-size:12px}
+.helper{margin-top:10px;color:var(--muted);font-size:12px}
+
+.footer-status{display:flex;justify-content:space-between;gap:12px;padding:15px 34px;background:#fbfcfe}
+.save-state{display:flex;align-items:center;gap:8px;color:#657286;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;background:#b7bfca}
+.dot.saved{background:#1ba366}
+
+@media(max-width:1000px){
+  .header-top{grid-template-columns:1fr}
+  .approval-wrap{max-width:520px;margin:auto}
+  .meta-grid{grid-template-columns:1fr}
+  .question-head{grid-template-columns:70px 130px 1fr 90px}
+  .question-head .manage-head{display:none}
+}
+@media(max-width:700px){
+  .page{padding:0 8px}
+  .sheet-header,.section{padding:20px 15px}
+  .title-box h1{font-size:23px;letter-spacing:9px}
+  .meta-item{grid-template-columns:92px 1fr}
+  .summary-grid{grid-template-columns:repeat(2,1fr)}
+  .options-grid{grid-template-columns:1fr}
+  .answer-area{grid-template-columns:1fr}
+  .question-head{grid-template-columns:60px 110px 1fr 80px}
+  .footer-status{padding:14px 15px;flex-direction:column}
+}
+@media print{
+  body{background:#fff}
+  .page{max-width:none;margin:0;padding:0}
+  .toolbar,.section-actions,.question-actions,.footer-status,.answer-area{display:none!important}
+  .sheet{box-shadow:none;border:0;border-radius:0}
+  .sheet-header,.section{padding-left:0;padding-right:0}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="toolbar">
+    <div class="group">
+      <button class="btn" onclick="window.print()">인쇄</button>
+      <button class="btn" onclick="toggleAnswers()">정답 표시/숨김</button>
+      <button class="btn" onclick="resetForm()">초기화</button>
+    </div>
+    <div class="group">
+      <button class="btn" onclick="loadDraft()">임시저장 불러오기</button>
+      <button class="btn btn-primary" onclick="saveDraft()">임시저장</button>
+    </div>
+  </div>
+
+  <main class="sheet">
+    <header class="sheet-header">
+      <div class="header-top">
+        <div class="title-box">
+          <h1>문 제 지</h1>
+          <div class="sub">ASSESSMENT QUESTION SHEET</div>
+        </div>
+
+        <div class="approval-wrap">
+          <table class="approval-table">
+            <thead><tr><th>담당</th><th>팀장</th><th>본부장</th><th>원장</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="stamp">승인<br>담당</div></td>
+                <td><div class="approval-state">대기</div></td>
+                <td><div class="approval-state">대기</div></td>
+                <td><button class="approve-btn" onclick="approve(this,'원장')">결재</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">훈련기관명</div>
+          <input class="meta-input" data-save value="대우능력개발원">
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">교육과정명</div>
+          <input class="meta-input" data-save value="AI 에이전트 클라우드·보안코딩 개발자 양성">
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">평가명</div>
+          <input class="meta-input" data-save value="자바프로그래밍 능력단위 평가">
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">평가일</div>
+          <input class="meta-input" data-save type="date" value="2026-11-02">
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">평가시간</div>
+          <input class="meta-input" data-save value="14:00 ~ 15:00">
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">담당교사</div>
+          <input class="meta-input" data-save value="이정은">
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-title" style="margin-bottom:14px">문제지 요약</div>
+      <div class="summary-grid">
+        <div class="summary-item"><div class="summary-label">총 문항 수</div><div class="summary-value"><input id="questionCount" readonly value="4">문항</div></div>
+        <div class="summary-item"><div class="summary-label">총 배점</div><div class="summary-value"><input id="totalScore" readonly value="100">점</div></div>
+        <div class="summary-item"><div class="summary-label">객관식</div><div class="summary-value"><input id="multipleCount" readonly value="2">문항</div></div>
+        <div class="summary-item"><div class="summary-label">주관/서술형</div><div class="summary-value"><input id="subjectiveCount" readonly value="2">문항</div></div>
+      </div>
+      <div class="helper">※ 배점 합계와 문항 유형별 개수는 자동 계산됩니다.</div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-title">평가 문항</div>
+        <div class="section-actions">
+          <button class="btn btn-small" onclick="copyLastQuestion()">이전 문항 복사</button>
+          <button class="btn btn-small btn-primary" onclick="addQuestion()">문항 추가</button>
+        </div>
+      </div>
+
+      <div id="questionList" class="question-list"></div>
+    </section>
+
+    <div class="footer-status">
+      <div class="save-state">
+        <span id="saveDot" class="dot"></span>
+        <span id="saveText">저장되지 않은 변경사항이 있습니다.</span>
+      </div>
+      <div style="font-size:12px;color:#8a94a3">대우능력개발원 LMS · 문제지</div>
+    </div>
+  </main>
+</div>
+
+<script>
+const STORAGE_KEY="question_sheet_v1";
+let qSeq=0;
+let answersVisible=true;
+
+const defaultQuestions=[
+  {
+    type:"객관식",
+    score:20,
+    title:"다음 중 자바의 특징으로 옳지 않은 것은?",
+    options:["객체지향 언어이다.","플랫폼 독립적이다.","다중 상속을 클래스 수준에서 직접 지원한다.","가비지 컬렉션을 지원한다."],
+    answer:"3"
+  },
+  {
+    type:"객관식",
+    score:20,
+    title:"다음 중 인터페이스를 구현할 때 사용하는 키워드는 무엇인가?",
+    options:["extends","implements","instanceof","import"],
+    answer:"2"
+  },
+  {
+    type:"주관식",
+    score:30,
+    title:"오버로딩과 오버라이딩의 차이를 간단히 설명하시오.",
+    options:["","","",""],
+    answer:"오버로딩은 같은 이름의 메서드를 매개변수 형태를 달리해 정의하는 것이고, 오버라이딩은 상위 클래스 메서드를 하위 클래스에서 재정의하는 것이다."
+  },
+  {
+    type:"서술형",
+    score:30,
+    title:"예외처리가 필요한 이유와 try-catch-finally의 역할을 설명하시오.",
+    options:["","","",""],
+    answer:"프로그램 실행 중 발생할 수 있는 오류 상황을 안전하게 처리하기 위해 필요하며, try는 예외 가능 코드, catch는 처리, finally는 예외 발생 여부와 관계없이 수행할 코드를 작성한다."
+  }
+];
+
+function esc(v){
+  return String(v??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;");
+}
+
+function createQuestion(q={type:"객관식",score:0,title:"",options:["","","",""],answer:""}){
+  qSeq++;
+  const card=document.createElement("div");
+  card.className="question-card";
+  card.innerHTML=`
+    <div class="question-head">
+      <div class="qcell qno">Q${qSeq}</div>
+      <div class="qcell">
+        <select data-field="type">
+          <option ${q.type==="객관식"?"selected":""}>객관식</option>
+          <option ${q.type==="주관식"?"selected":""}>주관식</option>
+          <option ${q.type==="서술형"?"selected":""}>서술형</option>
+        </select>
+      </div>
+      <div class="qcell"><input data-field="category" placeholder="평가영역 / 분류"></div>
+      <div class="qcell"><input data-field="score" type="number" min="0" value="${Number(q.score)||0}" placeholder="배점"></div>
+      <div class="qcell manage-head" style="text-align:center;font-weight:700">문항 관리</div>
+    </div>
+
+    <div class="question-body">
+      <textarea data-field="title" placeholder="문제 내용을 입력하세요.">${esc(q.title)}</textarea>
+
+      <div class="options-grid" data-role="options">
+        ${[0,1,2,3].map(i=>`
+          <div class="option-item">
+            <div class="option-no">${i+1}</div>
+            <input data-field="option${i+1}" value="${esc(q.options?.[i]||"")}" placeholder="${i+1}번 보기">
+          </div>
+        `).join("")}
+      </div>
+
+      <div class="answer-area" data-role="answerArea">
+        <div class="answer-label">정답 / 모범답안</div>
+        <input data-field="answer" value="${esc(q.answer)}" placeholder="정답 또는 모범답안을 입력하세요.">
+      </div>
+
+      <div class="question-actions">
+        <button class="row-btn" onclick="duplicateQuestion(this)">복사</button>
+        <button class="row-btn" onclick="removeQuestion(this)">삭제</button>
+      </div>
+    </div>
+  `;
+
+  const typeSelect=card.querySelector('[data-field="type"]');
+  typeSelect.addEventListener("change",()=>{
+    syncQuestionType(card);
+    calculateSummary();
+    markDirty();
+  });
+
+  card.querySelectorAll("input,textarea").forEach(el=>{
+    el.addEventListener("input",()=>{
+      calculateSummary();
+      markDirty();
+    });
+  });
+
+  document.getElementById("questionList").appendChild(card);
+  syncQuestionType(card);
+}
+
+function syncQuestionType(card){
+  const type=card.querySelector('[data-field="type"]').value;
+  const options=card.querySelector('[data-role="options"]');
+  options.style.display=type==="객관식" ? "grid" : "none";
+}
+
+function renumberQuestions(){
+  const cards=[...document.querySelectorAll(".question-card")];
+  cards.forEach((card,i)=>{
+    card.querySelector(".qno").textContent="Q"+(i+1);
+  });
+  qSeq=cards.length;
+}
+
+function addQuestion(){
+  createQuestion();
+  renumberQuestions();
+  calculateSummary();
+  markDirty();
+}
+
+function duplicateQuestion(btn){
+  const card=btn.closest(".question-card");
+  const q={
+    type:card.querySelector('[data-field="type"]').value,
+    score:card.querySelector('[data-field="score"]').value,
+    title:card.querySelector('[data-field="title"]').value,
+    options:[1,2,3,4].map(i=>card.querySelector(`[data-field="option${i}"]`).value),
+    answer:card.querySelector('[data-field="answer"]').value
+  };
+  createQuestion(q);
+  renumberQuestions();
+  calculateSummary();
+  markDirty();
+}
+
+function copyLastQuestion(){
+  const cards=[...document.querySelectorAll(".question-card")];
+  if(!cards.length){ addQuestion(); return; }
+  duplicateQuestion(cards[cards.length-1].querySelector(".row-btn"));
+}
+
+function removeQuestion(btn){
+  const cards=document.querySelectorAll(".question-card");
+  if(cards.length<=1){
+    alert("최소 1개의 문항은 유지해야 합니다.");
+    return;
+  }
+  btn.closest(".question-card").remove();
+  renumberQuestions();
+  calculateSummary();
+  markDirty();
+}
+
+function calculateSummary(){
+  const cards=[...document.querySelectorAll(".question-card")];
+  let total=0,multiple=0,subjective=0;
+  cards.forEach(card=>{
+    total+=Number(card.querySelector('[data-field="score"]').value||0);
+    const type=card.querySelector('[data-field="type"]').value;
+    if(type==="객관식") multiple++;
+    else subjective++;
+  });
+
+  document.getElementById("questionCount").value=cards.length;
+  document.getElementById("totalScore").value=total;
+  document.getElementById("multipleCount").value=multiple;
+  document.getElementById("subjectiveCount").value=subjective;
+}
+
+function toggleAnswers(){
+  answersVisible=!answersVisible;
+  document.querySelectorAll('[data-role="answerArea"]').forEach(el=>{
+    el.style.display=answersVisible?"grid":"none";
+  });
+}
+
+function approve(btn,role){
+  btn.closest("td").innerHTML=`<div class="stamp">승인<br>${role}</div>`;
+  markDirty();
+}
+
+function saveDraft(){
+  const payload={
+    fields:[...document.querySelectorAll("[data-save]")].map(el=>el.value),
+    questions:[...document.querySelectorAll(".question-card")].map(card=>({
+      type:card.querySelector('[data-field="type"]').value,
+      category:card.querySelector('[data-field="category"]').value,
+      score:card.querySelector('[data-field="score"]').value,
+      title:card.querySelector('[data-field="title"]').value,
+      options:[1,2,3,4].map(i=>card.querySelector(`[data-field="option${i}"]`).value),
+      answer:card.querySelector('[data-field="answer"]').value
+    }))
+  };
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));
+  setSaved(true);
+}
+
+function loadDraft(){
+  const raw=localStorage.getItem(STORAGE_KEY);
+  if(!raw){
+    alert("저장된 임시저장이 없습니다.");
+    return;
+  }
+  const p=JSON.parse(raw);
+
+  const fields=[...document.querySelectorAll("[data-save]")];
+  (p.fields||[]).forEach((v,i)=>{ if(fields[i]) fields[i].value=v; });
+
+  document.getElementById("questionList").innerHTML="";
+  qSeq=0;
+  (p.questions||[]).forEach(q=>{
+    createQuestion(q);
+    const card=document.querySelector(".question-card:last-child");
+    card.querySelector('[data-field="category"]').value=q.category||"";
+  });
+  if(!(p.questions||[]).length) createQuestion();
+
+  renumberQuestions();
+  calculateSummary();
+  setSaved(true);
+}
+
+function resetForm(){
+  if(!confirm("입력한 내용을 초기화하시겠습니까?")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+function markDirty(){ setSaved(false); }
+function setSaved(saved){
+  const d=document.getElementById("saveDot");
+  const t=document.getElementById("saveText");
+  if(saved){
+    d.classList.add("saved");
+    t.textContent="임시저장 완료";
+  }else{
+    d.classList.remove("saved");
+    t.textContent="저장되지 않은 변경사항이 있습니다.";
+  }
+}
+
+defaultQuestions.forEach(createQuestion);
+
+document.querySelectorAll("[data-save]").forEach(el=>{
+  el.addEventListener("input",markDirty);
+  el.addEventListener("change",markDirty);
+});
+
+calculateSummary();
+</script>
+</body>
+</html>
