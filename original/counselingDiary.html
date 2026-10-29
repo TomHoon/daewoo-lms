@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>상담일지</title>
+<style>
+:root{--primary:#2f5fd0;--border:#d8e0eb;--line:#e9edf3;--text:#263246;--muted:#768297;--bg:#f3f6fa}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+button,input,textarea,select{font:inherit}button{cursor:pointer}
+.page{max-width:1220px;margin:26px auto 50px;padding:0 18px}.toolbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.group{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);padding:9px 14px;border-radius:9px;font-weight:700;font-size:14px}.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn-small{padding:6px 10px;font-size:12px}
+.sheet{background:#fff;border:1px solid #e0e6ee;border-radius:18px;box-shadow:0 12px 34px rgba(31,45,79,.08);overflow:hidden}.sheet-header{padding:28px 34px 22px;border-bottom:1px solid var(--border);background:linear-gradient(#fff,#fcfdff)}
+.header-top{display:grid;grid-template-columns:1fr 390px;gap:30px;align-items:start}.title-box{text-align:center;padding-top:8px}.title-box h1{margin:0;font-size:30px;font-weight:800;letter-spacing:12px}.title-box .sub{margin-top:8px;color:var(--muted);font-size:12px}
+.approval-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}.approval-table th,.approval-table td{border:1px solid var(--border);text-align:center}.approval-table th{height:34px;background:#f7f9fc;color:#59667a}.approval-table td{height:76px}.approval-state{font-size:12px;color:#a0a9b7}
+.stamp{width:54px;height:54px;border-radius:50%;border:2px solid #d95858;color:#d95858;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:auto;font-size:11px;font-weight:800;line-height:1.2;transform:rotate(-7deg)}.approve-btn{border:1px solid #b7c1d0;background:#fff;border-radius:7px;padding:6px 9px;font-size:12px;font-weight:700}
+.meta-grid{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px}.meta-item{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center}.meta-label{color:#6e7a8f;font-size:13px;font-weight:800}.meta-input{width:100%;border:0;border-bottom:1px solid #dfe5ec;padding:7px 4px;outline:none;color:var(--text);font-weight:700;background:transparent}
+.section{padding:24px 34px;border-bottom:1px solid var(--line)}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.section-title{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800}.section-title:before{content:"";width:5px;height:18px;border-radius:3px;background:var(--primary)}.section-actions{display:flex;gap:7px;flex-wrap:wrap}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 20px}.form-card{border:1px solid var(--border);border-radius:12px;overflow:hidden}.form-row{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid var(--line)}.form-row:last-child{border-bottom:0}.form-label{background:#f7f9fc;padding:12px 14px;font-size:13px;font-weight:800;color:#59667a;display:flex;align-items:center}.form-control{padding:8px 10px}.form-control input,.form-control select{width:100%;border:0;outline:none;background:transparent;color:var(--text);padding:4px}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:12px;overflow:hidden}.summary-item{border-right:1px solid var(--border);min-height:72px;display:grid;grid-template-rows:32px 1fr}.summary-label{display:flex;align-items:center;justify-content:center;background:#f7f9fc;color:#5f6b7f;font-size:12px;font-weight:800}.summary-value{display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--primary)}
+.text-block{border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px}.text-head{background:#f7f9fc;padding:11px 14px;font-size:13px;font-weight:800;color:#59667a;border-bottom:1px solid var(--border)}.text-body{padding:12px}.text-body textarea{width:100%;min-height:120px;border:0;outline:none;resize:vertical;line-height:1.7;color:var(--text)}.counter{text-align:right;margin-top:6px;font-size:12px;color:var(--muted)}
+.table-wrap{border:1px solid var(--border);border-radius:12px;overflow:auto}.data-table{width:100%;border-collapse:collapse;min-width:1050px}.data-table th{background:#f7f9fc;border-right:1px solid var(--border);padding:12px 10px;font-size:13px;color:#556176;text-align:center}.data-table td{border-right:1px solid var(--line);border-top:1px solid var(--line);padding:0}.data-table input,.data-table select,.data-table textarea{width:100%;border:0;outline:none;background:transparent;color:var(--text);padding:11px 10px}.data-table textarea{min-height:58px;resize:vertical;line-height:1.5}.center{text-align:center}.row-actions{display:flex;gap:5px;justify-content:center;padding:7px}.row-btn{border:1px solid var(--border);background:#fff;border-radius:7px;padding:5px 7px;font-size:11px}
+.helper{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.6}.footer-status{display:flex;justify-content:space-between;gap:12px;padding:15px 34px;background:#fbfcfe}.save-state{display:flex;align-items:center;gap:8px;color:#657286;font-size:13px}.dot{width:8px;height:8px;border-radius:50%;background:#b7bfca}.dot.saved{background:#1ba366}
+@media(max-width:1000px){.header-top{grid-template-columns:1fr}.approval-wrap{max-width:520px;margin:auto}.meta-grid,.form-grid{grid-template-columns:1fr}}
+@media(max-width:650px){.page{padding:0 8px}.sheet-header,.section{padding:20px 15px}.title-box h1{font-size:23px;letter-spacing:8px}.meta-item{grid-template-columns:92px 1fr}.form-row{grid-template-columns:110px 1fr}.summary-grid{grid-template-columns:repeat(2,1fr)}.footer-status{padding:14px 15px;flex-direction:column}}
+@media print{body{background:#fff}.page{max-width:none;margin:0;padding:0}.toolbar,.section-actions,.row-actions,.footer-status{display:none!important}.sheet{box-shadow:none;border:0;border-radius:0}.sheet-header,.section{padding-left:0;padding-right:0}}
+</style>
+</head>
+<body>
+<div class="page">
+<div class="toolbar">
+  <div class="group"><button class="btn" onclick="window.print()">인쇄</button><button class="btn" onclick="resetForm()">초기화</button></div>
+  <div class="group"><button class="btn" onclick="loadDraft()">임시저장 불러오기</button><button class="btn btn-primary" onclick="saveDraft()">임시저장</button></div>
+</div>
+
+<main class="sheet">
+<header class="sheet-header">
+  <div class="header-top">
+    <div class="title-box"><h1>상 담 일 지</h1><div class="sub">TRAINEE COUNSELING REPORT</div></div>
+    <div class="approval-wrap">
+      <table class="approval-table">
+        <thead><tr><th>담당</th><th>팀장</th><th>본부장</th><th>원장</th></tr></thead>
+        <tbody><tr><td><div class="stamp">승인<br>담당</div></td><td><div class="approval-state">대기</div></td><td><div class="approval-state">대기</div></td><td><button class="approve-btn" onclick="approve(this,'원장')">결재</button></td></tr></tbody>
+      </table>
+    </div>
+  </div>
+  <div class="meta-grid">
+    <div class="meta-item"><div class="meta-label">훈련기관명</div><input class="meta-input" data-save value="대우능력개발원"></div>
+    <div class="meta-item"><div class="meta-label">교육과정명</div><input class="meta-input" data-save value="AI 에이전트 클라우드·보안코딩 개발자 양성"></div>
+    <div class="meta-item"><div class="meta-label">훈련기간</div><input class="meta-input" data-save value="2026-08-12 ~ 2027-05-14"></div>
+    <div class="meta-item"><div class="meta-label">작성일자</div><input class="meta-input" data-save type="date" value="2026-10-29"></div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="section-title" style="margin-bottom:14px">훈련생 기본정보</div>
+  <div class="form-grid">
+    <div class="form-card">
+      <div class="form-row"><div class="form-label">훈련생명</div><div class="form-control"><input data-save value="홍길동"></div></div>
+      <div class="form-row"><div class="form-label">생년월일</div><div class="form-control"><input data-save type="date" value="2000-01-01"></div></div>
+      <div class="form-row"><div class="form-label">연락처</div><div class="form-control"><input data-save value="010-1234-5678"></div></div>
+      <div class="form-row"><div class="form-label">상담차수</div><div class="form-control"><input id="counselingRound" data-save type="number" min="1" value="1"> 회차</div></div>
+    </div>
+    <div class="form-card">
+      <div class="form-row"><div class="form-label">상담일자</div><div class="form-control"><input data-save type="date" value="2026-10-29"></div></div>
+      <div class="form-row"><div class="form-label">상담시간</div><div class="form-control"><input data-save value="14:00 ~ 14:30"></div></div>
+      <div class="form-row"><div class="form-label">상담구분</div><div class="form-control"><select data-save id="counselingType"><option>정기상담</option><option>수시상담</option><option>출결상담</option><option>학습상담</option><option>취업상담</option><option>생활상담</option><option>중도탈락 예방상담</option></select></div></div>
+      <div class="form-row"><div class="form-label">상담방법</div><div class="form-control"><select data-save><option>대면</option><option>전화</option><option>온라인</option><option>기타</option></select></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title" style="margin-bottom:14px">상담 현황 요약</div>
+  <div class="summary-grid">
+    <div class="summary-item"><div class="summary-label">상담차수</div><div class="summary-value"><span id="roundSummary">1회</span></div></div>
+    <div class="summary-item"><div class="summary-label">상담유형</div><div class="summary-value"><span id="typeSummary">정기상담</span></div></div>
+    <div class="summary-item"><div class="summary-label">후속조치</div><div class="summary-value"><span id="followupStatus">필요</span></div></div>
+    <div class="summary-item"><div class="summary-label">상담상태</div><div class="summary-value"><span id="counselingStatus">작성중</span></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title" style="margin-bottom:14px">상담 내용</div>
+  <div class="text-block"><div class="text-head">상담 사유 및 주요 상담내용</div><div class="text-body"><textarea id="counselingContent" data-save maxlength="3000">최근 수업 진도와 학습 난이도에 대한 부담을 느끼고 있어 상담을 진행하였다. 자바 객체지향 개념 중 상속과 인터페이스 부분의 이해가 부족하다고 하여 복습 방법과 추가 실습 방향을 안내하였다.</textarea><div class="counter"><span id="contentCount">0</span>/3000</div></div></div>
+  <div class="text-block"><div class="text-head">상담 결과 및 조치사항</div><div class="text-body"><textarea id="actionContent" data-save maxlength="2000">기초 예제부터 다시 실습하도록 안내하고, 담당교사에게 취약 부분을 공유하여 추가 학습자료를 제공하기로 하였다.</textarea><div class="counter"><span id="actionCount">0</span>/2000</div></div></div>
+  <div class="text-block"><div class="text-head">향후 계획</div><div class="text-body"><textarea id="futurePlan" data-save maxlength="2000">1주 후 학습 진행상황을 재확인하고 필요 시 보충학습 및 추가 상담을 진행한다.</textarea><div class="counter"><span id="futureCount">0</span>/2000</div></div></div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div class="section-title">후속조치 관리</div>
+    <div class="section-actions"><button class="btn btn-small" onclick="copyLastRow()">이전 항목 복사</button><button class="btn btn-small btn-primary" onclick="addRow()">조치 추가</button></div>
+  </div>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead><tr><th style="width:70px">순번</th><th style="width:160px">조치구분</th><th>조치내용</th><th style="width:150px">담당자</th><th style="width:150px">확인예정일</th><th style="width:130px">상태</th><th style="width:95px">관리</th></tr></thead>
+      <tbody id="followupBody"></tbody>
+    </table>
+  </div>
+  <div class="helper">※ 실제 LMS에서는 훈련생별 상담이력을 누적 저장하고, 후속조치 예정일 기준 알림 기능과 연계할 수 있습니다.</div>
+</section>
+
+<section class="section">
+  <div class="section-title" style="margin-bottom:14px">상담자 의견</div>
+  <div class="text-block"><div class="text-head">종합 의견</div><div class="text-body"><textarea data-save maxlength="2000">현재 학습 의지는 양호하나 일부 개념에 대한 이해 부족이 확인되어 단기간 추가지도가 필요하다. 출결 및 훈련 참여도에는 특별한 문제가 없다.</textarea></div></div>
+</section>
+
+<div class="footer-status"><div class="save-state"><span id="saveDot" class="dot"></span><span id="saveText">저장되지 않은 변경사항이 있습니다.</span></div><div style="font-size:12px;color:#8a94a3">대우능력개발원 LMS · 상담일지</div></div>
+</main>
+</div>
+
+<script>
+const STORAGE_KEY="counseling_diary_v1";
+let rowSeq=0;
+const defaultRows=[
+{category:"학습지원",content:"자바 상속/인터페이스 추가 학습자료 제공",manager:"이정은",date:"2026-11-05",status:"진행중"},
+{category:"상담확인",content:"학습 진행상황 재확인 및 추가 상담 여부 판단",manager:"이정은",date:"2026-11-06",status:"예정"}
+];
+
+function esc(v){return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;")}
+
+function createRow(data={category:"학습지원",content:"",manager:"",date:"",status:"예정"}){
+  rowSeq++;
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+    <td><input class="center" data-field="no" value="${rowSeq}" readonly></td>
+    <td><select data-field="category"><option ${data.category==="학습지원"?"selected":""}>학습지원</option><option ${data.category==="출결관리"?"selected":""}>출결관리</option><option ${data.category==="취업지원"?"selected":""}>취업지원</option><option ${data.category==="생활지원"?"selected":""}>생활지원</option><option ${data.category==="상담확인"?"selected":""}>상담확인</option><option ${data.category==="기타"?"selected":""}>기타</option></select></td>
+    <td><textarea data-field="content">${esc(data.content)}</textarea></td>
+    <td><input data-field="manager" value="${esc(data.manager)}"></td>
+    <td><input data-field="date" type="date" value="${esc(data.date)}"></td>
+    <td><select data-field="status"><option ${data.status==="예정"?"selected":""}>예정</option><option ${data.status==="진행중"?"selected":""}>진행중</option><option ${data.status==="완료"?"selected":""}>완료</option><option ${data.status==="보류"?"selected":""}>보류</option></select></td>
+    <td><div class="row-actions"><button class="row-btn" onclick="duplicateRow(this)">복사</button><button class="row-btn" onclick="removeRow(this)">삭제</button></div></td>`;
+  tr.querySelectorAll("input,textarea,select").forEach(el=>{el.addEventListener("input",()=>{updateSummary();markDirty()});el.addEventListener("change",()=>{updateSummary();markDirty()})});
+  document.getElementById("followupBody").appendChild(tr);
+}
+
+function renumberRows(){const rows=[...document.querySelectorAll("#followupBody tr")];rows.forEach((tr,i)=>tr.querySelector('[data-field="no"]').value=i+1);rowSeq=rows.length}
+function addRow(){createRow();renumberRows();updateSummary();markDirty()}
+function duplicateRow(btn){const tr=btn.closest("tr");createRow({category:tr.querySelector('[data-field="category"]').value,content:tr.querySelector('[data-field="content"]').value,manager:tr.querySelector('[data-field="manager"]').value,date:tr.querySelector('[data-field="date"]').value,status:tr.querySelector('[data-field="status"]').value});renumberRows();updateSummary();markDirty()}
+function copyLastRow(){const rows=[...document.querySelectorAll("#followupBody tr")];if(!rows.length){addRow();return}duplicateRow(rows[rows.length-1].querySelector(".row-btn"))}
+function removeRow(btn){if(document.querySelectorAll("#followupBody tr").length<=1){alert("최소 1개의 후속조치 항목은 유지해야 합니다.");return}btn.closest("tr").remove();renumberRows();updateSummary();markDirty()}
+
+function updateCounters(){
+  [["counselingContent","contentCount"],["actionContent","actionCount"],["futurePlan","futureCount"]].forEach(([a,b])=>document.getElementById(b).textContent=document.getElementById(a).value.length);
+}
+
+function updateSummary(){
+  document.getElementById("roundSummary").textContent=(document.getElementById("counselingRound").value||"1")+"회";
+  document.getElementById("typeSummary").textContent=document.getElementById("counselingType").value;
+  const rows=[...document.querySelectorAll("#followupBody tr")];
+  const unfinished=rows.some(tr=>tr.querySelector('[data-field="status"]').value!=="완료");
+  document.getElementById("followupStatus").textContent=unfinished?"필요":"완료";
+  document.getElementById("followupStatus").style.color=unfinished?"#c47a10":"#1a8a55";
+  const hasContent=document.getElementById("counselingContent").value.trim().length>0;
+  document.getElementById("counselingStatus").textContent=hasContent?"작성중":"미작성";
+}
+
+function approve(btn,role){btn.closest("td").innerHTML=`<div class="stamp">승인<br>${role}</div>`;markDirty()}
+
+function saveDraft(){
+  const payload={fields:[...document.querySelectorAll("[data-save]")].map(el=>el.value),rows:[...document.querySelectorAll("#followupBody tr")].map(tr=>({category:tr.querySelector('[data-field="category"]').value,content:tr.querySelector('[data-field="content"]').value,manager:tr.querySelector('[data-field="manager"]').value,date:tr.querySelector('[data-field="date"]').value,status:tr.querySelector('[data-field="status"]').value}))};
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));setSaved(true);
+}
+
+function loadDraft(){
+  const raw=localStorage.getItem(STORAGE_KEY);if(!raw){alert("저장된 임시저장이 없습니다.");return}
+  const p=JSON.parse(raw),fields=[...document.querySelectorAll("[data-save]")];(p.fields||[]).forEach((v,i)=>{if(fields[i])fields[i].value=v});
+  document.getElementById("followupBody").innerHTML="";rowSeq=0;(p.rows||[]).forEach(createRow);if(!(p.rows||[]).length)createRow();
+  renumberRows();updateCounters();updateSummary();setSaved(true);
+}
+
+function resetForm(){if(confirm("입력한 내용을 초기화하시겠습니까?")){localStorage.removeItem(STORAGE_KEY);location.reload()}}
+function markDirty(){setSaved(false)}
+function setSaved(saved){const d=document.getElementById("saveDot"),t=document.getElementById("saveText");if(saved){d.classList.add("saved");t.textContent="임시저장 완료"}else{d.classList.remove("saved");t.textContent="저장되지 않은 변경사항이 있습니다."}}
+
+defaultRows.forEach(createRow);
+document.querySelectorAll("[data-save]").forEach(el=>{el.addEventListener("input",()=>{updateCounters();updateSummary();markDirty()});el.addEventListener("change",()=>{updateCounters();updateSummary();markDirty()})});
+updateCounters();updateSummary();
+</script>
+</body>
+</html>

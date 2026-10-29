@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>채점기준표</title>
+<style>
+:root{
+  --primary:#2f5fd0; --border:#d8e0eb; --line:#e9edf3;
+  --text:#263246; --muted:#768297; --bg:#f3f6fa;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.page{max-width:1220px;margin:26px auto 50px;padding:0 18px}
+.toolbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.group{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);padding:9px 14px;border-radius:9px;font-weight:700;font-size:14px}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn-small{padding:6px 10px;font-size:12px}
+.sheet{background:#fff;border:1px solid #e0e6ee;border-radius:18px;box-shadow:0 12px 34px rgba(31,45,79,.08);overflow:hidden}
+.sheet-header{padding:28px 34px 22px;border-bottom:1px solid var(--border);background:linear-gradient(#fff,#fcfdff)}
+.header-top{display:grid;grid-template-columns:1fr 390px;gap:30px;align-items:start}
+.title-box{text-align:center;padding-top:8px}
+.title-box h1{margin:0;font-size:30px;font-weight:800;letter-spacing:10px}
+.title-box .sub{margin-top:8px;color:var(--muted);font-size:12px}
+.approval-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+.approval-table th,.approval-table td{border:1px solid var(--border);text-align:center}
+.approval-table th{height:34px;background:#f7f9fc;color:#59667a}
+.approval-table td{height:76px}
+.approval-state{font-size:12px;color:#a0a9b7}
+.stamp{width:54px;height:54px;border-radius:50%;border:2px solid #d95858;color:#d95858;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:auto;font-size:11px;font-weight:800;line-height:1.2;transform:rotate(-7deg)}
+.approve-btn{border:1px solid #b7c1d0;background:#fff;border-radius:7px;padding:6px 9px;font-size:12px;font-weight:700}
+.meta-grid{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px}
+.meta-item{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center}
+.meta-label{color:#6e7a8f;font-size:13px;font-weight:800}
+.meta-input{width:100%;border:0;border-bottom:1px solid #dfe5ec;padding:7px 4px;outline:none;color:var(--text);font-weight:700;background:transparent}
+
+.section{padding:24px 34px;border-bottom:1px solid var(--line)}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.section-title{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800}
+.section-title:before{content:"";width:5px;height:18px;border-radius:3px;background:var(--primary)}
+.section-actions{display:flex;gap:7px;flex-wrap:wrap}
+
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.summary-item{border-right:1px solid var(--border);min-height:72px;display:grid;grid-template-rows:32px 1fr}
+.summary-item:last-child{border-right:0}
+.summary-label{display:flex;align-items:center;justify-content:center;background:#f7f9fc;color:#5f6b7f;font-size:12px;font-weight:800}
+.summary-value{display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--primary)}
+.summary-value input{width:86px;border:0;outline:none;background:transparent;text-align:center;font-weight:800;color:inherit}
+
+.table-wrap{border:1px solid var(--border);border-radius:12px;overflow:auto}
+.data-table{width:100%;border-collapse:collapse;min-width:1150px}
+.data-table th{background:#f7f9fc;border-right:1px solid var(--border);padding:12px 10px;font-size:13px;color:#556176;text-align:center}
+.data-table th:last-child{border-right:0}
+.data-table td{border-right:1px solid var(--line);border-top:1px solid var(--line);padding:0;vertical-align:middle}
+.data-table td:last-child{border-right:0}
+.data-table input,.data-table select,.data-table textarea{width:100%;border:0;outline:none;background:transparent;color:var(--text);padding:11px 10px}
+.data-table textarea{min-height:60px;resize:vertical;line-height:1.5}
+.data-table input:focus,.data-table select:focus,.data-table textarea:focus{background:#f9fbff;box-shadow:inset 0 0 0 2px rgba(47,95,208,.16)}
+.center{text-align:center}
+.row-actions{display:flex;gap:5px;justify-content:center;padding:7px}
+.row-btn{border:1px solid var(--border);background:#fff;border-radius:7px;padding:5px 7px;font-size:11px}
+
+.notice-box{display:grid;grid-template-columns:180px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.notice-label{background:#f7f9fc;display:flex;align-items:center;justify-content:center;min-height:128px;font-weight:800;letter-spacing:2px}
+.notice-body{padding:14px}
+.notice-body textarea{width:100%;min-height:90px;resize:vertical;border:1px solid var(--border);border-radius:9px;padding:11px 12px;outline:none;line-height:1.6}
+.helper{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.6}
+
+.footer-status{display:flex;justify-content:space-between;gap:12px;padding:15px 34px;background:#fbfcfe}
+.save-state{display:flex;align-items:center;gap:8px;color:#657286;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;background:#b7bfca}
+.dot.saved{background:#1ba366}
+
+@media(max-width:1000px){
+  .header-top{grid-template-columns:1fr}
+  .approval-wrap{max-width:520px;margin:auto}
+  .meta-grid{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+  .page{padding:0 8px}
+  .sheet-header,.section{padding:20px 15px}
+  .title-box h1{font-size:23px;letter-spacing:7px}
+  .meta-item{grid-template-columns:92px 1fr}
+  .summary-grid{grid-template-columns:repeat(2,1fr)}
+  .notice-box{grid-template-columns:1fr}
+  .notice-label{min-height:48px}
+  .footer-status{padding:14px 15px;flex-direction:column}
+}
+@media print{
+  body{background:#fff}
+  .page{max-width:none;margin:0;padding:0}
+  .toolbar,.section-actions,.row-actions,.footer-status{display:none!important}
+  .sheet{box-shadow:none;border:0;border-radius:0}
+  .sheet-header,.section{padding-left:0;padding-right:0}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="toolbar">
+    <div class="group">
+      <button class="btn" onclick="window.print()">인쇄</button>
+      <button class="btn" onclick="resetForm()">초기화</button>
+    </div>
+    <div class="group">
+      <button class="btn" onclick="loadDraft()">임시저장 불러오기</button>
+      <button class="btn btn-primary" onclick="saveDraft()">임시저장</button>
+    </div>
+  </div>
+
+  <main class="sheet">
+    <header class="sheet-header">
+      <div class="header-top">
+        <div class="title-box">
+          <h1>채 점 기 준 표</h1>
+          <div class="sub">SCORING RUBRIC</div>
+        </div>
+
+        <div class="approval-wrap">
+          <table class="approval-table">
+            <thead><tr><th>담당</th><th>팀장</th><th>본부장</th><th>원장</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="stamp">승인<br>담당</div></td>
+                <td><div class="approval-state">대기</div></td>
+                <td><div class="approval-state">대기</div></td>
+                <td><button class="approve-btn" onclick="approve(this,'원장')">결재</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-label">훈련기관명</div>
+          <input class="meta-input" data-save value="대우능력개발원">
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">교육과정명</div>
+          <input class="meta-input" data-save value="AI 에이전트 클라우드·보안코딩 개발자 양성">
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">평가명</div>
+          <input class="meta-input" data-save value="자바프로그래밍 능력단위 평가">
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">평가일</div>
+          <input class="meta-input" data-save type="date" value="2026-11-02">
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">평가방법</div>
+          <input class="meta-input" data-save value="필기 + 실기평가">
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">담당교사</div>
+          <input class="meta-input" data-save value="이정은">
+        </div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-title" style="margin-bottom:14px">채점 기준 요약</div>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="summary-label">총 문항 수</div>
+          <div class="summary-value"><input id="itemCount" readonly value="4">문항</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">총 배점</div>
+          <div class="summary-value"><input id="totalScore" readonly value="100">점</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">합격 기준</div>
+          <div class="summary-value"><input id="passScore" data-save type="number" value="60">점</div>
+        </div>
+        <div class="summary-item">
+          <div class="summary-label">배점 상태</div>
+          <div class="summary-value"><span id="scoreStatus">정상</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-title">문항별 채점기준</div>
+        <div class="section-actions">
+          <button class="btn btn-small" onclick="copyLastRow()">이전 행 복사</button>
+          <button class="btn btn-small btn-primary" onclick="addRow()">문항 추가</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:70px">문항</th>
+              <th style="width:120px">문항유형</th>
+              <th style="width:160px">정답</th>
+              <th style="width:90px">배점</th>
+              <th>채점기준</th>
+              <th style="width:220px">부분점수 기준</th>
+              <th style="width:200px">감점 기준</th>
+              <th style="width:95px">관리</th>
+            </tr>
+          </thead>
+          <tbody id="rubricBody"></tbody>
+        </table>
+      </div>
+
+      <div class="helper">
+        ※ 객관식은 정답 일치 여부 중심, 주관식·서술형은 핵심 키워드 및 설명 수준에 따라 부분점수 기준을 작성할 수 있습니다.
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title" style="margin-bottom:14px">공통 채점 유의사항</div>
+      <div class="notice-box">
+        <div class="notice-label">채 점 원 칙</div>
+        <div class="notice-body">
+          <textarea data-save>정답의 취지와 핵심 내용을 충족한 경우 정답으로 인정한다. 서술형 문항은 핵심 개념의 포함 여부, 논리성, 기술 정확도를 종합적으로 판단하여 부분점수를 부여할 수 있다.</textarea>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title" style="margin-bottom:14px">재평가 및 이의신청 기준</div>
+      <div class="notice-box">
+        <div class="notice-label">처 리 기 준</div>
+        <div class="notice-body">
+          <textarea data-save>합격기준 미달자는 내부 운영 기준에 따라 재평가할 수 있으며, 채점결과에 대한 이의가 있는 경우 담당교사 확인 후 필요한 경우 재검토한다.</textarea>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer-status">
+      <div class="save-state">
+        <span id="saveDot" class="dot"></span>
+        <span id="saveText">저장되지 않은 변경사항이 있습니다.</span>
+      </div>
+      <div style="font-size:12px;color:#8a94a3">대우능력개발원 LMS · 채점기준표</div>
+    </div>
+  </main>
+</div>
+
+<script>
+const STORAGE_KEY="scoring_rubric_v1";
+let rowSeq=0;
+
+const defaultRows=[
+  {
+    type:"객관식",
+    answer:"3",
+    score:20,
+    criteria:"정답 3번 선택 시 20점, 오답은 0점",
+    partial:"부분점수 없음",
+    deduction:"해당 없음"
+  },
+  {
+    type:"객관식",
+    answer:"2",
+    score:20,
+    criteria:"정답 2번 선택 시 20점, 오답은 0점",
+    partial:"부분점수 없음",
+    deduction:"해당 없음"
+  },
+  {
+    type:"주관식",
+    answer:"오버로딩 / 오버라이딩 차이",
+    score:30,
+    criteria:"두 개념의 정의와 차이를 모두 정확히 설명한 경우 만점",
+    partial:"개념 1개만 정확: 15점 / 차이까지 설명: 30점",
+    deduction:"용어 혼동 또는 핵심 개념 누락 시 감점"
+  },
+  {
+    type:"서술형",
+    answer:"예외처리 필요성 및 try-catch-finally 역할",
+    score:30,
+    criteria:"예외처리 필요성과 각 블록의 역할을 정확히 설명",
+    partial:"필요성 10점 / try-catch 10점 / finally 10점",
+    deduction:"역할 설명 오류 항목당 최대 10점 감점"
+  }
+];
+
+function esc(v){
+  return String(v??"")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;");
+}
+
+function createRow(data={type:"객관식",answer:"",score:0,criteria:"",partial:"",deduction:""}){
+  rowSeq++;
+  const tr=document.createElement("tr");
+  tr.innerHTML=`
+    <td><input class="center" data-field="no" value="${rowSeq}" readonly></td>
+    <td>
+      <select data-field="type">
+        <option ${data.type==="객관식"?"selected":""}>객관식</option>
+        <option ${data.type==="주관식"?"selected":""}>주관식</option>
+        <option ${data.type==="서술형"?"selected":""}>서술형</option>
+      </select>
+    </td>
+    <td><input data-field="answer" value="${esc(data.answer)}" placeholder="정답 / 핵심답안"></td>
+    <td><input class="center" data-field="score" type="number" min="0" value="${Number(data.score)||0}"></td>
+    <td><textarea data-field="criteria" placeholder="채점기준">${esc(data.criteria)}</textarea></td>
+    <td><textarea data-field="partial" placeholder="부분점수 기준">${esc(data.partial)}</textarea></td>
+    <td><textarea data-field="deduction" placeholder="감점 기준">${esc(data.deduction)}</textarea></td>
+    <td>
+      <div class="row-actions">
+        <button class="row-btn" onclick="duplicateRow(this)">복사</button>
+        <button class="row-btn" onclick="removeRow(this)">삭제</button>
+      </div>
+    </td>
+  `;
+
+  tr.querySelectorAll("input,textarea,select").forEach(el=>{
+    el.addEventListener("input",()=>{
+      calculateSummary();
+      markDirty();
+    });
+    el.addEventListener("change",()=>{
+      calculateSummary();
+      markDirty();
+    });
+  });
+
+  document.getElementById("rubricBody").appendChild(tr);
+}
+
+function renumberRows(){
+  const rows=[...document.querySelectorAll("#rubricBody tr")];
+  rows.forEach((tr,i)=>tr.querySelector('[data-field="no"]').value=i+1);
+  rowSeq=rows.length;
+}
+
+function addRow(){
+  createRow();
+  renumberRows();
+  calculateSummary();
+  markDirty();
+}
+
+function duplicateRow(btn){
+  const tr=btn.closest("tr");
+  createRow({
+    type:tr.querySelector('[data-field="type"]').value,
+    answer:tr.querySelector('[data-field="answer"]').value,
+    score:tr.querySelector('[data-field="score"]').value,
+    criteria:tr.querySelector('[data-field="criteria"]').value,
+    partial:tr.querySelector('[data-field="partial"]').value,
+    deduction:tr.querySelector('[data-field="deduction"]').value
+  });
+  renumberRows();
+  calculateSummary();
+  markDirty();
+}
+
+function copyLastRow(){
+  const rows=[...document.querySelectorAll("#rubricBody tr")];
+  if(!rows.length){ addRow(); return; }
+  duplicateRow(rows[rows.length-1].querySelector(".row-btn"));
+}
+
+function removeRow(btn){
+  const rows=document.querySelectorAll("#rubricBody tr");
+  if(rows.length<=1){
+    alert("최소 1개의 채점기준은 유지해야 합니다.");
+    return;
+  }
+  btn.closest("tr").remove();
+  renumberRows();
+  calculateSummary();
+  markDirty();
+}
+
+function calculateSummary(){
+  const rows=[...document.querySelectorAll("#rubricBody tr")];
+  const total=rows.reduce((sum,tr)=>sum+Number(tr.querySelector('[data-field="score"]').value||0),0);
+
+  document.getElementById("itemCount").value=rows.length;
+  document.getElementById("totalScore").value=total;
+
+  const status=document.getElementById("scoreStatus");
+  if(total===100){
+    status.textContent="정상";
+    status.style.color="#1a8a55";
+  }else{
+    status.textContent="배점 확인";
+    status.style.color="#c94a4a";
+  }
+}
+
+function approve(btn,role){
+  btn.closest("td").innerHTML=`<div class="stamp">승인<br>${role}</div>`;
+  markDirty();
+}
+
+function saveDraft(){
+  const payload={
+    fields:[...document.querySelectorAll("[data-save]")].map(el=>el.value),
+    rows:[...document.querySelectorAll("#rubricBody tr")].map(tr=>({
+      type:tr.querySelector('[data-field="type"]').value,
+      answer:tr.querySelector('[data-field="answer"]').value,
+      score:tr.querySelector('[data-field="score"]').value,
+      criteria:tr.querySelector('[data-field="criteria"]').value,
+      partial:tr.querySelector('[data-field="partial"]').value,
+      deduction:tr.querySelector('[data-field="deduction"]').value
+    }))
+  };
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));
+  setSaved(true);
+}
+
+function loadDraft(){
+  const raw=localStorage.getItem(STORAGE_KEY);
+  if(!raw){
+    alert("저장된 임시저장이 없습니다.");
+    return;
+  }
+
+  const p=JSON.parse(raw);
+  const fields=[...document.querySelectorAll("[data-save]")];
+  (p.fields||[]).forEach((v,i)=>{ if(fields[i]) fields[i].value=v; });
+
+  document.getElementById("rubricBody").innerHTML="";
+  rowSeq=0;
+
+  (p.rows||[]).forEach(createRow);
+  if(!(p.rows||[]).length) createRow();
+
+  renumberRows();
+  calculateSummary();
+  setSaved(true);
+}
+
+function resetForm(){
+  if(!confirm("입력한 내용을 초기화하시겠습니까?")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  location.reload();
+}
+
+function markDirty(){ setSaved(false); }
+
+function setSaved(saved){
+  const d=document.getElementById("saveDot");
+  const t=document.getElementById("saveText");
+
+  if(saved){
+    d.classList.add("saved");
+    t.textContent="임시저장 완료";
+  }else{
+    d.classList.remove("saved");
+    t.textContent="저장되지 않은 변경사항이 있습니다.";
+  }
+}
+
+defaultRows.forEach(createRow);
+
+document.querySelectorAll("[data-save]").forEach(el=>{
+  el.addEventListener("input",markDirty);
+  el.addEventListener("change",markDirty);
+});
+
+calculateSummary();
+</script>
+</body>
+</html>
