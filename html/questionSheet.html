@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문제지</title>
+    <link rel="stylesheet" href="../css/questionSheet.css" />
+    <script src="../js/questionSheet.js" defer></script>
+  </head>
+  <body>
+    <div class="page">
+      <div class="toolbar">
+        <div class="group">
+          <button class="btn" onclick="window.print()">인쇄</button>
+          <button class="btn" onclick="toggleAnswers()">정답 표시/숨김</button>
+          <button class="btn" onclick="resetForm()">초기화</button>
+        </div>
+        <div class="group">
+          <button class="btn" onclick="loadDraft()">임시저장 불러오기</button>
+          <button class="btn btn-primary" onclick="saveDraft()">
+            임시저장
+          </button>
+        </div>
+      </div>
+
+      <main class="sheet">
+        <header class="sheet-header">
+          <div class="header-top">
+            <div class="title-box">
+              <h1>문 제 지</h1>
+              <div class="sub">ASSESSMENT QUESTION SHEET</div>
+            </div>
+
+            <div class="approval-wrap">
+              <table class="approval-table">
+                <thead>
+                  <tr>
+                    <th>담당</th>
+                    <th>팀장</th>
+                    <th>본부장</th>
+                    <th>원장</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="stamp">승인<br />담당</div>
+                    </td>
+                    <td><div class="approval-state">대기</div></td>
+                    <td><div class="approval-state">대기</div></td>
+                    <td>
+                      <button
+                        class="approve-btn"
+                        onclick="approve(this, '원장')"
+                      >
+                        결재
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-item">
+              <div class="meta-label">훈련기관명</div>
+              <input class="meta-input" data-save value="대우능력개발원" />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">교육과정명</div>
+              <input
+                class="meta-input"
+                data-save
+                value="AI 에이전트 클라우드·보안코딩 개발자 양성"
+              />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">평가명</div>
+              <input
+                class="meta-input"
+                data-save
+                value="자바프로그래밍 능력단위 평가"
+              />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">평가일</div>
+              <input
+                class="meta-input"
+                data-save
+                type="date"
+                value="2026-11-02"
+              />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">평가시간</div>
+              <input class="meta-input" data-save value="14:00 ~ 15:00" />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">담당교사</div>
+              <input class="meta-input" data-save value="이정은" />
+            </div>
+          </div>
+        </header>
+
+        <section class="section">
+          <div class="section-title" style="margin-bottom: 14px">
+            문제지 요약
+          </div>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <div class="summary-label">총 문항 수</div>
+              <div class="summary-value">
+                <input id="questionCount" readonly value="4" />문항
+              </div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">총 배점</div>
+              <div class="summary-value">
+                <input id="totalScore" readonly value="100" />점
+              </div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">객관식</div>
+              <div class="summary-value">
+                <input id="multipleCount" readonly value="2" />문항
+              </div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">주관/서술형</div>
+              <div class="summary-value">
+                <input id="subjectiveCount" readonly value="2" />문항
+              </div>
+            </div>
+          </div>
+          <div class="helper">
+            ※ 배점 합계와 문항 유형별 개수는 자동 계산됩니다.
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-title">평가 문항</div>
+            <div class="section-actions">
+              <button class="btn btn-small" onclick="copyLastQuestion()">
+                이전 문항 복사
+              </button>
+              <button class="btn btn-small btn-primary" onclick="addQuestion()">
+                문항 추가
+              </button>
+            </div>
+          </div>
+
+          <div id="questionList" class="question-list"></div>
+        </section>
+
+        <div class="footer-status">
+          <div class="save-state">
+            <span id="saveDot" class="dot"></span>
+            <span id="saveText">저장되지 않은 변경사항이 있습니다.</span>
+          </div>
+          <div style="font-size: 12px; color: #8a94a3">
+            대우능력개발원 LMS · 문제지
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

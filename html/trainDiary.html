@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>훈련일지 - 대우 양식</title>
+    <link rel="stylesheet" href="../css/trainDiary.css" />
+    <script src="../js/trainDiary.js" defer></script>
+  </head>
+  <body>
+    <div class="page">
+      <div class="toolbar">
+        <div class="group">
+          <button class="btn" onclick="window.print()">인쇄</button>
+          <button class="btn" onclick="resetForm()">초기화</button>
+        </div>
+        <div class="group">
+          <button class="btn" onclick="loadDraft()">임시저장 불러오기</button>
+          <button class="btn btn-primary" onclick="saveDraft()">
+            임시저장
+          </button>
+        </div>
+      </div>
+
+      <main class="sheet">
+        <header class="sheet-header">
+          <div class="header-top">
+            <div class="title-box">
+              <h1>훈 련 일 지</h1>
+              <div class="sub">대우능력개발원 LMS</div>
+            </div>
+            <div class="approval-wrap">
+              <table class="approval-table">
+                <thead>
+                  <tr>
+                    <th>담당</th>
+                    <th>팀장</th>
+                    <th>본부장</th>
+                    <th>원장</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <div class="stamp">승인<br />담당</div>
+                    </td>
+                    <td><div class="approval-state">대기</div></td>
+                    <td><div class="approval-state">대기</div></td>
+                    <td>
+                      <button
+                        class="approve-btn"
+                        onclick="approve(this, '원장')"
+                      >
+                        결재
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="meta-grid">
+            <div class="meta-item">
+              <div class="meta-label">훈련기관명</div>
+              <input
+                class="meta-input"
+                data-save
+                id="academyName"
+                value="대우능력개발원"
+              />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">교육과정명</div>
+              <input
+                class="meta-input"
+                data-save
+                id="courseName"
+                value="AI 에이전트 클라우드·보안코딩 개발자 양성"
+              />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">훈련기간</div>
+              <input
+                class="meta-input"
+                data-save
+                id="trainingPeriod"
+                value="2026-08-12 ~ 2027-05-14"
+              />
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">훈련일자</div>
+              <input
+                class="meta-input"
+                data-save
+                id="trainingDate"
+                type="date"
+                value="2026-10-19"
+              />
+            </div>
+          </div>
+        </header>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-title">훈련 진행 현황</div>
+            <div class="section-actions">
+              <button class="btn btn-small" onclick="calculateProgress()">
+                자동계산
+              </button>
+            </div>
+          </div>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <div class="summary-label">총 훈련일수</div>
+              <div class="summary-value">
+                <input id="totalDays" data-save type="number" value="131" />일
+              </div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">진행일수</div>
+              <div class="summary-value">
+                <input id="progressDays" data-save type="number" value="44" />일
+              </div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">잔여일수</div>
+              <div class="summary-value">
+                <input id="remainingDays" type="number" value="87" readonly />일
+              </div>
+            </div>
+            <div class="summary-item">
+              <div class="summary-label">진행률</div>
+              <div class="summary-value">
+                <span id="progressRate">33.6%</span>
+              </div>
+            </div>
+          </div>
+          <div class="helper">
+            ※ 운영 시 휴일·휴강일을 제외한 실제 훈련일 기준으로 서버에서
+            계산하도록 확장할 수 있습니다.
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-title">출결 현황</div>
+            <div class="section-actions">
+              <button class="btn btn-small" onclick="calculateAttendance()">
+                출석 자동계산
+              </button>
+            </div>
+          </div>
+          <div class="attendance-grid">
+            <div class="att-item">
+              <div class="att-label">재적</div>
+              <div class="att-value">
+                <input id="totalStudent" data-save type="number" value="15" />명
+              </div>
+            </div>
+            <div class="att-item">
+              <div class="att-label">출석</div>
+              <div class="att-value">
+                <input
+                  id="presentStudent"
+                  data-save
+                  type="number"
+                  value="13"
+                />명
+              </div>
+            </div>
+            <div class="att-item">
+              <div class="att-label">결석</div>
+              <div class="att-value">
+                <input id="absentStudent" data-save type="number" value="2" />명
+              </div>
+            </div>
+            <div class="att-item">
+              <div class="att-label">휴가</div>
+              <div class="att-value">
+                <input
+                  id="vacationStudent"
+                  data-save
+                  type="number"
+                  value="0"
+                />명
+              </div>
+            </div>
+            <div class="att-item">
+              <div class="att-label">지각</div>
+              <div class="att-value">
+                <input id="lateStudent" data-save type="number" value="1" />명
+              </div>
+            </div>
+            <div class="att-item">
+              <div class="att-label">조퇴/외출</div>
+              <div class="att-value">
+                <input id="etcStudent" data-save type="number" value="0" />명
+              </div>
+            </div>
+          </div>
+          <div class="helper">
+            ※ 출석 = 재적 - 결석 - 휴가. 지각·조퇴·외출자는 출석 인원에
+            포함합니다.
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <div class="section-title">훈련 사항</div>
+            <div class="section-actions">
+              <button class="btn btn-small" onclick="copyLastRow()">
+                이전 교시 복사
+              </button>
+              <button class="btn btn-small btn-primary" onclick="addRow()">
+                교시 추가
+              </button>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th style="width: 70px">교시</th>
+                  <th style="width: 220px">훈련과목</th>
+                  <th style="width: 120px">담당교사</th>
+                  <th>훈련내용</th>
+                  <th style="width: 250px">비고 (불참자 등)</th>
+                  <th style="width: 95px">관리</th>
+                </tr>
+              </thead>
+              <tbody id="trainingBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title" style="margin-bottom: 14px">
+            지시 전달 사항
+          </div>
+          <div class="notice-box">
+            <div class="notice-label">지 시 전 달 사 항</div>
+            <div class="notice-body">
+              <textarea
+                id="notice"
+                data-save
+                maxlength="1000"
+                placeholder="훈련생 전달사항, 공지, 과제, 준비사항 등을 입력하세요."
+              ></textarea>
+              <div class="char-count"><span id="noticeCount">0</span>/1000</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-title" style="margin-bottom: 14px">특기 사항</div>
+          <table class="special-table">
+            <tr>
+              <th>지각자</th>
+              <td>
+                <input
+                  data-save
+                  value="이호준(1913, 시험공부)"
+                  placeholder="예: 홍길동(사유)"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>결석자</th>
+              <td>
+                <input
+                  data-save
+                  value="김지원(개인사유), 김유찬(개인사유)"
+                  placeholder="예: 홍길동(사유)"
+                />
+              </td>
+            </tr>
+            <tr>
+              <th>조퇴자</th>
+              <td><input data-save placeholder="없음" /></td>
+            </tr>
+            <tr>
+              <th>휴가자</th>
+              <td><input data-save placeholder="없음" /></td>
+            </tr>
+            <tr>
+              <th>외출자</th>
+              <td><input data-save placeholder="없음" /></td>
+            </tr>
+            <tr>
+              <th>기타사항</th>
+              <td><input data-save placeholder="기타 기록사항" /></td>
+            </tr>
+          </table>
+        </section>
+
+        <div class="footer-status">
+          <div class="save-state">
+            <span id="saveDot" class="dot"></span
+            ><span id="saveText">저장되지 않은 변경사항이 있습니다.</span>
+          </div>
+          <div style="font-size: 12px; color: #8a94a3">
+            대우능력개발원 LMS · 훈련일지
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
