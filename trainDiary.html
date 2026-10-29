@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>훈련일지 - 대우 양식</title>
+<style>
+:root{
+  --primary:#2f5fd0;--primary-dark:#244ea9;--border:#d8e0eb;--line:#e9edf3;
+  --text:#263246;--muted:#768297;--bg:#f3f6fa;--white:#fff;--danger:#c94a4a;
+  --shadow:0 12px 34px rgba(31,45,79,.08)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Pretendard,"Noto Sans KR",Arial,sans-serif;background:var(--bg);color:var(--text)}
+button,input,textarea{font:inherit}button{cursor:pointer}
+.page{max-width:1220px;margin:26px auto 50px;padding:0 18px}
+.toolbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.group{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);padding:9px 14px;border-radius:9px;font-weight:700;font-size:14px}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn-small{padding:6px 10px;font-size:12px}
+.sheet{background:#fff;border:1px solid #e0e6ee;border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.sheet-header{padding:28px 34px 22px;border-bottom:1px solid var(--border);background:linear-gradient(#fff,#fcfdff)}
+.header-top{display:grid;grid-template-columns:1fr 390px;gap:30px;align-items:start}
+.title-box{text-align:center;padding-top:8px}
+.title-box h1{margin:0;font-size:30px;font-weight:800;letter-spacing:14px}
+.title-box .sub{margin-top:8px;font-size:12px;color:var(--muted)}
+.approval-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+.approval-table th,.approval-table td{border:1px solid var(--border);text-align:center}
+.approval-table th{height:34px;background:#f7f9fc;color:#59667a}
+.approval-table td{height:76px}
+.approval-state{color:#a0a9b7;font-size:12px}
+.stamp{width:54px;height:54px;border-radius:50%;border:2px solid #d95858;color:#d95858;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:auto;font-size:11px;font-weight:800;line-height:1.2;transform:rotate(-7deg)}
+.approve-btn{border:1px solid #b7c1d0;background:#fff;border-radius:7px;padding:6px 9px;font-size:12px;font-weight:700}
+.meta-grid{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px}
+.meta-item{display:grid;grid-template-columns:105px 1fr;gap:10px;align-items:center}
+.meta-label{color:#6e7a8f;font-size:13px;font-weight:800}
+.meta-input{width:100%;border:0;border-bottom:1px solid #dfe5ec;padding:7px 4px;outline:none;color:var(--text);font-weight:700;background:transparent}
+.meta-input:focus{border-bottom-color:var(--primary)}
+.section{padding:24px 34px;border-bottom:1px solid var(--line)}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}
+.section-title{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px}
+.section-title:before{content:"";width:5px;height:18px;border-radius:3px;background:var(--primary)}
+.section-actions{display:flex;gap:7px;flex-wrap:wrap}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.summary-item{border-right:1px solid var(--border);min-height:74px;display:grid;grid-template-columns:1fr 1fr}
+.summary-item:last-child{border-right:0}
+.summary-label{display:flex;align-items:center;justify-content:center;background:#f7f9fc;color:#5f6b7f;font-size:13px;font-weight:800}
+.summary-value{display:flex;align-items:center;justify-content:center;gap:3px;font-weight:800;color:var(--primary)}
+.summary-value input{width:62px;border:0;text-align:center;outline:none;background:transparent;font-weight:800;color:inherit}
+.attendance-grid{display:grid;grid-template-columns:repeat(6,1fr);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.att-item{display:grid;grid-template-columns:1fr 1fr;min-height:54px;border-right:1px solid var(--border)}
+.att-item:last-child{border-right:0}
+.att-label{display:flex;align-items:center;justify-content:center;background:#f8fafc;font-size:13px;color:#5e697c;font-weight:800}
+.att-value{display:flex;align-items:center;justify-content:center;font-weight:800}
+.att-value input{width:48px;border:0;outline:none;text-align:center;background:transparent;font-weight:800}
+.table-wrap{border:1px solid var(--border);border-radius:12px;overflow:auto}
+.data-table{width:100%;border-collapse:collapse;min-width:920px}
+.data-table th{background:#f7f9fc;border-right:1px solid var(--border);padding:12px 10px;font-size:13px;color:#556176;text-align:center}
+.data-table td{border-right:1px solid var(--line);border-top:1px solid var(--line);padding:0}
+.data-table input{width:100%;border:0;outline:none;padding:12px 10px;background:transparent;color:var(--text)}
+.data-table input:focus{background:#f9fbff;box-shadow:inset 0 0 0 2px rgba(47,95,208,.16)}
+.period{text-align:center;font-weight:800}
+.row-actions{display:flex;gap:5px;justify-content:center;padding:7px}
+.row-btn{border:1px solid var(--border);background:#fff;border-radius:7px;padding:5px 7px;font-size:11px}
+.notice-box{display:grid;grid-template-columns:180px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.notice-label{background:#f7f9fc;display:flex;align-items:center;justify-content:center;min-height:134px;font-weight:800;letter-spacing:2px}
+.notice-body{padding:14px}
+.notice-body textarea{width:100%;min-height:92px;resize:vertical;border:1px solid var(--border);border-radius:9px;padding:11px 12px;outline:none;line-height:1.6}
+.char-count{text-align:right;margin-top:6px;color:var(--muted);font-size:12px}
+.special-table{width:100%;border-collapse:collapse;border:1px solid var(--border)}
+.special-table th,.special-table td{border:1px solid var(--border);padding:11px 12px;font-size:14px}
+.special-table th{width:160px;text-align:center;background:#f7f9fc;color:#59667a}
+.special-table input{width:100%;border:0;outline:none;background:transparent}
+.helper{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.6}
+.footer-status{display:flex;justify-content:space-between;gap:12px;padding:15px 34px;background:#fbfcfe}
+.save-state{display:flex;align-items:center;gap:8px;color:#657286;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;background:#b7bfca}.dot.saved{background:#1ba366}
+@media(max-width:950px){
+  .header-top{grid-template-columns:1fr}.approval-wrap{max-width:520px;margin:auto}.meta-grid{grid-template-columns:1fr}
+  .summary-grid{grid-template-columns:repeat(2,1fr)}.attendance-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:650px){
+  .page{padding:0 8px}.sheet-header,.section{padding:20px 15px}.title-box h1{font-size:23px;letter-spacing:9px}
+  .meta-item{grid-template-columns:90px 1fr}.summary-grid{grid-template-columns:1fr}.attendance-grid{grid-template-columns:repeat(2,1fr)}
+  .notice-box{grid-template-columns:1fr}.notice-label{min-height:48px}.footer-status{padding:14px 15px;flex-direction:column}
+}
+@media print{
+  body{background:#fff}.page{max-width:none;margin:0;padding:0}.toolbar,.section-actions,.row-actions,.footer-status{display:none!important}
+  .sheet{box-shadow:none;border:0;border-radius:0}.sheet-header,.section{padding-left:0;padding-right:0}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="toolbar">
+    <div class="group">
+      <button class="btn" onclick="window.print()">인쇄</button>
+      <button class="btn" onclick="resetForm()">초기화</button>
+    </div>
+    <div class="group">
+      <button class="btn" onclick="loadDraft()">임시저장 불러오기</button>
+      <button class="btn btn-primary" onclick="saveDraft()">임시저장</button>
+    </div>
+  </div>
+
+  <main class="sheet">
+    <header class="sheet-header">
+      <div class="header-top">
+        <div class="title-box">
+          <h1>훈 련 일 지</h1>
+          <div class="sub">대우능력개발원 LMS</div>
+        </div>
+        <div class="approval-wrap">
+          <table class="approval-table">
+            <thead><tr><th>담당</th><th>팀장</th><th>본부장</th><th>원장</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="stamp">승인<br>담당</div></td>
+                <td><div class="approval-state">대기</div></td>
+                <td><div class="approval-state">대기</div></td>
+                <td><button class="approve-btn" onclick="approve(this,'원장')">결재</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">훈련기관명</div><input class="meta-input" data-save id="academyName" value="대우능력개발원"></div>
+        <div class="meta-item"><div class="meta-label">교육과정명</div><input class="meta-input" data-save id="courseName" value="AI 에이전트 클라우드·보안코딩 개발자 양성"></div>
+        <div class="meta-item"><div class="meta-label">훈련기간</div><input class="meta-input" data-save id="trainingPeriod" value="2026-08-12 ~ 2027-05-14"></div>
+        <div class="meta-item"><div class="meta-label">훈련일자</div><input class="meta-input" data-save id="trainingDate" type="date" value="2026-10-19"></div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-title">훈련 진행 현황</div>
+        <div class="section-actions"><button class="btn btn-small" onclick="calculateProgress()">자동계산</button></div>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-item"><div class="summary-label">총 훈련일수</div><div class="summary-value"><input id="totalDays" data-save type="number" value="131">일</div></div>
+        <div class="summary-item"><div class="summary-label">진행일수</div><div class="summary-value"><input id="progressDays" data-save type="number" value="44">일</div></div>
+        <div class="summary-item"><div class="summary-label">잔여일수</div><div class="summary-value"><input id="remainingDays" type="number" value="87" readonly>일</div></div>
+        <div class="summary-item"><div class="summary-label">진행률</div><div class="summary-value"><span id="progressRate">33.6%</span></div></div>
+      </div>
+      <div class="helper">※ 운영 시 휴일·휴강일을 제외한 실제 훈련일 기준으로 서버에서 계산하도록 확장할 수 있습니다.</div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-title">출결 현황</div>
+        <div class="section-actions"><button class="btn btn-small" onclick="calculateAttendance()">출석 자동계산</button></div>
+      </div>
+      <div class="attendance-grid">
+        <div class="att-item"><div class="att-label">재적</div><div class="att-value"><input id="totalStudent" data-save type="number" value="15">명</div></div>
+        <div class="att-item"><div class="att-label">출석</div><div class="att-value"><input id="presentStudent" data-save type="number" value="13">명</div></div>
+        <div class="att-item"><div class="att-label">결석</div><div class="att-value"><input id="absentStudent" data-save type="number" value="2">명</div></div>
+        <div class="att-item"><div class="att-label">휴가</div><div class="att-value"><input id="vacationStudent" data-save type="number" value="0">명</div></div>
+        <div class="att-item"><div class="att-label">지각</div><div class="att-value"><input id="lateStudent" data-save type="number" value="1">명</div></div>
+        <div class="att-item"><div class="att-label">조퇴/외출</div><div class="att-value"><input id="etcStudent" data-save type="number" value="0">명</div></div>
+      </div>
+      <div class="helper">※ 출석 = 재적 - 결석 - 휴가. 지각·조퇴·외출자는 출석 인원에 포함합니다.</div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div class="section-title">훈련 사항</div>
+        <div class="section-actions">
+          <button class="btn btn-small" onclick="copyLastRow()">이전 교시 복사</button>
+          <button class="btn btn-small btn-primary" onclick="addRow()">교시 추가</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width:70px">교시</th>
+              <th style="width:220px">훈련과목</th>
+              <th style="width:120px">담당교사</th>
+              <th>훈련내용</th>
+              <th style="width:250px">비고 (불참자 등)</th>
+              <th style="width:95px">관리</th>
+            </tr>
+          </thead>
+          <tbody id="trainingBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title" style="margin-bottom:14px">지시 전달 사항</div>
+      <div class="notice-box">
+        <div class="notice-label">지 시 전 달 사 항</div>
+        <div class="notice-body">
+          <textarea id="notice" data-save maxlength="1000" placeholder="훈련생 전달사항, 공지, 과제, 준비사항 등을 입력하세요."></textarea>
+          <div class="char-count"><span id="noticeCount">0</span>/1000</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title" style="margin-bottom:14px">특기 사항</div>
+      <table class="special-table">
+        <tr><th>지각자</th><td><input data-save value="이호준(1913, 시험공부)" placeholder="예: 홍길동(사유)"></td></tr>
+        <tr><th>결석자</th><td><input data-save value="김지원(개인사유), 김유찬(개인사유)" placeholder="예: 홍길동(사유)"></td></tr>
+        <tr><th>조퇴자</th><td><input data-save placeholder="없음"></td></tr>
+        <tr><th>휴가자</th><td><input data-save placeholder="없음"></td></tr>
+        <tr><th>외출자</th><td><input data-save placeholder="없음"></td></tr>
+        <tr><th>기타사항</th><td><input data-save placeholder="기타 기록사항"></td></tr>
+      </table>
+    </section>
+
+    <div class="footer-status">
+      <div class="save-state"><span id="saveDot" class="dot"></span><span id="saveText">저장되지 않은 변경사항이 있습니다.</span></div>
+      <div style="font-size:12px;color:#8a94a3">대우능력개발원 LMS · 훈련일지</div>
+    </div>
+  </main>
+</div>
+
+<script>
+const STORAGE_KEY="daewoo_training_diary_v1";
+let rowSeq=0;
+
+const defaultRows=[
+["자바프로그래밍","이정은","자바프로그래밍","김지원, 김유찬, 이호준"],
+["자바프로그래밍","이정은","자바프로그래밍","김지원, 김유찬, 이호준"],
+["자바프로그래밍","이정은","자바프로그래밍","김지원, 김유찬"],
+["자바프로그래밍","이정은","자바프로그래밍","김지원, 김유찬"],
+["자바프로그래밍","이정은","자바프로그래밍","김지원, 김유찬"],
+["","","",""],["","","",""],["","","",""]
+];
+
+function esc(v){
+ return String(v??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;");
+}
+
+function createRow(data=["","","",""]){
+ rowSeq++;
+ const tr=document.createElement("tr");
+ tr.innerHTML=`
+  <td><input class="period" data-field="period" value="${rowSeq}" readonly></td>
+  <td><input data-field="subject" value="${esc(data[0])}" placeholder="훈련과목"></td>
+  <td><input data-field="teacher" value="${esc(data[1])}" placeholder="담당교사"></td>
+  <td><input data-field="content" value="${esc(data[2])}" placeholder="훈련내용"></td>
+  <td><input data-field="remark" value="${esc(data[3])}" placeholder="불참자 / 비고"></td>
+  <td><div class="row-actions"><button class="row-btn" onclick="duplicateRow(this)">복사</button><button class="row-btn" onclick="removeRow(this)">삭제</button></div></td>`;
+ tr.querySelectorAll("input").forEach(el=>el.addEventListener("input",markDirty));
+ document.getElementById("trainingBody").appendChild(tr);
+}
+
+function renumberRows(){
+ const rows=[...document.querySelectorAll("#trainingBody tr")];
+ rows.forEach((tr,i)=>tr.querySelector('[data-field="period"]').value=i+1);
+ rowSeq=rows.length;
+}
+
+function addRow(){createRow();renumberRows();markDirty()}
+
+function duplicateRow(btn){
+ const r=btn.closest("tr");
+ createRow([
+  r.querySelector('[data-field="subject"]').value,
+  r.querySelector('[data-field="teacher"]').value,
+  r.querySelector('[data-field="content"]').value,
+  r.querySelector('[data-field="remark"]').value
+ ]);
+ renumberRows();markDirty();
+}
+
+function copyLastRow(){
+ const rows=[...document.querySelectorAll("#trainingBody tr")];
+ if(!rows.length){addRow();return}
+ const r=rows[rows.length-1];
+ createRow([
+  r.querySelector('[data-field="subject"]').value,
+  r.querySelector('[data-field="teacher"]').value,
+  r.querySelector('[data-field="content"]').value,
+  r.querySelector('[data-field="remark"]').value
+ ]);
+ renumberRows();markDirty();
+}
+
+function removeRow(btn){
+ const rows=document.querySelectorAll("#trainingBody tr");
+ if(rows.length<=1){alert("최소 1개 교시는 유지해야 합니다.");return}
+ btn.closest("tr").remove();renumberRows();markDirty();
+}
+
+function calculateProgress(){
+ const total=Number(document.getElementById("totalDays").value||0);
+ const progress=Number(document.getElementById("progressDays").value||0);
+ document.getElementById("remainingDays").value=Math.max(0,total-progress);
+ document.getElementById("progressRate").textContent=(total>0?(progress/total*100).toFixed(1):"0.0")+"%";
+ markDirty();
+}
+
+function calculateAttendance(){
+ const total=Number(document.getElementById("totalStudent").value||0);
+ const absent=Number(document.getElementById("absentStudent").value||0);
+ const vacation=Number(document.getElementById("vacationStudent").value||0);
+ document.getElementById("presentStudent").value=Math.max(0,total-absent-vacation);
+ markDirty();
+}
+
+function approve(btn,role){
+ btn.closest("td").innerHTML=`<div class="stamp">승인<br>${role}</div>`;
+ markDirty();
+}
+
+function updateNoticeCount(){
+ const n=document.getElementById("notice");
+ document.getElementById("noticeCount").textContent=n.value.length;
+}
+
+function saveDraft(){
+ const payload={
+  fields:[...document.querySelectorAll("[data-save]")].map(el=>el.value),
+  rows:[...document.querySelectorAll("#trainingBody tr")].map(tr=>({
+   subject:tr.querySelector('[data-field="subject"]').value,
+   teacher:tr.querySelector('[data-field="teacher"]').value,
+   content:tr.querySelector('[data-field="content"]').value,
+   remark:tr.querySelector('[data-field="remark"]').value
+  }))
+ };
+ localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));
+ setSaved(true);
+}
+
+function loadDraft(){
+ const raw=localStorage.getItem(STORAGE_KEY);
+ if(!raw){alert("저장된 임시저장이 없습니다.");return}
+ const p=JSON.parse(raw);
+ const fields=[...document.querySelectorAll("[data-save]")];
+ (p.fields||[]).forEach((v,i)=>{if(fields[i])fields[i].value=v});
+ document.getElementById("trainingBody").innerHTML="";
+ rowSeq=0;
+ (p.rows||[]).forEach(r=>createRow([r.subject,r.teacher,r.content,r.remark]));
+ if(!(p.rows||[]).length)createRow();
+ renumberRows();calculateProgress();calculateAttendance();updateNoticeCount();setSaved(true);
+}
+
+function resetForm(){
+ if(!confirm("입력한 내용을 초기화하시겠습니까?"))return;
+ localStorage.removeItem(STORAGE_KEY);location.reload();
+}
+
+function markDirty(){setSaved(false)}
+function setSaved(saved){
+ const d=document.getElementById("saveDot"),t=document.getElementById("saveText");
+ if(saved){d.classList.add("saved");t.textContent="임시저장 완료"}
+ else{d.classList.remove("saved");t.textContent="저장되지 않은 변경사항이 있습니다."}
+}
+
+defaultRows.forEach(createRow);
+
+document.querySelectorAll("[data-save]").forEach(el=>{
+ el.addEventListener("input",()=>{
+  if(["totalDays","progressDays"].includes(el.id)) calculateProgress();
+  else if(["totalStudent","absentStudent","vacationStudent"].includes(el.id)) calculateAttendance();
+  else markDirty();
+ });
+});
+document.getElementById("notice").addEventListener("input",updateNoticeCount);
+
+calculateProgress();calculateAttendance();updateNoticeCount();
+</script>
+</body>
+</html>
