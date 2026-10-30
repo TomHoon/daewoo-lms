@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>서술형 시험지 생성</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans KR",sans-serif;background:#f3f6fb;color:#172033}
+button,input,select,textarea{font:inherit}.page{max-width:1500px;margin:0 auto;padding:28px}.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+h1{margin:0;font-size:26px}.subtitle{margin:7px 0 0;color:#71809a;font-size:14px}.actions{display:flex;gap:8px}.btn{border:1px solid #d8e0ec;background:#fff;color:#31415d;border-radius:8px;padding:10px 16px;cursor:pointer;font-weight:700}
+.btn.primary{background:#2f65d9;border-color:#2f65d9;color:#fff}.btn.danger{color:#c43d4b;border-color:#efcdd2;background:#fff7f8}.card{background:#fff;border:1px solid #dfe6f0;border-radius:12px;box-shadow:0 8px 24px rgba(38,58,90,.05);overflow:hidden;margin-bottom:18px}
+.card-head{padding:16px 20px;border-bottom:1px solid #e8edf5;display:flex;justify-content:space-between;align-items:center;background:#fbfcfe}.card-head h2{margin:0;font-size:17px}.card-body{padding:20px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.field.span-2{grid-column:span 2}.field.span-4{grid-column:span 4}.field label{display:block;margin-bottom:7px;font-size:13px;font-weight:700;color:#46536b}.required:after{content:" *";color:#e25555}
+input,select,textarea{width:100%;border:1px solid #d9e1ec;border-radius:8px;padding:10px 12px;outline:none;background:#fff}textarea{resize:vertical;min-height:82px}
+.question-list{display:flex;flex-direction:column;gap:16px}.question{border:1px solid #dfe6f0;border-radius:12px;overflow:hidden;background:#fff}.question-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#f8faff;border-bottom:1px solid #e6ebf3}
+.q-title{display:flex;gap:10px;align-items:center}.q-no{width:32px;height:32px;border-radius:9px;background:#eaf1ff;color:#2f65d9;display:grid;place-items:center;font-weight:800}.q-actions{display:flex;gap:6px}
+.question-body{padding:18px;display:grid;grid-template-columns:1.5fr .8fr;gap:18px}.left-col,.right-col{display:flex;flex-direction:column;gap:14px}.inline-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.criteria-box{border:1px solid #dfe6f0;border-radius:10px;overflow:hidden}.criteria-head,.criteria-row{display:grid;grid-template-columns:50px 1fr 110px 50px}.criteria-head{background:#f6f8fc;border-bottom:1px solid #dfe6f0;font-size:12px;font-weight:800;color:#59677f}
+.criteria-head div,.criteria-row>div{padding:10px;border-right:1px solid #e6ebf3}.criteria-row{border-bottom:1px solid #edf1f6;align-items:center}.criteria-row:last-child{border-bottom:0}.criteria-row input{padding:7px 9px}
+.remove-criteria{border:0;background:transparent;cursor:pointer;color:#c94c5b;font-size:18px}.add-criteria{margin-top:8px;border:1px dashed #b9c8de;background:#fbfcff;border-radius:8px;padding:9px;cursor:pointer;color:#47658d;font-weight:700}
+.score-box{padding:14px;border-radius:10px;background:#f5f8ff;border:1px solid #dce6fb}.score-box .big{font-size:28px;font-weight:800;color:#2f65d9}.score-box span{color:#71809a;font-size:13px}
+.footer-summary{position:sticky;bottom:0;background:rgba(255,255,255,.96);border:1px solid #dfe6f0;border-radius:12px;box-shadow:0 -6px 24px rgba(38,58,90,.08);padding:14px 18px;display:flex;justify-content:space-between;align-items:center}
+.summary-left{display:flex;gap:24px}.summary-item{font-size:13px;color:#6a7890}.summary-item strong{display:block;margin-top:4px;font-size:18px;color:#1c2a42}.badge{padding:5px 9px;border-radius:999px;background:#eef4ff;color:#2f65d9;font-size:12px;font-weight:800}
+.help{margin-top:6px;color:#8a96a9;font-size:12px}
+@media(max-width:1000px){.grid{grid-template-columns:1fr 1fr}.field.span-4{grid-column:span 2}.question-body{grid-template-columns:1fr}}
+@media(max-width:650px){.page{padding:14px}.topbar{align-items:flex-start;gap:12px;flex-direction:column}.grid{grid-template-columns:1fr}.field.span-2,.field.span-4{grid-column:span 1}.inline-grid{grid-template-columns:1fr}.footer-summary{align-items:stretch;gap:12px;flex-direction:column}.summary-left{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="topbar">
+    <div><h1>서술형 시험지 생성</h1><p class="subtitle">NCS 평가용 서술형 시험지를 구성하고 문항별 배점 및 채점기준을 설정합니다.</p></div>
+    <div class="actions"><button class="btn" onclick="previewExam()">미리보기</button><button class="btn" onclick="alert('임시저장되었습니다.')">임시저장</button><button class="btn primary" onclick="saveExam()">시험지 저장</button></div>
+  </div>
+
+  <section class="card">
+    <div class="card-head"><h2>시험 기본정보</h2><span class="badge">교사용</span></div>
+    <div class="card-body">
+      <div class="grid">
+        <div class="field"><label class="required">훈련과정</label><select><option>대우 직업훈련 과정</option></select></div>
+        <div class="field"><label class="required">훈련기수</label><select><option>2026년 1기</option></select></div>
+        <div class="field"><label class="required">교과목 / 능력단위</label><select><option>자바 프로그래밍</option></select></div>
+        <div class="field"><label class="required">평가방법</label><select disabled><option>서술형시험</option></select></div>
+
+        <div class="field span-2"><label class="required">시험지명</label><input value="자바 프로그래밍 능력단위 평가"></div>
+        <div class="field"><label class="required">평가일</label><input type="date" value="2026-11-06"></div>
+        <div class="field"><label>시험시간(분)</label><input type="number" value="60"></div>
+
+        <div class="field"><label>통과점수</label><input id="passScore" type="number" value="60"></div>
+        <div class="field"><label>재평가 허용</label><select><option>허용</option><option>허용 안 함</option></select></div>
+        <div class="field"><label>학생 문제순서</label><select><option>동일 순서</option><option>학생별 랜덤</option></select></div>
+        <div class="field"><label>개별 링크 발급</label><select disabled><option>학생별 자동 발급</option></select></div>
+
+        <div class="field span-4"><label>시험 안내문</label><textarea>각 문항의 내용을 확인한 후 답안을 작성해주세요. 답안 제출 후에는 수정이 제한될 수 있습니다.</textarea></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><h2>문항 구성</h2><button class="btn primary" onclick="addQuestion()">+ 문항 추가</button></div>
+    <div class="card-body"><div id="questionList" class="question-list"></div></div>
+  </section>
+
+  <div class="footer-summary">
+    <div class="summary-left">
+      <div class="summary-item">총 문항<strong id="questionCount">0개</strong></div>
+      <div class="summary-item">총 배점<strong id="totalScore">0점</strong></div>
+      <div class="summary-item">통과점수<strong id="summaryPassScore">60점</strong></div>
+    </div>
+    <div class="actions"><button class="btn" onclick="previewExam()">학생 화면 미리보기</button><button class="btn primary" onclick="saveExam()">시험지 저장</button></div>
+  </div>
+</div>
+
+<template id="questionTemplate">
+<article class="question">
+  <div class="question-head">
+    <div class="q-title"><div class="q-no"></div><strong>서술형 문항</strong></div>
+    <div class="q-actions"><button class="btn" onclick="moveQuestion(this,-1)">↑</button><button class="btn" onclick="moveQuestion(this,1)">↓</button><button class="btn danger" onclick="removeQuestion(this)">삭제</button></div>
+  </div>
+  <div class="question-body">
+    <div class="left-col">
+      <div class="field"><label class="required">문제</label><textarea class="question-text" placeholder="학생에게 출제할 문제를 입력하세요."></textarea></div>
+      <div class="field"><label>문제 안내 / 조건</label><textarea placeholder="답안 작성 시 참고할 조건이나 요구사항을 입력하세요."></textarea></div>
+      <div class="field"><label class="required">모범답안 / 정답기준</label><textarea placeholder="교사용 모범답안 또는 핵심 정답 내용을 입력하세요."></textarea></div>
+      <div class="field">
+        <label>채점기준</label>
+        <div class="criteria-box">
+          <div class="criteria-head"><div>순번</div><div>평가기준</div><div>배점</div><div></div></div>
+          <div class="criteria-body"></div>
+        </div>
+        <button class="add-criteria" onclick="addCriteria(this)">+ 채점기준 추가</button>
+        <div class="help">예: 핵심 개념 설명 3점 / 적용 사례 제시 4점 / 결론 도출 3점</div>
+      </div>
+    </div>
+    <div class="right-col">
+      <div class="inline-grid">
+        <div class="field"><label class="required">문항 배점</label><input class="question-score" type="number" value="10" min="0" oninput="updateSummary()"></div>
+        <div class="field"><label>난이도</label><select><option>하</option><option selected>중</option><option>상</option></select></div>
+      </div>
+      <div class="field"><label>채점 방식</label><select><option>문항별 점수 직접 입력</option><option>채점기준 합산</option></select></div>
+      <div class="field"><label>부분점수 허용</label><select><option>허용</option><option>허용 안 함</option></select></div>
+      <div class="field"><label>학생 첨부파일</label><select><option>허용 안 함</option><option>허용</option></select></div>
+      <div class="score-box"><span>현재 문항 배점</span><div class="big"><span class="score-display">10</span>점</div></div>
+    </div>
+  </div>
+</article>
+</template>
+
+<script>
+let questionSeq=0;
+function addQuestion(defaults={}){
+  const t=document.getElementById('questionTemplate');
+  const node=t.content.cloneNode(true);
+  const q=node.querySelector('.question');
+  q.dataset.id=++questionSeq;
+  if(defaults.question) q.querySelector('.question-text').value=defaults.question;
+  if(defaults.score){q.querySelector('.question-score').value=defaults.score;q.querySelector('.score-display').textContent=defaults.score;}
+  document.getElementById('questionList').appendChild(node);
+  addCriteria(q.querySelector('.add-criteria'),'핵심 내용이 정확하게 포함되어 있는가?',5);
+  addCriteria(q.querySelector('.add-criteria'),'내용을 논리적으로 설명하였는가?',5);
+  renumberQuestions();updateSummary();
+}
+function removeQuestion(btn){if(confirm('이 문항을 삭제하시겠습니까?')){btn.closest('.question').remove();renumberQuestions();updateSummary();}}
+function moveQuestion(btn,d){const i=btn.closest('.question'),l=i.parentElement;if(d<0&&i.previousElementSibling)l.insertBefore(i,i.previousElementSibling);if(d>0&&i.nextElementSibling)l.insertBefore(i.nextElementSibling,i);renumberQuestions();}
+function renumberQuestions(){document.querySelectorAll('.question').forEach((q,i)=>q.querySelector('.q-no').textContent=i+1);}
+function addCriteria(btn,text='',score=0){
+  const body=btn.previousElementSibling.querySelector('.criteria-body');
+  const row=document.createElement('div');row.className='criteria-row';
+  row.innerHTML=`<div class="criteria-no"></div><div><input value="${text}" placeholder="평가기준 입력"></div><div><input type="number" value="${score}" min="0" oninput="syncCriteriaTotal(this.closest('.question'))"></div><div><button class="remove-criteria" onclick="removeCriteria(this)">×</button></div>`;
+  body.appendChild(row);renumberCriteria(body);syncCriteriaTotal(body.closest('.question'));
+}
+function removeCriteria(btn){const body=btn.closest('.criteria-body');btn.closest('.criteria-row').remove();renumberCriteria(body);syncCriteriaTotal(body.closest('.question'));}
+function renumberCriteria(body){body.querySelectorAll('.criteria-row').forEach((r,i)=>r.querySelector('.criteria-no').textContent=i+1);}
+function syncCriteriaTotal(q){let s=0;q.querySelectorAll('.criteria-row input[type="number"]').forEach(i=>s+=Number(i.value||0));q.querySelector('.question-score').value=s;q.querySelector('.score-display').textContent=s;updateSummary();}
+function updateSummary(){
+  const qs=[...document.querySelectorAll('.question')];let total=0;
+  qs.forEach(q=>{const s=Number(q.querySelector('.question-score').value||0);q.querySelector('.score-display').textContent=s;total+=s;});
+  document.getElementById('questionCount').textContent=qs.length+'개';
+  document.getElementById('totalScore').textContent=total+'점';
+  document.getElementById('summaryPassScore').textContent=(document.getElementById('passScore').value||0)+'점';
+}
+function previewExam(){alert('학생용 시험지 미리보기 화면으로 연결될 영역입니다.');}
+function saveExam(){
+  const qs=document.querySelectorAll('.question');
+  if(!qs.length){alert('최소 1개 이상의 문항을 등록해주세요.');return;}
+  const total=[...document.querySelectorAll('.question-score')].reduce((s,e)=>s+Number(e.value||0),0);
+  alert('시험지가 저장되었습니다.\n총 배점: '+total+'점\n학생별 개별 링크는 시험 배포 단계에서 생성됩니다.');
+}
+document.getElementById('passScore').addEventListener('input',updateSummary);
+addQuestion({question:'객체지향 프로그래밍의 특징 중 캡슐화와 상속의 개념을 설명하고 각각의 장점을 작성하시오.',score:10});
+addQuestion({question:'Java Collection Framework에서 List와 Set의 차이를 설명하고 각각의 사용 예시를 작성하시오.',score:10});
+</script>
+</body>
+</html>

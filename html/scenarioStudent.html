@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>문제해결시나리오 - 학생 제출</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans KR",sans-serif;background:#f3f6fb;color:#172033}
+button,input,textarea{font:inherit}.page{max-width:1200px;margin:0 auto;padding:24px}.header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}
+.header h1{margin:0;font-size:26px}.header p{margin:7px 0 0;color:#71809a;font-size:14px}.badge{display:inline-flex;padding:5px 9px;border-radius:999px;background:#eef4ff;color:#2f65d9;font-size:12px;font-weight:800}
+.card{background:#fff;border:1px solid #dfe6f0;border-radius:12px;box-shadow:0 8px 24px rgba(38,58,90,.05);overflow:hidden;margin-bottom:16px}.card-head{padding:15px 18px;border-bottom:1px solid #e8edf5;background:#fbfcfe;display:flex;justify-content:space-between;align-items:center}.card-head h2{margin:0;font-size:17px}.card-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.field label{display:block;font-size:12px;font-weight:800;color:#536178;margin-bottom:6px}
+input,textarea{width:100%;border:1px solid #d9e1ec;border-radius:8px;padding:10px 12px;background:#fff;outline:none}textarea{min-height:100px;resize:vertical}
+.problem-sheet{border:1px solid #cbd6e5;background:#fff}.sheet-title{text-align:center;font-weight:800;font-size:22px;padding:18px;border-bottom:1px solid #aebdce}
+.meta-table{width:100%;border-collapse:collapse;font-size:13px}.meta-table th,.meta-table td{border:1px solid #bfcbd9;padding:9px}.meta-table th{background:#eef7f8;width:120px}
+.problem-content{padding:20px;line-height:1.8;font-size:14px}.problem-content ol{padding-left:22px}
+.upload-box{border:2px dashed #b8c6d9;border-radius:12px;padding:28px;text-align:center;background:#fbfcff}.upload-box strong{display:block;font-size:16px;margin-bottom:7px}.upload-box p{margin:0 0 14px;color:#7b879a;font-size:13px}
+.file-list{margin-top:14px;display:flex;flex-direction:column;gap:8px}.file-item{display:flex;justify-content:space-between;align-items:center;border:1px solid #dfe6f0;border-radius:8px;padding:10px 12px;background:#fff}.file-name{font-weight:700}.file-meta{font-size:12px;color:#8995a7}
+.btn{border:1px solid #d5deeb;background:#fff;color:#32415b;border-radius:8px;padding:9px 14px;cursor:pointer;font-weight:700}.btn.primary{background:#2f65d9;border-color:#2f65d9;color:#fff}.submit-area{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.status-chip{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800;background:#fff4df;color:#a46b05}
+@media(max-width:850px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.page{padding:14px}.grid{grid-template-columns:1fr}.header{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div>
+      <h1>문제해결시나리오 평가</h1>
+      <p>평가 문제를 확인하고 본인이 작업한 결과물을 업로드하여 제출합니다.</p>
+    </div>
+    <span class="badge">학생용</span>
+  </div>
+
+  <section class="card">
+    <div class="card-head"><h2>평가 기본정보</h2><span class="status-chip">제출 전</span></div>
+    <div class="card-body">
+      <div class="grid">
+        <div class="field"><label>훈련과정</label><input value="대우 직업훈련 과정" readonly></div>
+        <div class="field"><label>교과목 / 능력단위</label><input value="애플리케이션 테스트 수행" readonly></div>
+        <div class="field"><label>평가방법</label><input value="문제해결시나리오" readonly></div>
+        <div class="field"><label>평가일</label><input value="2026-10-07" readonly></div>
+        <div class="field"><label>훈련생</label><input value="홍길동" readonly></div>
+        <div class="field"><label>훈련생 번호</label><input value="2026-0017" readonly></div>
+        <div class="field"><label>제출 마감</label><input value="2026-10-07 18:00" readonly></div>
+        <div class="field"><label>상태</label><input value="미제출" readonly></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><h2>평가 문제</h2></div>
+    <div class="card-body">
+      <div class="problem-sheet">
+        <div class="sheet-title">[ 애플리케이션 테스트 수행 ] 평가 문제</div>
+        <table class="meta-table">
+          <tr><th>평가일시</th><td>2026.10.07</td><th>훈련생</th><td>홍길동</td></tr>
+          <tr><th>과정명</th><td colspan="3">대우 직업훈련 과정</td></tr>
+          <tr><th>교과목</th><td>애플리케이션 테스트 수행</td><th>평가방법</th><td>문제해결시나리오</td></tr>
+        </table>
+        <div class="problem-content">
+          <strong>평가내용</strong>
+          <ol>
+            <li>아래 제시사항에 따라 애플리케이션 테스트를 수행하시오.</li>
+            <li>테스트 수행 결과를 정리하고, 요구된 결과물을 파일로 제출하시오.</li>
+            <li>제출 파일에는 작업 과정과 최종 결과가 확인될 수 있도록 포함하시오.</li>
+            <li>필요한 경우 화면 캡처, 테스트 결과, 코드 또는 문서를 함께 제출할 수 있습니다.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><h2>작업물 제출</h2></div>
+    <div class="card-body">
+      <div class="upload-box">
+        <strong>본인이 작업한 결과물을 업로드하세요.</strong>
+        <p>ZIP, PDF, DOCX, XLSX, PPTX, PNG, JPG 파일 업로드 가능</p>
+        <input id="fileInput" type="file" multiple onchange="renderFiles()">
+      </div>
+      <div id="fileList" class="file-list"></div>
+
+      <div class="field" style="margin-top:16px">
+        <label>학생 제출 의견</label>
+        <textarea placeholder="작업 내용이나 교사에게 전달할 내용을 입력하세요."></textarea>
+      </div>
+
+      <div class="submit-area">
+        <button class="btn" onclick="alert('임시저장되었습니다.')">임시저장</button>
+        <button class="btn primary" onclick="submitWork()">최종 제출</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+function renderFiles(){
+  const input=document.getElementById('fileInput');
+  const list=document.getElementById('fileList');
+  list.innerHTML='';
+  [...input.files].forEach(f=>{
+    const div=document.createElement('div');
+    div.className='file-item';
+    div.innerHTML=`<div><div class="file-name">${f.name}</div><div class="file-meta">${(f.size/1024/1024).toFixed(2)} MB</div></div><button class="btn" onclick="this.closest('.file-item').remove()">제거</button>`;
+    list.appendChild(div);
+  });
+}
+function submitWork(){
+  const cnt=document.querySelectorAll('#fileList .file-item').length;
+  if(!cnt){alert('제출할 작업물을 하나 이상 업로드해주세요.');return;}
+  alert('작업물이 최종 제출되었습니다.');
+}
+</script>
+</body>
+</html>

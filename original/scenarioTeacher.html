@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>문제해결시나리오 - 교사 채점</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans KR",sans-serif;background:#f3f6fb;color:#172033}
+button,input,select,textarea{font:inherit}.page{max-width:1450px;margin:0 auto;padding:24px}.header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}
+.header h1{margin:0;font-size:26px}.header p{margin:7px 0 0;color:#71809a;font-size:14px}.badge{display:inline-flex;padding:5px 9px;border-radius:999px;background:#eef4ff;color:#2f65d9;font-size:12px;font-weight:800}
+.card{background:#fff;border:1px solid #dfe6f0;border-radius:12px;box-shadow:0 8px 24px rgba(38,58,90,.05);overflow:hidden;margin-bottom:16px}.card-head{padding:15px 18px;border-bottom:1px solid #e8edf5;background:#fbfcfe;display:flex;justify-content:space-between;align-items:center}.card-head h2{margin:0;font-size:17px}.card-body{padding:18px}
+.teacher-layout{display:grid;grid-template-columns:310px 1fr;gap:16px}.student-list{border:1px solid #dfe6f0;border-radius:10px;overflow:hidden}.student-item{padding:13px 14px;border-bottom:1px solid #edf1f6;cursor:pointer;background:#fff}.student-item:last-child{border-bottom:0}.student-item.active{background:#eef4ff}.student-item strong{display:block}.student-item span{font-size:12px;color:#7c899c}
+.file-list{display:flex;flex-direction:column;gap:8px}.file-item{display:flex;justify-content:space-between;align-items:center;border:1px solid #dfe6f0;border-radius:8px;padding:10px 12px;background:#fff}.file-name{font-weight:700}.file-meta{font-size:12px;color:#8995a7}
+.btn{border:1px solid #d5deeb;background:#fff;color:#32415b;border-radius:8px;padding:9px 14px;cursor:pointer;font-weight:700}.btn.success{background:#15956b;border-color:#15956b;color:#fff}
+.field label{display:block;font-size:12px;font-weight:800;color:#536178;margin-bottom:6px}input,select,textarea{width:100%;border:1px solid #d9e1ec;border-radius:8px;padding:10px 12px;background:#fff;outline:none}textarea{min-height:100px;resize:vertical}
+.score-table{width:100%;border-collapse:collapse;font-size:13px}.score-table th,.score-table td{border:1px solid #dfe6f0;padding:9px;vertical-align:middle}.score-table th{background:#f6f8fc}.score-input{width:90px}
+.total-box{display:flex;justify-content:flex-end;gap:24px;margin-top:12px;padding:14px;border-radius:10px;background:#f7f9fc}.total-box strong{font-size:22px;color:#2f65d9}
+.feedback-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.submit-area{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+.status-chip{display:inline-flex;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}.status-chip.done{background:#e8f7ef;color:#168a61}.status-chip.wait{background:#fff4df;color:#a46b05}
+@media(max-width:1000px){.teacher-layout{grid-template-columns:1fr}.feedback-grid{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}@media(max-width:650px){.page{padding:14px}.grid{grid-template-columns:1fr}.header{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div>
+      <h1>문제해결시나리오 채점</h1>
+      <p>학생별 제출자료를 확인하고 채점기준에 따라 점수와 피드백을 입력합니다.</p>
+    </div>
+    <span class="badge">교사용</span>
+  </div>
+
+  <div class="teacher-layout">
+    <aside class="card">
+      <div class="card-head"><h2>훈련생 제출현황</h2></div>
+      <div class="card-body">
+        <div class="student-list">
+          <div class="student-item active" onclick="selectStudent(this,'홍길동','제출완료')"><strong>홍길동</strong><span>2026-0017 · 제출완료</span></div>
+          <div class="student-item" onclick="selectStudent(this,'김민수','제출완료')"><strong>김민수</strong><span>2026-0018 · 제출완료</span></div>
+          <div class="student-item" onclick="selectStudent(this,'이수진','미제출')"><strong>이수진</strong><span>2026-0019 · 미제출</span></div>
+          <div class="student-item" onclick="selectStudent(this,'박지훈','채점완료')"><strong>박지훈</strong><span>2026-0020 · 채점완료</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <section class="card">
+        <div class="card-head"><h2><span id="selectedName">홍길동</span> 제출자료</h2><span id="selectedStatus" class="status-chip done">제출완료</span></div>
+        <div class="card-body">
+          <div class="file-list">
+            <div class="file-item"><div><div class="file-name">application_test_result.zip</div><div class="file-meta">12.4 MB · 2026-10-07 16:42 제출</div></div><button class="btn">다운로드</button></div>
+            <div class="file-item"><div><div class="file-name">test_result_report.pdf</div><div class="file-meta">1.8 MB · 2026-10-07 16:42 제출</div></div><button class="btn">다운로드</button></div>
+          </div>
+          <div class="field" style="margin-top:14px">
+            <label>학생 제출 의견</label>
+            <textarea readonly>테스트 케이스 수행 결과와 오류 수정 내역을 함께 첨부했습니다.</textarea>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><h2>채점기준별 평가</h2></div>
+        <div class="card-body">
+          <table class="score-table">
+            <thead>
+              <tr><th style="width:60px">순번</th><th>채점기준</th><th style="width:110px">배점</th><th style="width:130px">취득점수</th><th>채점 메모</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>요구사항에 따라 테스트 시나리오를 정확히 수행하였는가</td><td>25점</td><td><input class="score-input score" type="number" min="0" max="25" value="23" oninput="calcScore()"></td><td><input value="주요 테스트 케이스 정상 수행"></td></tr>
+              <tr><td>2</td><td>테스트 결과와 오류 발생 내용을 적절히 기록하였는가</td><td>25점</td><td><input class="score-input score" type="number" min="0" max="25" value="22" oninput="calcScore()"></td><td><input value="오류 원인 설명 보완 필요"></td></tr>
+              <tr><td>3</td><td>수정 후 재테스트를 수행하고 결과를 검증하였는가</td><td>25점</td><td><input class="score-input score" type="number" min="0" max="25" value="24" oninput="calcScore()"></td><td><input value="재테스트 결과 명확함"></td></tr>
+              <tr><td>4</td><td>제출 결과물이 평가 요구사항에 맞게 정리되어 있는가</td><td>25점</td><td><input class="score-input score" type="number" min="0" max="25" value="21" oninput="calcScore()"></td><td><input value="문서 정리 상태 양호"></td></tr>
+            </tbody>
+          </table>
+          <div class="total-box"><div>총점 <strong id="totalScore">90</strong> / 100</div><div>판정 <strong id="passText">PASS</strong></div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><h2>교사 피드백</h2></div>
+        <div class="card-body">
+          <div class="feedback-grid">
+            <div class="field"><label>종합 피드백</label><textarea>테스트 시나리오 수행과 결과 정리는 전반적으로 잘 되어 있습니다. 오류 원인 분석을 조금 더 구체적으로 작성하면 좋겠습니다.</textarea></div>
+            <div class="field"><label>보완사항 / 재평가 안내</label><textarea placeholder="보완이 필요한 내용이나 재평가 안내사항을 입력하세요."></textarea></div>
+          </div>
+          <div class="grid" style="margin-top:14px">
+            <div class="field"><label>최종 판정</label><select><option>PASS</option><option>FAIL</option><option>재평가</option></select></div>
+            <div class="field"><label>피드백 공개</label><select><option>학생에게 공개</option><option>비공개</option></select></div>
+            <div class="field"><label>재평가 필요</label><select><option>아니오</option><option>예</option></select></div>
+            <div class="field"><label>채점자</label><input value="이정훈" readonly></div>
+          </div>
+          <div class="submit-area">
+            <button class="btn" onclick="alert('채점 내용이 임시저장되었습니다.')">임시저장</button>
+            <button class="btn success" onclick="alert('채점 및 피드백이 확정되었습니다.')">채점 완료</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script>
+function calcScore(){
+  let sum=0;document.querySelectorAll('.score').forEach(i=>sum+=Number(i.value||0));
+  document.getElementById('totalScore').textContent=sum;
+  document.getElementById('passText').textContent=sum>=60?'PASS':'FAIL';
+}
+function selectStudent(el,name,status){
+  document.querySelectorAll('.student-item').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('selectedName').textContent=name;
+  const s=document.getElementById('selectedStatus');
+  s.textContent=status;
+  s.className='status-chip '+(status==='미제출'?'wait':'done');
+}
+</script>
+</body>
+</html>

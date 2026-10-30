@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>문제해결시나리오 평가도구 생성</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,"Noto Sans KR",sans-serif;background:#f3f6fb;color:#172033}
+button,input,select,textarea{font:inherit}
+.page{max-width:1450px;margin:0 auto;padding:24px}
+.header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:18px}
+.header h1{margin:0;font-size:26px}
+.header p{margin:7px 0 0;color:#71809a;font-size:14px}
+.actions{display:flex;gap:8px}
+.btn{border:1px solid #d5deeb;background:#fff;color:#32415b;border-radius:8px;padding:10px 15px;cursor:pointer;font-weight:700}
+.btn.primary{background:#2f65d9;border-color:#2f65d9;color:#fff}
+.btn.danger{color:#c24453;background:#fff7f8;border-color:#efcbd1}
+.card{background:#fff;border:1px solid #dfe6f0;border-radius:12px;box-shadow:0 8px 24px rgba(38,58,90,.05);overflow:hidden;margin-bottom:16px}
+.card-head{padding:15px 18px;border-bottom:1px solid #e8edf5;background:#fbfcfe;display:flex;justify-content:space-between;align-items:center}
+.card-head h2{margin:0;font-size:17px}
+.card-body{padding:18px}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.span-2{grid-column:span 2}.span-4{grid-column:span 4}
+.field label{display:block;font-size:12px;font-weight:800;color:#536178;margin-bottom:6px}
+.required:after{content:" *";color:#df4b59}
+input,select,textarea{width:100%;border:1px solid #d9e1ec;border-radius:8px;padding:10px 12px;background:#fff;outline:none}
+textarea{min-height:100px;resize:vertical}
+.help{margin-top:6px;color:#8b97aa;font-size:12px}
+.badge{display:inline-flex;padding:5px 9px;border-radius:999px;background:#eef4ff;color:#2f65d9;font-size:12px;font-weight:800}
+.problem-mode{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.mode-card{flex:1;min-width:260px;border:1px solid #dce4ef;border-radius:10px;padding:14px;cursor:pointer;background:#fff}
+.mode-card.active{border-color:#2f65d9;background:#f5f8ff}
+.mode-card strong{display:block;margin-bottom:5px}
+.mode-card span{font-size:12px;color:#7a8799}
+.upload-box{border:2px dashed #b8c6d9;border-radius:12px;padding:24px;text-align:center;background:#fbfcff}
+.file-item{display:flex;justify-content:space-between;align-items:center;margin-top:10px;border:1px solid #dfe6f0;border-radius:8px;padding:10px 12px}
+.score-table{width:100%;border-collapse:collapse;font-size:13px}
+.score-table th,.score-table td{border:1px solid #dfe6f0;padding:9px;vertical-align:middle}
+.score-table th{background:#f6f8fc}
+.score-table input{padding:8px}
+.criteria-actions{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.total-box{display:flex;justify-content:flex-end;gap:20px;align-items:center;padding:14px;border-radius:10px;background:#f7f9fc;margin-top:12px}
+.total-box strong{font-size:22px;color:#2f65d9}
+.req-list{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.req-item{border:1px solid #dfe6f0;border-radius:10px;padding:12px;background:#fff}
+.req-item label{display:flex;gap:8px;align-items:center;font-weight:700}
+.req-item input[type="checkbox"]{width:auto}
+.footer{position:sticky;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border:1px solid #dfe6f0;border-radius:12px;box-shadow:0 -6px 24px rgba(38,58,90,.08);padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.summary{display:flex;gap:22px;font-size:13px;color:#6d7b90}.summary strong{display:block;margin-top:4px;font-size:18px;color:#1f2e47}
+.hidden{display:none}
+@media(max-width:1000px){.grid{grid-template-columns:1fr 1fr}.span-4{grid-column:span 2}.req-list{grid-template-columns:1fr 1fr}}
+@media(max-width:650px){.page{padding:14px}.header{flex-direction:column}.grid{grid-template-columns:1fr}.span-2,.span-4{grid-column:span 1}.req-list{grid-template-columns:1fr}.footer{flex-direction:column;align-items:stretch;gap:12px}.summary{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div>
+      <h1>문제해결시나리오 평가도구 생성</h1>
+      <p>NCS 문제해결시나리오 평가를 생성하고, 학생 제출요건과 채점기준을 설정합니다.</p>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="preview()">미리보기</button>
+      <button class="btn" onclick="alert('임시저장되었습니다.')">임시저장</button>
+      <button class="btn primary" onclick="saveExam()">평가도구 저장</button>
+    </div>
+  </div>
+
+  <section class="card">
+    <div class="card-head"><h2>평가 기본정보</h2><span class="badge">교사용</span></div>
+    <div class="card-body">
+      <div class="grid">
+        <div class="field"><label class="required">훈련과정</label><select><option>대우 직업훈련 과정</option></select></div>
+        <div class="field"><label class="required">훈련기수</label><select><option>2026년 1기</option></select></div>
+        <div class="field"><label class="required">교과목 / 능력단위</label><select><option>애플리케이션 테스트 수행</option></select></div>
+        <div class="field"><label class="required">평가방법</label><input value="문제해결시나리오" readonly></div>
+
+        <div class="field span-2"><label class="required">평가명</label><input value="애플리케이션 테스트 수행 평가"></div>
+        <div class="field"><label class="required">평가일</label><input type="date" value="2026-10-07"></div>
+        <div class="field"><label class="required">제출 마감</label><input type="datetime-local" value="2026-10-07T18:00"></div>
+
+        <div class="field"><label>통과점수</label><input id="passScore" type="number" value="60" min="0" max="100"></div>
+        <div class="field"><label>재평가 허용</label><select><option>허용</option><option>허용 안 함</option></select></div>
+        <div class="field"><label>개별 링크 발급</label><select disabled><option>학생별 자동 발급</option></select></div>
+        <div class="field"><label>채점 공개</label><select><option>채점 완료 후 공개</option><option>교사 공개 시 공개</option><option>비공개</option></select></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><h2>평가 문제 등록</h2></div>
+    <div class="card-body">
+      <div class="problem-mode">
+        <div class="mode-card active" id="modeText" onclick="setMode('text')">
+          <strong>직접 작성</strong>
+          <span>LMS에서 평가문제를 직접 작성합니다.</span>
+        </div>
+        <div class="mode-card" id="modeFile" onclick="setMode('file')">
+          <strong>문제지 파일 업로드</strong>
+          <span>기존 HWP/PDF/DOCX 문제지를 업로드합니다.</span>
+        </div>
+      </div>
+
+      <div id="textMode">
+        <div class="field">
+          <label class="required">평가문제 제목</label>
+          <input value="[ 애플리케이션 테스트 수행 ] 평가 문제">
+        </div>
+        <div class="field" style="margin-top:14px">
+          <label class="required">평가내용 / 수행지시사항</label>
+          <textarea style="min-height:230px">1. 아래 제시사항에 따라 애플리케이션 테스트를 수행하시오.
+
+2. 테스트 수행 결과를 정리하고 요구된 결과물을 파일로 제출하시오.
+
+3. 제출 파일에는 작업 과정과 최종 결과가 확인될 수 있도록 포함하시오.
+
+4. 필요한 경우 화면 캡처, 테스트 결과, 코드 또는 문서를 함께 제출할 수 있습니다.</textarea>
+        </div>
+        <div class="field" style="margin-top:14px">
+          <label>교사용 참고사항</label>
+          <textarea placeholder="학생에게는 공개되지 않는 교사용 참고사항을 입력하세요."></textarea>
+        </div>
+      </div>
+
+      <div id="fileMode" class="hidden">
+        <div class="upload-box">
+          <strong>문제지 파일을 업로드하세요.</strong>
+          <p>PDF, HWP, DOCX 등의 문제지 파일을 등록할 수 있습니다.</p>
+          <input id="problemFile" type="file" onchange="renderProblemFile()">
+        </div>
+        <div id="problemFileList"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><h2>학생 제출 설정</h2></div>
+    <div class="card-body">
+      <div class="req-list">
+        <div class="req-item"><label><input type="checkbox" checked> 작업결과 파일 제출</label><div class="help">학생이 작업한 파일을 업로드합니다.</div></div>
+        <div class="req-item"><label><input type="checkbox" checked> 여러 파일 허용</label><div class="help">ZIP, PDF, 이미지 등 복수 파일 제출 허용</div></div>
+        <div class="req-item"><label><input type="checkbox"> 제출 의견 필수</label><div class="help">학생의 작업 설명을 필수로 입력받습니다.</div></div>
+        <div class="req-item"><label><input type="checkbox" checked> 제출 후 수정 불가</label><div class="help">최종 제출 이후 변경을 제한합니다.</div></div>
+        <div class="req-item"><label><input type="checkbox" checked> 임시저장 허용</label><div class="help">학생이 제출 전 파일을 임시저장할 수 있습니다.</div></div>
+        <div class="req-item"><label><input type="checkbox"> 지각 제출 허용</label><div class="help">마감시간 이후에도 제출을 허용합니다.</div></div>
+      </div>
+
+      <div class="grid" style="margin-top:16px">
+        <div class="field"><label>최대 파일 개수</label><input type="number" value="5"></div>
+        <div class="field"><label>파일당 최대 용량(MB)</label><input type="number" value="100"></div>
+        <div class="field span-2"><label>허용 확장자</label><input value="zip,pdf,docx,xlsx,pptx,png,jpg"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>채점기준 설정</h2>
+      <button class="btn primary" onclick="addCriterion()">+ 채점기준 추가</button>
+    </div>
+    <div class="card-body">
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th style="width:70px">순번</th>
+            <th>채점기준</th>
+            <th style="width:130px">배점</th>
+            <th>교사용 채점 가이드</th>
+            <th style="width:80px">삭제</th>
+          </tr>
+        </thead>
+        <tbody id="criteriaBody"></tbody>
+      </table>
+
+      <div class="total-box">
+        <div>총 배점 <strong id="totalScore">0</strong>점</div>
+        <div>통과점수 <strong id="passSummary">60</strong>점</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><h2>피드백 / 재평가 설정</h2></div>
+    <div class="card-body">
+      <div class="grid">
+        <div class="field span-2">
+          <label>학생 피드백 방식</label>
+          <select><option>종합 피드백 + 채점기준별 메모</option><option>종합 피드백만</option><option>채점기준별 메모만</option></select>
+        </div>
+        <div class="field"><label>재평가 시 기존 점수 표시</label><select><option>표시</option><option>숨김</option></select></div>
+        <div class="field"><label>재평가 결과 반영</label><select><option>최종 점수로 대체</option><option>최고 점수 반영</option><option>교사 선택</option></select></div>
+        <div class="field span-4">
+          <label>기본 피드백 안내문</label>
+          <textarea>채점 완료 후 평가결과와 피드백을 확인할 수 있습니다. 보완이 필요한 경우 재평가 안내를 확인해주세요.</textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">
+    <div class="summary">
+      <div>채점기준 수<strong id="criteriaCount">0개</strong></div>
+      <div>총 배점<strong id="summaryScore">0점</strong></div>
+      <div>통과점수<strong id="summaryPass">60점</strong></div>
+    </div>
+    <div class="actions">
+      <button class="btn" onclick="preview()">학생 화면 미리보기</button>
+      <button class="btn primary" onclick="saveExam()">평가도구 저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let criterionSeq = 0;
+
+function setMode(mode){
+  document.getElementById('modeText').classList.toggle('active', mode==='text');
+  document.getElementById('modeFile').classList.toggle('active', mode==='file');
+  document.getElementById('textMode').classList.toggle('hidden', mode!=='text');
+  document.getElementById('fileMode').classList.toggle('hidden', mode!=='file');
+}
+
+function renderProblemFile(){
+  const input=document.getElementById('problemFile');
+  const area=document.getElementById('problemFileList');
+  area.innerHTML='';
+  if(!input.files.length) return;
+  const f=input.files[0];
+  area.innerHTML=`<div class="file-item"><div><strong>${f.name}</strong><div class="help">${(f.size/1024/1024).toFixed(2)} MB</div></div><button class="btn danger" onclick="clearProblemFile()">제거</button></div>`;
+}
+function clearProblemFile(){
+  document.getElementById('problemFile').value='';
+  document.getElementById('problemFileList').innerHTML='';
+}
+
+function addCriterion(name='',score=0,guide=''){
+  const body=document.getElementById('criteriaBody');
+  const tr=document.createElement('tr');
+  tr.innerHTML=`
+    <td class="criterion-no"></td>
+    <td><input value="${name}" placeholder="예: 요구사항에 따라 테스트 시나리오를 정확히 수행하였는가"></td>
+    <td><input class="criterion-score" type="number" min="0" value="${score}" oninput="updateSummary()"></td>
+    <td><input value="${guide}" placeholder="채점 시 참고할 가이드를 입력하세요."></td>
+    <td><button class="btn danger" onclick="removeCriterion(this)">삭제</button></td>
+  `;
+  body.appendChild(tr);
+  renumber();
+  updateSummary();
+}
+function removeCriterion(btn){
+  btn.closest('tr').remove();
+  renumber();
+  updateSummary();
+}
+function renumber(){
+  document.querySelectorAll('#criteriaBody tr').forEach((tr,i)=>tr.querySelector('.criterion-no').textContent=i+1);
+}
+function updateSummary(){
+  const rows=[...document.querySelectorAll('#criteriaBody tr')];
+  let total=0;
+  document.querySelectorAll('.criterion-score').forEach(i=>total+=Number(i.value||0));
+  const pass=Number(document.getElementById('passScore').value||0);
+  document.getElementById('totalScore').textContent=total;
+  document.getElementById('passSummary').textContent=pass;
+  document.getElementById('criteriaCount').textContent=rows.length+'개';
+  document.getElementById('summaryScore').textContent=total+'점';
+  document.getElementById('summaryPass').textContent=pass+'점';
+}
+function preview(){
+  alert('학생용 문제해결시나리오 제출 화면 미리보기로 연결될 영역입니다.');
+}
+function saveExam(){
+  const count=document.querySelectorAll('#criteriaBody tr').length;
+  const total=[...document.querySelectorAll('.criterion-score')].reduce((s,e)=>s+Number(e.value||0),0);
+  if(count===0){alert('채점기준을 1개 이상 등록해주세요.');return;}
+  if(total<=0){alert('총 배점을 확인해주세요.');return;}
+  alert('문제해결시나리오 평가도구가 저장되었습니다.\\n채점기준: '+count+'개\\n총 배점: '+total+'점');
+}
+
+document.getElementById('passScore').addEventListener('input',updateSummary);
+
+addCriterion('요구사항에 따라 테스트 시나리오를 정확히 수행하였는가',25,'주요 테스트 케이스 수행 여부 확인');
+addCriterion('테스트 결과와 오류 발생 내용을 적절히 기록하였는가',25,'오류 내용과 원인 기록 여부 확인');
+addCriterion('수정 후 재테스트를 수행하고 결과를 검증하였는가',25,'재테스트 및 검증 결과 확인');
+addCriterion('제출 결과물이 평가 요구사항에 맞게 정리되어 있는가',25,'최종 산출물 구성과 완성도 확인');
+</script>
+</body>
+</html>
