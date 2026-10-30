@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LMS 경로조사</title>
+<style>
+:root{
+  --primary:#2f5fd0; --border:#d8e0eb; --line:#e9edf3;
+  --text:#263246; --muted:#768297; --bg:#f3f6fa;
+  --soft:#f7f9fc; --success:#1a8a55; --danger:#c94a4a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.page{max-width:1180px;margin:26px auto 50px;padding:0 18px}
+.toolbar{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.group{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);padding:9px 14px;border-radius:9px;font-weight:700;font-size:14px}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.sheet{background:#fff;border:1px solid #e0e6ee;border-radius:18px;box-shadow:0 12px 34px rgba(31,45,79,.08);overflow:hidden}
+.sheet-header{padding:28px 34px 22px;border-bottom:1px solid var(--border);background:linear-gradient(#fff,#fcfdff)}
+.header-top{display:grid;grid-template-columns:1fr 390px;gap:30px}
+.title-box{text-align:center;padding-top:8px}
+.title-box h1{margin:0;font-size:30px;font-weight:800;letter-spacing:10px}
+.title-box .sub{margin-top:8px;color:var(--muted);font-size:12px}
+.approval-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:13px}
+.approval-table th,.approval-table td{border:1px solid var(--border);text-align:center}
+.approval-table th{height:34px;background:var(--soft);color:#59667a}
+.approval-table td{height:76px}
+.approval-state{font-size:12px;color:#a0a9b7}
+.stamp{width:54px;height:54px;border-radius:50%;border:2px solid #d95858;color:#d95858;display:flex;align-items:center;justify-content:center;flex-direction:column;margin:auto;font-size:11px;font-weight:800}
+.approve-btn{border:1px solid #b7c1d0;background:#fff;border-radius:7px;padding:6px 9px;font-size:12px;font-weight:700}
+.meta-grid{margin-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:10px 28px}
+.meta-item{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center}
+.meta-label{color:#6e7a8f;font-size:13px;font-weight:800}
+.meta-input{width:100%;border:0;border-bottom:1px solid #dfe5ec;padding:7px 4px;outline:none;color:var(--text);font-weight:700;background:transparent}
+
+.section{padding:24px 34px;border-bottom:1px solid var(--line)}
+.section-title{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800;margin-bottom:14px}
+.section-title:before{content:"";width:5px;height:18px;border-radius:3px;background:var(--primary)}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+.form-card{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.form-row{display:grid;grid-template-columns:150px 1fr;border-bottom:1px solid var(--line)}
+.form-row:last-child{border-bottom:0}
+.form-label{background:var(--soft);padding:12px 14px;font-size:13px;font-weight:800;color:#59667a;display:flex;align-items:center}
+.form-control{padding:8px 10px}
+.form-control input,.form-control select,.form-control textarea{width:100%;border:0;outline:none;background:transparent;color:var(--text);padding:4px}
+.form-control textarea{min-height:76px;resize:vertical;line-height:1.6}
+
+.channel-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.channel-card{border:1px solid var(--border);border-radius:12px;padding:16px 10px;text-align:center;background:#fff;cursor:pointer;transition:.15s}
+.channel-card:hover{border-color:#a8b9e6;background:#fbfcff}
+.channel-card.active{border-color:var(--primary);background:#eef4ff;box-shadow:0 0 0 2px rgba(47,95,208,.08)}
+.channel-card input{display:none}
+.channel-icon{font-size:23px;margin-bottom:8px}
+.channel-name{font-size:13px;font-weight:800}
+
+.choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.choice-item{border:1px solid var(--border);border-radius:10px;padding:12px;background:#fff;display:flex;align-items:center;gap:8px}
+.choice-item input{width:16px;height:16px}
+
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.summary-item{border-right:1px solid var(--border);min-height:72px;display:grid;grid-template-rows:32px 1fr}
+.summary-label{display:flex;align-items:center;justify-content:center;background:var(--soft);color:#5f6b7f;font-size:12px;font-weight:800}
+.summary-value{display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--primary)}
+
+.notice-box{display:grid;grid-template-columns:180px 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.notice-label{background:var(--soft);display:flex;align-items:center;justify-content:center;min-height:120px;font-weight:800;letter-spacing:2px}
+.notice-body{padding:14px}
+.notice-body textarea{width:100%;min-height:84px;resize:vertical;border:1px solid var(--border);border-radius:9px;padding:11px 12px;outline:none;line-height:1.6}
+
+.footer-status{display:flex;justify-content:space-between;gap:12px;padding:15px 34px;background:#fbfcfe}
+.save-state{display:flex;align-items:center;gap:8px;color:#657286;font-size:13px}
+.dot{width:8px;height:8px;border-radius:50%;background:#b7bfca}
+.dot.saved{background:#1ba366}
+
+@media(max-width:1000px){
+  .header-top{grid-template-columns:1fr}
+  .approval-wrap{max-width:520px;margin:auto}
+  .meta-grid,.form-grid{grid-template-columns:1fr}
+  .channel-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:700px){
+  .page{padding:0 8px}
+  .sheet-header,.section{padding:20px 15px}
+  .title-box h1{font-size:23px;letter-spacing:7px}
+  .meta-item{grid-template-columns:92px 1fr}
+  .form-row{grid-template-columns:110px 1fr}
+  .channel-grid{grid-template-columns:repeat(2,1fr)}
+  .choice-grid{grid-template-columns:1fr}
+  .summary-grid{grid-template-columns:repeat(2,1fr)}
+  .notice-box{grid-template-columns:1fr}
+  .notice-label{min-height:48px}
+  .footer-status{padding:14px 15px;flex-direction:column}
+}
+@media print{
+  body{background:#fff}
+  .page{max-width:none;margin:0;padding:0}
+  .toolbar,.footer-status{display:none!important}
+  .sheet{box-shadow:none;border:0;border-radius:0}
+  .sheet-header,.section{padding-left:0;padding-right:0}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="toolbar">
+    <div class="group">
+      <button class="btn" onclick="window.print()">인쇄</button>
+      <button class="btn" onclick="resetForm()">초기화</button>
+    </div>
+    <div class="group">
+      <button class="btn" onclick="loadDraft()">임시저장 불러오기</button>
+      <button class="btn btn-primary" onclick="saveDraft()">임시저장</button>
+    </div>
+  </div>
+
+  <main class="sheet">
+    <header class="sheet-header">
+      <div class="header-top">
+        <div class="title-box">
+          <h1>경 로 조 사</h1>
+          <div class="sub">TRAINING ENROLLMENT CHANNEL SURVEY</div>
+        </div>
+
+        <div class="approval-wrap">
+          <table class="approval-table">
+            <thead><tr><th>담당</th><th>팀장</th><th>본부장</th><th>원장</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="stamp">승인<br>담당</div></td>
+                <td><div class="approval-state">대기</div></td>
+                <td><div class="approval-state">대기</div></td>
+                <td><button class="approve-btn" onclick="approve(this,'원장')">결재</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="meta-grid">
+        <div class="meta-item"><div class="meta-label">훈련기관명</div><input class="meta-input" data-save value="대우능력개발원"></div>
+        <div class="meta-item"><div class="meta-label">교육과정명</div><input class="meta-input" data-save value="AI 에이전트 클라우드·보안코딩 개발자 양성"></div>
+        <div class="meta-item"><div class="meta-label">입과일</div><input class="meta-input" data-save type="date" value="2026-08-12"></div>
+        <div class="meta-item"><div class="meta-label">조사일자</div><input class="meta-input" data-save type="date" value="2026-10-30"></div>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="section-title">훈련생 기본정보</div>
+      <div class="form-grid">
+        <div class="form-card">
+          <div class="form-row"><div class="form-label">훈련생명</div><div class="form-control"><input data-save value="홍길동"></div></div>
+          <div class="form-row"><div class="form-label">생년월일</div><div class="form-control"><input data-save type="date" value="2000-01-01"></div></div>
+          <div class="form-row"><div class="form-label">연락처</div><div class="form-control"><input data-save value="010-1234-5678"></div></div>
+        </div>
+        <div class="form-card">
+          <div class="form-row"><div class="form-label">거주지역</div><div class="form-control"><input data-save value="서울"></div></div>
+          <div class="form-row"><div class="form-label">최종학력</div><div class="form-control"><select data-save><option>고졸</option><option>전문대졸</option><option selected>대졸</option><option>대학원졸</option><option>기타</option></select></div></div>
+          <div class="form-row"><div class="form-label">상담담당자</div><div class="form-control"><input data-save value="홍담당"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">1. 이 훈련과정을 처음 알게 된 경로</div>
+      <div class="channel-grid" id="awarenessGrid">
+        <label class="channel-card active"><input type="radio" name="awareness" value="고용24" checked><div class="channel-icon">💻</div><div class="channel-name">고용24</div></label>
+        <label class="channel-card"><input type="radio" name="awareness" value="네이버검색"><div class="channel-icon">🔎</div><div class="channel-name">네이버 검색</div></label>
+        <label class="channel-card"><input type="radio" name="awareness" value="구글검색"><div class="channel-icon">🌐</div><div class="channel-name">구글 검색</div></label>
+        <label class="channel-card"><input type="radio" name="awareness" value="SNS"><div class="channel-icon">📱</div><div class="channel-name">SNS</div></label>
+        <label class="channel-card"><input type="radio" name="awareness" value="유튜브"><div class="channel-icon">▶️</div><div class="channel-name">유튜브</div></label>
+        <label class="channel-card"><input type="radio" name="awareness" value="지인추천"><div class="channel-icon">👥</div><div class="channel-name">지인 추천</div></label>
+        <label class="channel-card"><input type="radio" name="awareness" value="학교추천"><div class="channel-icon">🎓</div><div class="channel-name">학교 추천</div></label>
+        <label class="channel-card"><input type="radio" name="awareness" value="취업지원기관"><div class="channel-icon">🏢</div><div class="channel-name">취업지원기관</div></label>
+        <label class="channel-card"><input type="radio" name="awareness" value="블로그카페"><div class="channel-icon">📝</div><div class="channel-name">블로그/카페</div></label>
+        <label class="channel-card"><input type="radio" name="awareness" value="기타"><div class="channel-icon">📌</div><div class="channel-name">기타</div></label>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">2. 실제 신청 경로</div>
+      <div class="form-grid">
+        <div class="form-card">
+          <div class="form-row"><div class="form-label">신청 경로</div><div class="form-control">
+            <select id="applyChannel" data-save>
+              <option>고용24</option>
+              <option>기관 홈페이지</option>
+              <option>전화 문의</option>
+              <option>방문 상담</option>
+              <option>담당자 안내</option>
+              <option>지인 소개</option>
+              <option>기타</option>
+            </select>
+          </div></div>
+          <div class="form-row"><div class="form-label">최초 문의일</div><div class="form-control"><input data-save type="date" value="2026-07-20"></div></div>
+          <div class="form-row"><div class="form-label">최초 문의방법</div><div class="form-control"><select data-save><option>전화</option><option>문자</option><option>온라인 문의</option><option>방문</option><option>기타</option></select></div></div>
+        </div>
+        <div class="form-card">
+          <div class="form-row"><div class="form-label">상담일자</div><div class="form-control"><input data-save type="date" value="2026-07-22"></div></div>
+          <div class="form-row"><div class="form-label">상담방법</div><div class="form-control"><select data-save><option>전화</option><option>대면</option><option>온라인</option><option>문자</option></select></div></div>
+          <div class="form-row"><div class="form-label">상담담당자</div><div class="form-control"><input data-save value="홍담당"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">3. 입과 결정에 영향을 준 요인</div>
+      <div class="choice-grid">
+        <label class="choice-item"><input type="checkbox" data-factor value="교육과정 내용" checked> 교육과정 내용</label>
+        <label class="choice-item"><input type="checkbox" data-factor value="취업 연계" checked> 취업 연계</label>
+        <label class="choice-item"><input type="checkbox" data-factor value="훈련비 지원"> 훈련비 지원</label>
+        <label class="choice-item"><input type="checkbox" data-factor value="훈련기관 위치"> 훈련기관 위치</label>
+        <label class="choice-item"><input type="checkbox" data-factor value="강사"> 강사</label>
+        <label class="choice-item"><input type="checkbox" data-factor value="지인 추천"> 지인 추천</label>
+        <label class="choice-item"><input type="checkbox" data-factor value="과정 기간"> 과정 기간</label>
+        <label class="choice-item"><input type="checkbox" data-factor value="기관 인지도"> 기관 인지도</label>
+        <label class="choice-item"><input type="checkbox" data-factor value="기타"> 기타</label>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">4. 경로조사 요약</div>
+      <div class="summary-grid">
+        <div class="summary-item"><div class="summary-label">최초 인지</div><div class="summary-value"><span id="awarenessSummary">고용24</span></div></div>
+        <div class="summary-item"><div class="summary-label">신청 경로</div><div class="summary-value"><span id="applySummary">고용24</span></div></div>
+        <div class="summary-item"><div class="summary-label">영향요인 수</div><div class="summary-value"><span id="factorCount">2개</span></div></div>
+        <div class="summary-item"><div class="summary-label">조사상태</div><div class="summary-value"><span id="surveyStatus">작성중</span></div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">5. 기타 유입정보 및 메모</div>
+      <div class="notice-box">
+        <div class="notice-label">기 타 사 항</div>
+        <div class="notice-body"><textarea data-save maxlength="1500" placeholder="광고명, 추천인, 검색 키워드, 설명회 참여 여부 등 추가 유입정보를 입력하세요."></textarea></div>
+      </div>
+    </section>
+
+    <div class="footer-status">
+      <div class="save-state"><span id="saveDot" class="dot"></span><span id="saveText">저장되지 않은 변경사항이 있습니다.</span></div>
+      <div style="font-size:12px;color:#8a94a3">대우능력개발원 LMS · 경로조사</div>
+    </div>
+  </main>
+</div>
+
+<script>
+const STORAGE_KEY="enrollment_channel_survey_v1";
+
+function setActiveChannel(value){
+  document.querySelectorAll(".channel-card").forEach(card=>{
+    card.classList.toggle("active", card.querySelector("input").value===value);
+  });
+  document.getElementById("awarenessSummary").textContent=value;
+  markDirty();
+}
+
+document.querySelectorAll('input[name="awareness"]').forEach(radio=>{
+  radio.addEventListener("change",()=>setActiveChannel(radio.value));
+});
+
+function updateSummary(){
+  const awareness=document.querySelector('input[name="awareness"]:checked')?.value || "-";
+  const apply=document.getElementById("applyChannel").value;
+  const factors=[...document.querySelectorAll("[data-factor]:checked")];
+
+  document.getElementById("awarenessSummary").textContent=awareness;
+  document.getElementById("applySummary").textContent=apply;
+  document.getElementById("factorCount").textContent=factors.length+"개";
+  document.getElementById("surveyStatus").textContent=(awareness && apply) ? "작성중" : "미작성";
+}
+
+document.getElementById("applyChannel").addEventListener("change",()=>{updateSummary();markDirty()});
+document.querySelectorAll("[data-factor]").forEach(el=>{
+  el.addEventListener("change",()=>{updateSummary();markDirty()});
+});
+
+function approve(btn,role){
+  btn.closest("td").innerHTML=`<div class="stamp">승인<br>${role}</div>`;
+  markDirty();
+}
+
+function saveDraft(){
+  const payload={
+    awareness:document.querySelector('input[name="awareness"]:checked')?.value || "",
+    factors:[...document.querySelectorAll("[data-factor]:checked")].map(el=>el.value),
+    fields:[...document.querySelectorAll("[data-save]")].map(el=>el.value)
+  };
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));
+  setSaved(true);
+}
+
+function loadDraft(){
+  const raw=localStorage.getItem(STORAGE_KEY);
+  if(!raw){alert("저장된 임시저장이 없습니다.");return}
+  const p=JSON.parse(raw);
+
+  const fields=[...document.querySelectorAll("[data-save]")];
+  (p.fields||[]).forEach((v,i)=>{if(fields[i]) fields[i].value=v});
+
+  if(p.awareness){
+    const radio=document.querySelector(`input[name="awareness"][value="${p.awareness}"]`);
+    if(radio){radio.checked=true;setActiveChannel(p.awareness)}
+  }
+
+  document.querySelectorAll("[data-factor]").forEach(el=>{
+    el.checked=(p.factors||[]).includes(el.value);
+  });
+
+  updateSummary();
+  setSaved(true);
+}
+
+function resetForm(){
+  if(confirm("입력한 내용을 초기화하시겠습니까?")){
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+}
+
+function markDirty(){setSaved(false)}
+function setSaved(saved){
+  const d=document.getElementById("saveDot"),t=document.getElementById("saveText");
+  if(saved){d.classList.add("saved");t.textContent="임시저장 완료"}
+  else{d.classList.remove("saved");t.textContent="저장되지 않은 변경사항이 있습니다."}
+}
+
+document.querySelectorAll("[data-save]").forEach(el=>{
+  el.addEventListener("input",markDirty);
+  el.addEventListener("change",markDirty);
+});
+
+updateSummary();
+</script>
+</body>
+</html>
