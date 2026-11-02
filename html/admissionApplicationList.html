@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>입학접수목록</title>
+<style>
+:root{
+  --primary:#2f5fd0;
+  --primary-soft:#eef4ff;
+  --border:#d8e0eb;
+  --line:#e9edf3;
+  --text:#263246;
+  --muted:#768297;
+  --bg:#f3f6fa;
+  --soft:#f7f9fc;
+  --success:#198754;
+  --warning:#c47a10;
+  --danger:#d9534f;
+  --purple:#7b2cbf;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.page{max-width:1500px;margin:28px auto 56px;padding:0 18px}
+.page-header{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px
+}
+.page-title h1{margin:0;font-size:30px;font-weight:800}
+.page-title p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.btn{
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  border-radius:9px;
+  padding:10px 14px;
+  font-weight:800;
+  font-size:13px;
+}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-danger{color:var(--danger)}
+.btn-small{padding:7px 10px;font-size:12px}
+.card{
+  background:#fff;border:1px solid var(--border);border-radius:18px;
+  box-shadow:0 12px 34px rgba(31,45,79,.07);overflow:hidden;margin-bottom:18px
+}
+.card-head{
+  padding:18px 22px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:12px
+}
+.section-title{
+  display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800
+}
+.section-title:before{content:"";width:5px;height:20px;border-radius:3px;background:var(--primary)}
+.card-body{padding:18px 22px 22px}
+.course-banner{
+  background:#f8faff;border:1px solid #dbe6ff;border-radius:14px;padding:16px 18px;
+  display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap
+}
+.course-main{font-weight:800;font-size:15px}
+.course-sub{margin-top:5px;color:var(--muted);font-size:12px}
+.controls{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px 16px;margin-top:16px
+}
+.field{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center}
+.label{font-size:13px;font-weight:800;color:#59667a}
+.control input,.control select{
+  width:100%;border:1px solid var(--border);border-radius:9px;padding:9px 10px;outline:none;background:#fff
+}
+.summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
+.summary-card{border:1px solid var(--border);border-radius:14px;padding:15px;background:#fff}
+.summary-label{font-size:12px;color:var(--muted);font-weight:800}
+.summary-value{margin-top:5px;font-size:24px;font-weight:800;color:var(--primary)}
+.table-wrap{border:1px solid var(--border);border-radius:12px;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:1500px}
+th{
+  background:var(--soft);color:#59667a;font-size:12px;font-weight:800;
+  padding:11px 8px;border-bottom:1px solid var(--border);border-right:1px solid var(--border);text-align:center
+}
+td{
+  padding:10px 8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);
+  font-size:13px;vertical-align:middle
+}
+th:last-child,td:last-child{border-right:0}
+tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#fbfcff}
+.center{text-align:center}
+.small-select{
+  width:100%;border:1px solid var(--border);border-radius:8px;padding:7px 8px;background:#fff
+}
+.name-btn{
+  border:0;background:none;padding:0;color:var(--primary);font-weight:800;cursor:pointer
+}
+.status-chip{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:5px 9px;border-radius:999px;font-size:12px;font-weight:800
+}
+.status-chip.receipt{background:#eef4ff;color:#2f5fd0}
+.status-chip.interview{background:#fff6e5;color:#c47a10}
+.status-chip.pass{background:#eaf8f0;color:#198754}
+.status-chip.fail{background:#fdecec;color:#d9534f}
+.status-chip.wait{background:#f3efff;color:#7b2cbf}
+.status-chip.cancel{background:#f7f7f8;color:#768297}
+.history{line-height:1.55;color:#5d6b80}
+.history strong{color:#263246}
+.test-ok{color:var(--success);font-weight:800}
+.test-no{color:var(--muted);font-weight:800}
+.row-actions{display:flex;gap:6px;justify-content:flex-end;flex-wrap:wrap}
+.mini-btn{
+  border:1px solid var(--border);background:#fff;color:#44536b;
+  border-radius:7px;padding:6px 8px;font-size:12px;font-weight:800
+}
+.mini-btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.mini-btn.danger{color:var(--danger)}
+.bottom-actions{display:flex;gap:8px;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap}
+.left-actions,.right-actions{display:flex;gap:8px;flex-wrap:wrap}
+.footer-note{margin-top:14px;text-align:right;color:var(--muted);font-size:12px}
+@media(max-width:1000px){
+  .controls{grid-template-columns:1fr 1fr}
+  .summary-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:650px){
+  .page{padding:0 10px}
+  .page-header{flex-direction:column}
+  .controls{grid-template-columns:1fr}
+  .field{grid-template-columns:1fr}
+  .summary-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>입학접수목록</h1>
+      <p>선택한 과정에 접수한 학생들의 신청 및 승인상태를 관리합니다.</p>
+    </div>
+    <div>
+      <button class="btn" onclick="history.back()">과정보기</button>
+    </div>
+  </header>
+
+  <section class="card">
+    <div class="card-body">
+      <div class="course-banner">
+        <div>
+          <div class="course-main">[내일배움카드(재직자)] [대구] 재직자를 위한 고급 JAVA 개발</div>
+          <div class="course-sub">교육기간 2026.11.21 ~ 2027.03.31 · 모집/진행 · 승인인원 17명</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn btn-small" onclick="alert('간편입력 영역입니다.')">간편입력</button>
+          <button class="btn btn-small" onclick="alert('사전시험 관리 영역입니다.')">사전시험</button>
+          <button class="btn btn-small" onclick="alert('엑셀 다운로드 영역입니다.')">엑셀</button>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="field">
+          <div class="label">과정상태</div>
+          <div class="control">
+            <select id="courseStatus">
+              <option>모집/진행</option>
+              <option>모집중</option>
+              <option>진행중</option>
+              <option>종료</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">생기부오픈여부</div>
+          <div class="control">
+            <select id="recordOpen">
+              <option>차단</option>
+              <option>허용</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">접수상태</div>
+          <div class="control">
+            <select id="statusFilter">
+              <option value="전체">전체</option>
+              <option value="가접수">가접수</option>
+              <option value="접수">접수</option>
+              <option value="면접">면접</option>
+              <option value="합격">합격</option>
+              <option value="불합격">불합격</option>
+              <option value="후보">후보</option>
+              <option value="대기">대기</option>
+              <option value="취소">취소</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">검색</div>
+          <div class="control">
+            <input id="keyword" type="text" placeholder="이름 / 연락처 / 지역">
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:center;gap:8px;margin-top:14px">
+        <button class="btn btn-primary" onclick="render()">검색</button>
+        <button class="btn" onclick="resetFilters()">초기화</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">접수 학생 현황</div>
+      <div style="font-size:12px;color:var(--muted)">이름을 클릭하면 신청자 상세정보를 확인합니다.</div>
+    </div>
+
+    <div class="card-body">
+      <div class="summary-grid">
+        <div class="summary-card"><div class="summary-label">총 접수자</div><div class="summary-value" id="sumTotal">0</div></div>
+        <div class="summary-card"><div class="summary-label">합격</div><div class="summary-value" id="sumPass">0</div></div>
+        <div class="summary-card"><div class="summary-label">면접</div><div class="summary-value" id="sumInterview">0</div></div>
+        <div class="summary-card"><div class="summary-label">대기/후보</div><div class="summary-value" id="sumWait">0</div></div>
+        <div class="summary-card"><div class="summary-label">오늘 접수</div><div class="summary-value" id="sumToday">0</div></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:42px"><input type="checkbox" onclick="toggleAll(this)"></th>
+              <th style="width:105px">접수상태</th>
+              <th style="width:100px">승인상태</th>
+              <th style="width:95px">이름</th>
+              <th style="width:110px">생년월일</th>
+              <th style="width:42px">성별</th>
+              <th style="width:140px">대표연락처</th>
+              <th style="width:110px">지역</th>
+              <th style="width:110px">접수일</th>
+              <th>신청이력</th>
+              <th style="width:90px">사전시험</th>
+              <th style="width:180px">관리</th>
+            </tr>
+          </thead>
+          <tbody id="studentBody"></tbody>
+        </table>
+      </div>
+
+      <div class="bottom-actions">
+        <div class="left-actions">
+          <button class="btn btn-small" onclick="bulkStatus()">상태변경</button>
+          <button class="btn btn-small" onclick="sendMessage()">문자전송</button>
+          <button class="btn btn-small btn-danger" onclick="bulkDelete()">삭제</button>
+        </div>
+        <div class="right-actions">
+          <span style="font-size:12px;color:var(--muted)" id="resultCount"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">LMS 관리자 · 입학접수목록</div>
+</div>
+
+<script>
+const students = [
+  {
+    status:"접수", approval:"대기", name:"김민준", birth:"1998-03-14", gender:"남",
+    phone:"010-4821-7732", region:"서울 강서구", date:"2026-10-28",
+    history:"2026-10-28 온라인 접수 / 2026-10-29 상담완료", pretest:true, today:false
+  },
+  {
+    status:"면접", approval:"검토중", name:"이서연", birth:"2000-07-22", gender:"여",
+    phone:"010-7754-2190", region:"경기 부천시", date:"2026-10-29",
+    history:"온라인 접수 → 서류확인 → 11/03 면접예정", pretest:true, today:false
+  },
+  {
+    status:"합격", approval:"승인", name:"박지훈", birth:"1996-11-05", gender:"남",
+    phone:"010-2388-5514", region:"서울 양천구", date:"2026-10-26",
+    history:"전화문의 → 방문상담 → 면접완료 → 최종합격", pretest:true, today:false
+  },
+  {
+    status:"합격", approval:"승인", name:"최유진", birth:"1999-01-19", gender:"여",
+    phone:"010-6613-9820", region:"인천 부평구", date:"2026-10-27",
+    history:"고용24 접수 → 상담완료 → 사전시험 → 합격", pretest:true, today:false
+  },
+  {
+    status:"가접수", approval:"미승인", name:"정우성", birth:"1997-05-08", gender:"남",
+    phone:"010-3145-7798", region:"서울 마포구", date:"2026-11-02",
+    history:"과정문의 후 가접수 등록", pretest:false, today:true
+  },
+  {
+    status:"대기", approval:"검토중", name:"한지민", birth:"2001-09-11", gender:"여",
+    phone:"010-8234-1612", region:"경기 고양시", date:"2026-11-02",
+    history:"온라인 접수 → 서류보완 요청", pretest:false, today:true
+  },
+  {
+    status:"후보", approval:"검토중", name:"윤도현", birth:"1995-12-30", gender:"남",
+    phone:"010-5018-2267", region:"서울 영등포구", date:"2026-10-25",
+    history:"면접완료 / 정원초과로 후보 등록", pretest:true, today:false
+  },
+  {
+    status:"불합격", approval:"반려", name:"오세진", birth:"1998-06-17", gender:"남",
+    phone:"010-4430-9001", region:"경기 광명시", date:"2026-10-24",
+    history:"서류검토 → 면접완료 → 최종 불합격", pretest:true, today:false
+  }
+];
+
+function chipClass(status){
+  if(status==="접수"||status==="가접수") return "receipt";
+  if(status==="면접") return "interview";
+  if(status==="합격") return "pass";
+  if(status==="불합격") return "fail";
+  if(status==="대기"||status==="후보") return "wait";
+  return "cancel";
+}
+
+function approvalOptions(current){
+  return ["미승인","검토중","승인","반려"].map(v=>`<option ${v===current?"selected":""}>${v}</option>`).join("");
+}
+
+function render(){
+  const keyword=document.getElementById("keyword").value.trim().toLowerCase();
+  const status=document.getElementById("statusFilter").value;
+
+  const filtered=students.filter(s=>{
+    if(status!=="전체" && s.status!==status) return false;
+    if(keyword){
+      const text=[s.name,s.phone,s.region].join(" ").toLowerCase();
+      if(!text.includes(keyword)) return false;
+    }
+    return true;
+  });
+
+  const body=document.getElementById("studentBody");
+  body.innerHTML="";
+
+  filtered.forEach((s,index)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td class="center"><input type="checkbox" class="rowCheck" data-name="${s.name}"></td>
+      <td class="center">
+        <select class="small-select" onchange="changeStatus('${s.name}',this.value)">
+          ${["가접수","접수","면접","합격","불합격","취소","후보","대기"].map(v=>`<option ${v===s.status?"selected":""}>${v}</option>`).join("")}
+        </select>
+      </td>
+      <td class="center">
+        <select class="small-select" onchange="changeApproval('${s.name}',this.value)">
+          ${approvalOptions(s.approval)}
+        </select>
+      </td>
+      <td class="center"><button class="name-btn" onclick="openDetail('${s.name}')">${s.name}</button></td>
+      <td class="center">${s.birth}</td>
+      <td class="center">${s.gender}</td>
+      <td class="center">${s.phone}</td>
+      <td class="center">${s.region}</td>
+      <td class="center">${s.date}</td>
+      <td><div class="history"><strong>${s.status}</strong> · ${s.history}</div></td>
+      <td class="center">${s.pretest?'<span class="test-ok">응시</span>':'<span class="test-no">미응시</span>'}</td>
+      <td>
+        <div class="row-actions">
+          <button class="mini-btn primary" onclick="openDetail('${s.name}')">상세</button>
+          <button class="mini-btn" onclick="sendOne('${s.name}')">문자</button>
+          <button class="mini-btn danger" onclick="deleteOne('${s.name}')">삭제</button>
+        </div>
+      </td>
+    `;
+    body.appendChild(tr);
+  });
+
+  document.getElementById("sumTotal").textContent=students.length;
+  document.getElementById("sumPass").textContent=students.filter(s=>s.status==="합격").length;
+  document.getElementById("sumInterview").textContent=students.filter(s=>s.status==="면접").length;
+  document.getElementById("sumWait").textContent=students.filter(s=>s.status==="대기"||s.status==="후보").length;
+  document.getElementById("sumToday").textContent=students.filter(s=>s.today).length;
+  document.getElementById("resultCount").textContent=`검색결과 ${filtered.length}명`;
+}
+
+function changeStatus(name,value){
+  const s=students.find(x=>x.name===name);
+  if(s){s.status=value;render();}
+}
+
+function changeApproval(name,value){
+  const s=students.find(x=>x.name===name);
+  if(s){s.approval=value;}
+}
+
+function openDetail(name){
+  alert(`"${name}" 신청자의 상세정보 화면으로 이동합니다.`);
+}
+
+function sendOne(name){
+  alert(`"${name}" 학생에게 문자 발송 화면을 엽니다.`);
+}
+
+function deleteOne(name){
+  if(!confirm(`"${name}" 학생의 접수정보를 삭제하시겠습니까?`)) return;
+  const idx=students.findIndex(x=>x.name===name);
+  if(idx>-1){students.splice(idx,1);render();}
+}
+
+function toggleAll(master){
+  document.querySelectorAll(".rowCheck").forEach(chk=>chk.checked=master.checked);
+}
+
+function selectedNames(){
+  return [...document.querySelectorAll(".rowCheck:checked")].map(x=>x.dataset.name);
+}
+
+function bulkStatus(){
+  const names=selectedNames();
+  if(!names.length){alert("대상 학생을 선택하세요.");return;}
+  alert(`${names.length}명의 접수상태를 일괄 변경하는 기능 영역입니다.`);
+}
+
+function sendMessage(){
+  const names=selectedNames();
+  if(!names.length){alert("문자를 보낼 학생을 선택하세요.");return;}
+  alert(`${names.length}명에게 문자 발송 화면을 엽니다.`);
+}
+
+function bulkDelete(){
+  const names=selectedNames();
+  if(!names.length){alert("삭제할 학생을 선택하세요.");return;}
+  if(!confirm(`${names.length}명의 접수정보를 삭제하시겠습니까?`)) return;
+  names.forEach(name=>{
+    const idx=students.findIndex(x=>x.name===name);
+    if(idx>-1) students.splice(idx,1);
+  });
+  render();
+}
+
+function resetFilters(){
+  document.getElementById("statusFilter").value="전체";
+  document.getElementById("keyword").value="";
+  render();
+}
+
+render();
+</script>
+</body>
+</html>

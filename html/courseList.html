@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>과정목록</title>
+<style>
+:root{
+  --primary:#2f5fd0;
+  --primary-soft:#eef4ff;
+  --border:#d8e0eb;
+  --line:#e9edf3;
+  --text:#263246;
+  --muted:#768297;
+  --bg:#f3f6fa;
+  --soft:#f7f9fc;
+  --success:#198754;
+  --warning:#c47a10;
+  --danger:#d9534f;
+  --shadow:0 12px 34px rgba(31,45,79,.07);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+.page{max-width:1520px;margin:28px auto 56px;padding:0 18px}
+.page-header{
+  display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px
+}
+.page-title h1{margin:0;font-size:30px;font-weight:800;letter-spacing:-.3px}
+.page-title p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  border-radius:9px;
+  padding:10px 14px;
+  font-weight:800;
+  font-size:13px;
+}
+.btn:hover{background:#fafcff}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-danger{color:var(--danger)}
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  margin-bottom:18px;
+}
+.card-head{
+  padding:18px 22px;
+  border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+}
+.section-title{
+  display:flex;align-items:center;gap:10px;
+  font-size:18px;font-weight:800;
+}
+.section-title:before{
+  content:"";width:5px;height:20px;border-radius:3px;background:var(--primary);
+}
+.card-body{padding:18px 22px 22px}
+.summary-line{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap
+}
+.summary-text{font-size:14px;font-weight:800}
+.summary-text strong{color:var(--primary)}
+.filter-grid{
+  display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px 20px
+}
+.field{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+.label{font-size:13px;font-weight:800;color:#59667a}
+.control input,.control select{
+  width:100%;border:1px solid var(--border);border-radius:9px;padding:10px 11px;outline:none;background:#fff;color:var(--text)
+}
+.control input:focus,.control select:focus{
+  border-color:#9fb2e6;box-shadow:0 0 0 3px rgba(47,95,208,.08)
+}
+.inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.filter-actions{display:flex;justify-content:center;gap:8px;margin-top:14px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.tab{
+  border:1px solid var(--border);
+  background:#fff;
+  color:#50607a;
+  border-radius:10px 10px 0 0;
+  padding:10px 14px;
+  font-size:13px;
+  font-weight:800;
+}
+.tab.active{background:var(--primary-soft);border-color:#bfd0fb;color:var(--primary)}
+.table-wrap{
+  border:1px solid var(--border);
+  border-radius:12px;
+  overflow:auto;
+}
+table{width:100%;border-collapse:collapse;min-width:1500px}
+th{
+  background:var(--soft);
+  color:#59667a;
+  font-size:12px;
+  font-weight:800;
+  padding:12px 10px;
+  border-bottom:1px solid var(--border);
+  text-align:center;
+  vertical-align:middle;
+}
+td{
+  border-bottom:1px solid var(--line);
+  padding:10px 8px;
+  font-size:13px;
+  vertical-align:middle;
+}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:#fbfcff}
+.center{text-align:center}
+.small-select,.small-input{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:7px 8px;
+  background:#fff;
+}
+.thumb{
+  width:54px;height:54px;border-radius:10px;overflow:hidden;border:1px solid var(--border);flex:0 0 54px;background:#f0f3f8
+}
+.thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.course-cell{display:flex;align-items:flex-start;gap:10px;min-width:400px}
+.course-meta{font-size:11px;color:#8a95a5;margin-bottom:4px}
+.course-name{font-size:14px;font-weight:800;line-height:1.45}
+.course-name.blue{color:#1570ef}
+.course-name.green{color:#198754}
+.course-name.orange{color:#b96d09}
+.course-name.red{color:#d9534f}
+.badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:52px;height:28px;padding:0 10px;border-radius:999px;
+  font-size:12px;font-weight:800
+}
+.badge-fixed{background:#eef6ff;color:#1570ef}
+.date-range{line-height:1.5;font-weight:800}
+.date-range .start{color:#1f6feb}
+.date-range .end{color:#d9534f}
+.row-actions{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.mini-btn{
+  border:1px solid var(--border);
+  background:#fff;
+  color:#44536b;
+  border-radius:7px;
+  padding:6px 8px;
+  font-size:12px;
+  font-weight:800;
+}
+.mini-btn.admission{background:#a26a14;color:#fff;border-color:#a26a14}
+.mini-btn.edu{background:#2f9e44;color:#fff;border-color:#2f9e44}
+.mini-btn.dark{background:#2f3441;color:#fff;border-color:#2f3441}
+.mini-btn.delete{color:var(--danger)}
+.pagination{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  margin-top:14px;flex-wrap:wrap
+}
+.page-info{color:var(--muted);font-size:12px}
+.pager{display:flex;gap:6px}
+.page-btn{
+  min-width:34px;height:34px;border:1px solid var(--border);background:#fff;border-radius:8px;font-weight:800
+}
+.page-btn.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.footer-note{margin-top:16px;color:var(--muted);font-size:12px;text-align:right}
+
+@media(max-width:1100px){
+  .filter-grid{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .page{padding:0 10px}
+  .page-header{flex-direction:column}
+  .field{grid-template-columns:1fr}
+  .card-body{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>과정목록</h1>
+      <p>등록된 과정을 조회하고, 교육상태 / 노출여부 / 기본정보를 관리할 수 있습니다.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn" onclick="resetFilters()">필터 초기화</button>
+      <button class="btn btn-primary" onclick="goRegister()">+ 과정 등록</button>
+    </div>
+  </header>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">검색조건</div>
+      <div style="font-size:12px;color:var(--muted)">분류, 캠퍼스, 상태, 기간으로 조회</div>
+    </div>
+    <div class="card-body">
+      <div class="summary-line">
+        <div class="summary-text">Total : <strong id="totalCount">0</strong>, Page : <strong id="pageText">1/1</strong></div>
+      </div>
+
+      <div class="filter-grid">
+        <div class="field">
+          <div class="label">검색조건</div>
+          <div class="control inline">
+            <select id="searchType" style="max-width:120px">
+              <option value="name">과정명</option>
+              <option value="code">훈련코드</option>
+              <option value="campus">캠퍼스</option>
+            </select>
+            <input id="searchKeyword" type="text" placeholder="검색어를 입력하세요.">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">교육기간</div>
+          <div class="control inline">
+            <input id="startDate" type="date">
+            <span>~</span>
+            <input id="endDate" type="date">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">교육상태</div>
+          <div class="control">
+            <select id="statusFilter">
+              <option value="전체">전체보기</option>
+              <option value="임시등록">임시등록</option>
+              <option value="모집중">모집중</option>
+              <option value="모집진행">모집진행</option>
+              <option value="진행중">진행중</option>
+              <option value="종료">종료</option>
+              <option value="관리종료">관리종료</option>
+              <option value="폐강">폐강</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">분류선택</div>
+          <div class="control inline">
+            <select id="jobCategoryFilter">
+              <option value="전체">훈련직종선택</option>
+              <option>국가기간전략산업</option>
+              <option>내일배움카드(실업자)</option>
+              <option>내일배움카드(재직자)</option>
+              <option>일반과정</option>
+            </select>
+            <select id="courseCategoryFilter">
+              <option value="전체">교육과정선택</option>
+              <option>컴퓨터활용</option>
+              <option>UI/UX디자인</option>
+              <option>프로그래밍</option>
+              <option>바리스타</option>
+              <option>한식 조리사</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">캠퍼스별</div>
+          <div class="control">
+            <select id="campusFilter">
+              <option value="전체">전체 캠퍼스</option>
+              <option>본원</option>
+              <option>대구</option>
+              <option>강남</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">운영대장 출력여부</div>
+          <div class="control">
+            <select id="ledgerFilter">
+              <option value="전체">전체보기</option>
+              <option value="출력">출력</option>
+              <option value="숨김">숨김</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-primary" onclick="applyFilters()">검색</button>
+        <button class="btn" onclick="resetFilters()">엑셀/초기화</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">과정목록</div>
+      <div style="font-size:12px;color:var(--muted)">상태 탭을 눌러 빠르게 필터링할 수 있습니다.</div>
+    </div>
+    <div class="card-body">
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-tab="전체">전체보기</button>
+        <button class="tab" data-tab="임시등록">임시등록</button>
+        <button class="tab" data-tab="모집중">모집중</button>
+        <button class="tab" data-tab="모집진행">모집/진행</button>
+        <button class="tab" data-tab="진행중">진행중</button>
+        <button class="tab" data-tab="종료">종료</button>
+        <button class="tab" data-tab="관리종료">관리종료</button>
+        <button class="tab" data-tab="폐강">폐강</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:42px"><input type="checkbox" onclick="toggleAll(this)"></th>
+              <th style="width:105px">교육상태</th>
+              <th style="width:125px">운영대장<br>출력여부</th>
+              <th style="width:90px">캠퍼스</th>
+              <th style="width:110px">훈련코드</th>
+              <th style="width:90px">이미지</th>
+              <th>분류 및 과정명</th>
+              <th style="width:90px">기간타입</th>
+              <th style="width:120px">과정기간</th>
+              <th style="width:80px">등록학생</th>
+              <th style="width:80px">클릭수</th>
+              <th style="width:80px">입학</th>
+              <th style="width:80px">교육</th>
+              <th style="width:180px">관리</th>
+            </tr>
+          </thead>
+          <tbody id="courseBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <div class="page-info" id="pageInfo">총 0건</div>
+        <div class="pager" id="pager"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">LMS 관리자 · 과정목록 관리</div>
+</div>
+
+<script>
+const PAGE_SIZE = 6;
+let currentPage = 1;
+let currentTab = "전체";
+
+const courses = [
+  {
+    status:"진행중", ledger:"숨김", campus:"", code:"",
+    image:"https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=200&q=60",
+    jobCategory:"내일배움카드(실업자)", courseCategory:"한식 조리사",
+    name:"한식 조리사 자격증 대비반11111111 복사본", color:"green",
+    periodType:"기간확정", start:"2019.04.29", end:"2019.06.28",
+    students:0, clicks:39
+  },
+  {
+    status:"임시등록", ledger:"숨김", campus:"", code:"",
+    image:"https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=200&q=60",
+    jobCategory:"내일배움카드(실업자)", courseCategory:"한식 조리사",
+    name:"한식 조리사 자격증 대비반 복사본", color:"green",
+    periodType:"기간확정", start:"2019.04.29", end:"2019.06.28",
+    students:0, clicks:0
+  },
+  {
+    status:"진행중", ledger:"숨김", campus:"", code:"",
+    image:"https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=200&q=60",
+    jobCategory:"내일배움카드(실업자)", courseCategory:"한식 조리사",
+    name:"한식 조리사 자격증 대비반", color:"green",
+    periodType:"기간확정", start:"2019.04.29", end:"2019.06.28",
+    students:5, clicks:48
+  },
+  {
+    status:"진행중", ledger:"숨김", campus:"", code:"",
+    image:"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=200&q=60",
+    jobCategory:"일반과정", courseCategory:"바리스타",
+    name:"커피 바리스타 과정 2회차 2019.03.05~04.15", color:"orange",
+    periodType:"기간확정", start:"2019.03.05", end:"2019.04.12",
+    students:4, clicks:44
+  },
+  {
+    status:"진행중", ledger:"출력", campus:"", code:"",
+    image:"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=200&q=60",
+    jobCategory:"내일배움카드(실업자)", courseCategory:"바리스타",
+    name:"커피 바리스타 과정 1회차", color:"red",
+    periodType:"기간확정", start:"2019.01.02", end:"2019.02.15",
+    students:10, clicks:188
+  },
+  {
+    status:"임시등록", ledger:"숨김", campus:"대구", code:"",
+    image:"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=200&q=60",
+    jobCategory:"내일배움카드(실업자)", courseCategory:"바리스타",
+    name:"커피 바리스타 과정 기본 2019.01.02~02.15", color:"black",
+    periodType:"기간확정", start:"2019.01.02", end:"2019.02.15",
+    students:0, clicks:0
+  },
+  {
+    status:"모집진행", ledger:"숨김", campus:"대구", code:"P-1004",
+    image:"https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=200&q=60",
+    jobCategory:"내일배움카드(재직자)", courseCategory:"프로그래밍",
+    name:"재직자를 위한 고급 JAVA 개발", color:"black",
+    periodType:"기간확정", start:"2019.01.21", end:"2019.05.31",
+    students:0, clicks:208
+  },
+  {
+    status:"종료", ledger:"출력", campus:"본원", code:"UI-2301",
+    image:"https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=200&q=60",
+    jobCategory:"국가기간전략산업", courseCategory:"UI/UX디자인",
+    name:"실무형 UI/UX 디자이너 양성과정", color:"blue",
+    periodType:"기간확정", start:"2019.03.04", end:"2019.08.30",
+    students:9, clicks:49
+  }
+];
+
+function normalizeStatusForTab(status){
+  if(currentTab === "모집/진행"){
+    return status === "모집중" || status === "모집진행";
+  }
+  if(currentTab === "전체") return true;
+  return status === currentTab;
+}
+
+function parseKoreanDate(s){
+  if(!s) return null;
+  const [y,m,d] = s.split(".").map(Number);
+  return new Date(y, m-1, d);
+}
+
+function getFilteredCourses(){
+  const keyword = document.getElementById("searchKeyword").value.trim().toLowerCase();
+  const searchType = document.getElementById("searchType").value;
+  const statusFilter = document.getElementById("statusFilter").value;
+  const jobCategory = document.getElementById("jobCategoryFilter").value;
+  const courseCategory = document.getElementById("courseCategoryFilter").value;
+  const campus = document.getElementById("campusFilter").value;
+  const ledger = document.getElementById("ledgerFilter").value;
+  const startDate = document.getElementById("startDate").value;
+  const endDate = document.getElementById("endDate").value;
+
+  return courses.filter(c => {
+    if(!normalizeStatusForTab(c.status)) return false;
+    if(statusFilter !== "전체" && c.status !== statusFilter) return false;
+    if(jobCategory !== "전체" && c.jobCategory !== jobCategory) return false;
+    if(courseCategory !== "전체" && c.courseCategory !== courseCategory) return false;
+    if(campus !== "전체" && c.campus !== campus) return false;
+    if(ledger !== "전체" && c.ledger !== ledger) return false;
+
+    if(keyword){
+      const target = searchType === "name" ? c.name
+                   : searchType === "code" ? c.code
+                   : c.campus;
+      if(!(target || "").toLowerCase().includes(keyword)) return false;
+    }
+
+    const start = parseKoreanDate(c.start);
+    const end = parseKoreanDate(c.end);
+    if(startDate){
+      const filterStart = new Date(startDate);
+      if(end < filterStart) return false;
+    }
+    if(endDate){
+      const filterEnd = new Date(endDate);
+      if(start > filterEnd) return false;
+    }
+
+    return true;
+  });
+}
+
+function colorClass(color){
+  return color === "green" ? "green"
+       : color === "orange" ? "orange"
+       : color === "red" ? "red"
+       : color === "blue" ? "blue"
+       : "";
+}
+
+function renderTable(){
+  const filtered = getFilteredCourses();
+  const total = filtered.length;
+  const totalPage = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  if(currentPage > totalPage) currentPage = totalPage;
+
+  const startIdx = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = filtered.slice(startIdx, startIdx + PAGE_SIZE);
+
+  const body = document.getElementById("courseBody");
+  body.innerHTML = "";
+
+  pageItems.forEach((c, i) => {
+    const rowIndex = startIdx + i;
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td class="center"><input type="checkbox" class="rowCheck"></td>
+      <td>
+        <select class="small-select" onchange="updateField(${rowIndex}, 'status', this.value)">
+          ${["임시등록","모집중","모집진행","진행중","종료","관리종료","폐강"].map(v=>`<option ${c.status===v?"selected":""}>${v}</option>`).join("")}
+        </select>
+      </td>
+      <td>
+        <select class="small-select" onchange="updateField(${rowIndex}, 'ledger', this.value)">
+          ${["숨김","출력"].map(v=>`<option ${c.ledger===v?"selected":""}>${v}</option>`).join("")}
+        </select>
+      </td>
+      <td class="center">${c.campus || "-"}</td>
+      <td class="center">${c.code || "-"}</td>
+      <td class="center">
+        <div class="thumb"><img src="${c.image}" alt="썸네일"></div>
+      </td>
+      <td>
+        <div class="course-cell">
+          <div class="course-info">
+            <div class="course-meta">${c.jobCategory} &gt; ${c.courseCategory}</div>
+            <div class="course-name ${colorClass(c.color)}">${c.name}</div>
+          </div>
+        </div>
+      </td>
+      <td class="center"><span class="badge badge-fixed">${c.periodType}</span></td>
+      <td class="center">
+        <div class="date-range">
+          <div class="start">${c.start}</div>
+          <div class="end">${c.end}</div>
+        </div>
+      </td>
+      <td class="center">${c.students}</td>
+      <td class="center">${c.clicks}</td>
+      <td class="center"><button class="mini-btn admission" onclick="actionMsg('입학관리', '${c.name}')">입학</button></td>
+      <td class="center"><button class="mini-btn edu" onclick="actionMsg('교육관리', '${c.name}')">교육</button></td>
+      <td class="center">
+        <div class="row-actions">
+          <button class="mini-btn" onclick="editCourse('${c.name}')">수정</button>
+          <button class="mini-btn delete" onclick="deleteCourse('${c.name}')">삭제</button>
+          <button class="mini-btn dark" onclick="actionMsg('과정 모든 자료 삭제', '${c.name}')">과정모든자료삭제</button>
+        </div>
+      </td>
+    `;
+    body.appendChild(tr);
+  });
+
+  document.getElementById("totalCount").textContent = total;
+  document.getElementById("pageText").textContent = `${currentPage}/${totalPage}`;
+  document.getElementById("pageInfo").textContent = `총 ${total}건 · 현재 ${currentPage}페이지`;
+  renderPager(totalPage);
+}
+
+function renderPager(totalPage){
+  const pager = document.getElementById("pager");
+  pager.innerHTML = "";
+
+  const prev = document.createElement("button");
+  prev.className = "page-btn";
+  prev.textContent = "‹";
+  prev.onclick = () => {
+    if(currentPage > 1){
+      currentPage--;
+      renderTable();
+    }
+  };
+  pager.appendChild(prev);
+
+  for(let i=1; i<=totalPage; i++){
+    const btn = document.createElement("button");
+    btn.className = "page-btn" + (i === currentPage ? " active" : "");
+    btn.textContent = i;
+    btn.onclick = () => {
+      currentPage = i;
+      renderTable();
+    };
+    pager.appendChild(btn);
+  }
+
+  const next = document.createElement("button");
+  next.className = "page-btn";
+  next.textContent = "›";
+  next.onclick = () => {
+    if(currentPage < totalPage){
+      currentPage++;
+      renderTable();
+    }
+  };
+  pager.appendChild(next);
+}
+
+function updateField(index, key, value){
+  const filtered = getFilteredCourses();
+  const item = filtered[index];
+  if(item){
+    item[key] = value;
+  }
+  renderTable();
+}
+
+function applyFilters(){
+  currentPage = 1;
+  renderTable();
+}
+
+function resetFilters(){
+  document.getElementById("searchType").value = "name";
+  document.getElementById("searchKeyword").value = "";
+  document.getElementById("startDate").value = "";
+  document.getElementById("endDate").value = "";
+  document.getElementById("statusFilter").value = "전체";
+  document.getElementById("jobCategoryFilter").value = "전체";
+  document.getElementById("courseCategoryFilter").value = "전체";
+  document.getElementById("campusFilter").value = "전체";
+  document.getElementById("ledgerFilter").value = "전체";
+  currentTab = "전체";
+  document.querySelectorAll(".tab").forEach(tab => tab.classList.toggle("active", tab.dataset.tab === "전체"));
+  currentPage = 1;
+  renderTable();
+}
+
+function goRegister(){
+  alert("과정 등록 화면으로 이동합니다.");
+}
+
+function editCourse(name){
+  alert(`"${name}" 과정 수정 화면으로 이동합니다.`);
+}
+
+function deleteCourse(name){
+  if(confirm(`"${name}" 과정을 삭제하시겠습니까?`)){
+    const idx = courses.findIndex(c => c.name === name);
+    if(idx > -1){
+      courses.splice(idx, 1);
+      renderTable();
+    }
+  }
+}
+
+function actionMsg(action, name){
+  alert(`"${name}" 과정의 ${action} 기능으로 이동합니다.`);
+}
+
+function toggleAll(master){
+  document.querySelectorAll(".rowCheck").forEach(chk => chk.checked = master.checked);
+}
+
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    currentTab = tab.dataset.tab;
+    currentPage = 1;
+    renderTable();
+  });
+});
+
+renderTable();
+</script>
+</body>
+</html>

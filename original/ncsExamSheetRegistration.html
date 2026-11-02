@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NCS 평가지 등록</title>
+<style>
+:root{
+  --primary:#2f5fd0;--primary-soft:#eef4ff;--border:#d8e0eb;--line:#e9edf3;
+  --text:#263246;--muted:#768297;--bg:#f3f6fa;--soft:#f7f9fc;
+  --success:#198754;--warning:#c47a10;--danger:#d9534f;--purple:#7b2cbf;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.page{max-width:1460px;margin:28px auto 60px;padding:0 18px}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}
+.page-title h1{margin:0;font-size:30px;font-weight:800}
+.page-title p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:9px;padding:10px 14px;font-weight:800;font-size:13px}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-success{background:var(--success);border-color:var(--success);color:#fff}
+.btn-danger{color:var(--danger)}
+.btn-small{padding:7px 10px;font-size:12px}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 34px rgba(31,45,79,.07);overflow:hidden;margin-bottom:18px}
+.card-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.section-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800}
+.section-title:before{content:"";width:5px;height:20px;border-radius:3px;background:var(--primary)}
+.card-body{padding:18px 22px 22px}
+.course-banner{background:#f8faff;border:1px solid #dbe6ff;border-radius:14px;padding:16px 18px}
+.course-name{font-size:16px;font-weight:800}
+.course-meta{margin-top:5px;color:var(--muted);font-size:12px}
+.subnav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.subnav .btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px 20px}
+.field{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+.field.full{grid-column:1/-1}
+.label{font-size:13px;font-weight:800;color:#59667a}
+.control input,.control select,.control textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:10px 11px;outline:none;background:#fff}
+.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.help{font-size:11px;color:var(--danger)}
+
+.editor-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.editor-toolbar{padding:8px 10px;background:var(--soft);border-bottom:1px solid var(--border);display:flex;gap:5px;flex-wrap:wrap}
+.tool{min-width:30px;height:30px;border:1px solid var(--border);background:#fff;border-radius:6px;font-size:12px;font-weight:800}
+.editor{min-height:150px;padding:14px;outline:none;line-height:1.7;background:#fff}
+
+.performance-table{width:100%;border-collapse:collapse}
+.performance-table th,.performance-table td{border:1px solid var(--border);padding:9px;font-size:13px}
+.performance-table th{background:var(--soft);color:#59667a}
+.performance-table input{width:100%;border:1px solid var(--border);border-radius:7px;padding:7px 8px}
+.center{text-align:center}
+
+.question-layout{display:grid;grid-template-columns:1.2fr 1fr;gap:18px}
+.question-list{display:flex;flex-direction:column;gap:12px}
+.question-card{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.question-head{display:grid;grid-template-columns:60px 130px 100px 1fr 90px 90px;gap:8px;align-items:end;padding:11px 12px;background:var(--soft);border-bottom:1px solid var(--border)}
+.qfield label{display:block;margin-bottom:5px;font-size:11px;font-weight:800;color:#667287}
+.qfield input,.qfield select{width:100%;border:1px solid var(--border);border-radius:7px;padding:7px 8px;background:#fff}
+.question-body{padding:12px}
+.question-body textarea{width:100%;min-height:90px;border:1px solid var(--border);border-radius:8px;padding:10px;resize:vertical}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.option-row{display:flex;gap:8px;align-items:center}
+.option-row input[type="text"]{flex:1;border:1px solid var(--border);border-radius:7px;padding:7px 8px}
+.question-actions{display:flex;justify-content:flex-end;gap:6px;margin-top:10px}
+.summary-panel{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.summary-panel .panel-head{padding:12px 14px;background:var(--soft);font-size:13px;font-weight:800;border-bottom:1px solid var(--border)}
+.summary-panel .panel-body{padding:14px}
+.summary-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+.summary-row:last-child{border-bottom:0}
+.summary-value{font-weight:800;color:var(--primary)}
+.notice{padding:11px 13px;border-radius:10px;background:#fff8f7;border:1px solid #ffd8d3;color:#b8443b;font-size:12px;line-height:1.5}
+.footer-actions{display:flex;justify-content:flex-end;gap:8px}
+@media(max-width:1100px){.form-grid,.question-layout{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.page{padding:0 10px}.page-header{flex-direction:column}.form-grid,.question-layout{grid-template-columns:1fr}.field{grid-template-columns:1fr}.question-head{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+<header class="page-header">
+  <div class="page-title">
+    <h1>NCS 평가지 등록</h1>
+    <p>등록된 평가에 실제 문제지와 수행정도 기준을 작성합니다.</p>
+  </div>
+  <button class="btn" onclick="history.back()">평가 목록</button>
+</header>
+
+<section class="card">
+  <div class="card-body">
+    <div class="course-banner">
+      <div class="course-name">[내일배움카드(실업자)] 한식 조리사 자격증 대비반</div>
+      <div class="course-meta">NCS 평가 · 커피 원두 선택 최종평가 · 서술형</div>
+    </div>
+
+    <div class="subnav">
+      <button class="btn btn-small">NCS 평가항목 목록</button>
+      <button class="btn btn-small">NCS 평가항목 등록</button>
+      <button class="btn btn-small">평가목록</button>
+      <button class="btn btn-small active">NCS 평가등록</button>
+      <button class="btn btn-small">사전평가결과</button>
+      <button class="btn btn-small">요소별 평가결과</button>
+      <button class="btn btn-small">능력단위평가결과</button>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-head"><div class="section-title">시험 기본정보</div></div>
+  <div class="card-body">
+    <div class="form-grid">
+      <div class="field">
+        <div class="label">출제자</div>
+        <div class="control"><select><option>김교사</option><option>이교사</option></select></div>
+      </div>
+      <div class="field">
+        <div class="label">평가일자</div>
+        <div class="control"><input type="date" value="2026-11-11"></div>
+      </div>
+      <div class="field">
+        <div class="label">상태</div>
+        <div class="control"><select><option>시험중</option><option>대기</option><option>종료</option></select></div>
+      </div>
+
+      <div class="field full">
+        <div class="label">시험명</div>
+        <div class="control"><input id="examName" value="커피 원두 선택 최종평가"></div>
+      </div>
+
+      <div class="field">
+        <div class="label">총 문항수</div>
+        <div class="control inline"><input id="questionCount" type="number" value="10" style="max-width:100px"><span>문항</span></div>
+      </div>
+      <div class="field">
+        <div class="label">패스점수</div>
+        <div class="control inline"><input id="passScore" type="number" value="60" style="max-width:100px"><span>점</span></div>
+      </div>
+      <div class="field">
+        <div class="label">재시험여부</div>
+        <div class="control inline">
+          <select><option>첫시험</option><option>재시험</option></select>
+          <input type="number" value="0" style="max-width:70px">
+          <span class="help">ex) 10%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-head"><div class="section-title">설명</div></div>
+  <div class="card-body">
+    <div class="editor-wrap">
+      <div class="editor-toolbar">
+        <button class="tool" onclick="cmd('bold')"><b>B</b></button>
+        <button class="tool" onclick="cmd('italic')"><i>I</i></button>
+        <button class="tool" onclick="cmd('underline')"><u>U</u></button>
+        <button class="tool" onclick="cmd('insertUnorderedList')">• 목록</button>
+        <button class="tool" onclick="cmd('justifyLeft')">좌</button>
+        <button class="tool" onclick="cmd('justifyCenter')">중</button>
+      </div>
+      <div class="editor" contenteditable="true">평가 진행 전 안내사항과 응시 유의사항을 입력하세요.</div>
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-head"><div class="section-title">수행정도 기준</div></div>
+  <div class="card-body">
+    <table class="performance-table">
+      <thead>
+        <tr>
+          <th style="width:110px">최소 수행점수</th>
+          <th>수행정도 설명</th>
+        </tr>
+      </thead>
+      <tbody id="performanceBody">
+        <tr><td><input type="number" value="90"></td><td><input value="해당 지식과 기술을 확실하게 습득하여 직무수행에 필요한 기술적 사고력과 문제 해결력을 토대로 주도적으로 완벽한 작업을 수행할 수 있다."></td></tr>
+        <tr><td><input type="number" value="80"></td><td><input value="해당 지식과 기술을 습득하여 직무수행에 필요한 기술적 사고력과 문제 해결력을 토대로 작업을 수행할 수 있다."></td></tr>
+        <tr><td><input type="number" value="70"></td><td><input value="해당 지식과 기술을 대부분 습득하여 직무수행에 필요한 지식과 기술을 가지고 대부분의 작업을 수행할 수 있다."></td></tr>
+        <tr><td><input type="number" value="60"></td><td><input value="해당 지식과 기술을 부분적으로 습득하여 직무수행에 필요한 지식과 기술을 가지고 타인과 공동으로 작업할 수 있다."></td></tr>
+      </tbody>
+    </table>
+
+    <div class="notice" style="margin-top:12px">
+      요소별 평가결과 하단의 수행평가기준과 연결되며, 최소 수행점수 이상일 경우 해당 수행정도가 적용됩니다.
+    </div>
+  </div>
+</section>
+
+<section class="card">
+  <div class="card-head">
+    <div class="section-title">문제출제</div>
+    <button class="btn btn-small btn-primary" onclick="addQuestion()">+ 문항 추가</button>
+  </div>
+  <div class="card-body">
+    <div class="question-layout">
+      <div class="question-list" id="questionList"></div>
+
+      <div class="summary-panel">
+        <div class="panel-head">문제유형 설정 요약</div>
+        <div class="panel-body">
+          <div class="summary-row"><span>총 문항수</span><span class="summary-value" id="sumCount">0</span></div>
+          <div class="summary-row"><span>총 배점</span><span class="summary-value" id="sumScore">0점</span></div>
+          <div class="summary-row"><span>객관식</span><span class="summary-value" id="sumObjective">0</span></div>
+          <div class="summary-row"><span>주관/서술형</span><span class="summary-value" id="sumSubjective">0</span></div>
+          <div class="summary-row"><span>체크리스트형</span><span class="summary-value" id="sumChecklist">0</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer-actions">
+  <button class="btn">목록</button>
+  <button class="btn btn-success" onclick="saveDraft()">임시저장</button>
+  <button class="btn btn-primary" onclick="saveSheet()">평가지 저장</button>
+</div>
+</div>
+
+<script>
+const questions=[
+  {type:"객관식",count:4,text:"커피 원두 선택 기준으로 가장 적절한 것은?",answer:"2",score:5},
+  {type:"객관식",count:4,text:"원두 보관 시 가장 적절한 방법은?",answer:"3",score:5},
+  {type:"서술형",count:0,text:"원두 품질을 판단할 때 확인해야 할 항목을 설명하시오.",answer:"모범답안",score:10}
+];
+
+function cmd(command){document.execCommand(command,false,null)}
+
+function renderQuestions(){
+  const root=document.getElementById("questionList");
+  root.innerHTML="";
+
+  questions.forEach((q,i)=>{
+    const card=document.createElement("div");
+    card.className="question-card";
+    card.innerHTML=`
+      <div class="question-head">
+        <div class="qfield"><label>번호</label><input value="${i+1}" readonly></div>
+        <div class="qfield"><label>타입</label>
+          <select onchange="questions[${i}].type=this.value;renderQuestions()">
+            ${["객관식","주관식","서술형","체크리스트"].map(v=>`<option ${q.type===v?"selected":""}>${v}</option>`).join("")}
+          </select>
+        </div>
+        <div class="qfield"><label>항목수</label><input type="number" value="${q.count}" onchange="questions[${i}].count=Number(this.value)"></div>
+        <div class="qfield"><label>정답/모범답안</label><input value="${q.answer}" onchange="questions[${i}].answer=this.value"></div>
+        <div class="qfield"><label>배점</label><input type="number" value="${q.score}" onchange="questions[${i}].score=Number(this.value);updateSummary()"></div>
+        <div class="qfield"><label>관리</label><button class="btn btn-danger btn-small" onclick="removeQuestion(${i})">삭제</button></div>
+      </div>
+      <div class="question-body">
+        <textarea onchange="questions[${i}].text=this.value">${q.text}</textarea>
+        ${q.type==="객관식" ? `
+          <div class="options">
+            ${[1,2,3,4].map(n=>`<div class="option-row"><span>${n}</span><input type="text" placeholder="${n}번 보기 입력"></div>`).join("")}
+          </div>` : ""}
+      </div>`;
+    root.appendChild(card);
+  });
+
+  updateSummary();
+}
+
+function addQuestion(){
+  questions.push({type:"서술형",count:0,text:"",answer:"",score:10});
+  renderQuestions();
+}
+
+function removeQuestion(i){
+  if(questions.length<=1){alert("최소 1개 문항은 유지해야 합니다.");return}
+  questions.splice(i,1);
+  renderQuestions();
+}
+
+function updateSummary(){
+  const totalScore=questions.reduce((s,q)=>s+(Number(q.score)||0),0);
+  document.getElementById("sumCount").textContent=questions.length;
+  document.getElementById("sumScore").textContent=totalScore+"점";
+  document.getElementById("sumObjective").textContent=questions.filter(q=>q.type==="객관식").length;
+  document.getElementById("sumSubjective").textContent=questions.filter(q=>q.type==="주관식"||q.type==="서술형").length;
+  document.getElementById("sumChecklist").textContent=questions.filter(q=>q.type==="체크리스트").length;
+}
+
+function saveDraft(){
+  localStorage.setItem("ncs_exam_sheet_demo",JSON.stringify({questions}));
+  alert("평가지 내용을 임시저장했습니다.");
+}
+
+function saveSheet(){
+  if(!document.getElementById("examName").value.trim()){alert("시험명을 입력하세요.");return}
+  if(questions.reduce((s,q)=>s+(Number(q.score)||0),0)<=0){alert("배점을 입력하세요.");return}
+  alert(`평가지 저장 완료\n문항수: ${questions.length}개\n총 배점: ${questions.reduce((s,q)=>s+(Number(q.score)||0),0)}점`);
+}
+
+renderQuestions();
+</script>
+</body>
+</html>

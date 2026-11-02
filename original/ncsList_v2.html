@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NCS 평가항목 목록</title>
+<style>
+:root{
+  --primary:#2f5fd0;--primary-soft:#eef4ff;--border:#d8e0eb;--line:#e9edf3;
+  --text:#263246;--muted:#768297;--bg:#f3f6fa;--soft:#f7f9fc;
+  --success:#198754;--warning:#c47a10;--danger:#d9534f;--purple:#7b2cbf;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.page{max-width:1540px;margin:28px auto 60px;padding:0 18px}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}
+.page-title h1{margin:0;font-size:30px;font-weight:800}
+.page-title p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:9px;padding:10px 14px;font-weight:800;font-size:13px}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-success{background:var(--success);border-color:var(--success);color:#fff}
+.btn-warning{background:#fff6e5;border-color:#f2d7a0;color:var(--warning)}
+.btn-danger{color:var(--danger)}
+.btn-small{padding:7px 10px;font-size:12px}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 34px rgba(31,45,79,.07);overflow:hidden;margin-bottom:18px}
+.card-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.section-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800}
+.section-title:before{content:"";width:5px;height:20px;border-radius:3px;background:var(--primary)}
+.card-body{padding:18px 22px 22px}
+.course-banner{background:#f8faff;border:1px solid #dbe6ff;border-radius:14px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.course-name{font-size:16px;font-weight:800}
+.course-meta{margin-top:5px;color:var(--muted);font-size:12px}
+.badges{display:flex;gap:7px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}
+.badge.success{background:#eaf8f0;color:var(--success)}
+.badge.blue{background:var(--primary-soft);color:var(--primary)}
+.badge.gray{background:#f2f4f7;color:#687386}
+.badge.warning{background:#fff6e5;color:var(--warning)}
+.subnav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.subnav .btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.utility-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:16px}
+.notice{margin-top:14px;padding:11px 13px;border-radius:10px;background:#fff8f7;border:1px solid #ffd8d3;color:#b8443b;font-size:12px;font-weight:700}
+.subject-card{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:16px}
+.subject-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 14px;background:#f7f9fc;border-bottom:1px solid var(--border)}
+.subject-name{font-size:15px;font-weight:800}
+.subject-actions{display:flex;gap:6px}
+.unit-block{border-bottom:1px solid var(--line)}
+.unit-block:last-child{border-bottom:0}
+.unit-grid{display:grid;grid-template-columns:1.8fr 180px 110px 90px 90px 90px 220px;align-items:center}
+.unit-grid > div{padding:10px;border-right:1px solid var(--line);min-height:52px;display:flex;align-items:center}
+.unit-grid > div:last-child{border-right:0}
+.unit-name{font-weight:800}
+.center{justify-content:center;text-align:center}
+.checkbox-view{width:16px;height:16px}
+.element-wrap{margin:0 14px 14px;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.element-head{display:grid;grid-template-columns:1fr 160px 220px;background:#fbfcfe;border-bottom:1px solid var(--border)}
+.element-head div{padding:9px 10px;font-size:12px;font-weight:800;color:#59667a;border-right:1px solid var(--border);text-align:center}
+.element-head div:last-child{border-right:0}
+.element-row{display:grid;grid-template-columns:1fr 160px 220px;border-bottom:1px solid var(--line)}
+.element-row:last-child{border-bottom:0}
+.element-row > div{padding:10px;border-right:1px solid var(--line);font-size:13px;display:flex;align-items:center}
+.element-row > div:last-child{border-right:0}
+.eval-state{display:inline-flex;align-items:center;justify-content:center;padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}
+.eval-state.none{background:#f2f4f7;color:#768297}
+.eval-state.ready{background:#eef4ff;color:var(--primary)}
+.eval-state.active{background:#fff6e5;color:var(--warning)}
+.eval-state.done{background:#eaf8f0;color:var(--success)}
+.action-cell{display:flex!important;gap:6px;justify-content:center;flex-wrap:wrap}
+.mini-btn{border:1px solid var(--border);background:#fff;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:800}
+.mini-btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.mini-btn.result{background:#eaf8f0;border-color:#b8e1c9;color:var(--success)}
+.mini-btn.retest{background:#fff6e5;border-color:#f0d49c;color:var(--warning)}
+.footer-note{margin-top:14px;text-align:right;color:var(--muted);font-size:12px}
+@media(max-width:1200px){.unit-grid{grid-template-columns:1fr 1fr 1fr 1fr}.unit-grid > div{border-bottom:1px solid var(--line)}}
+@media(max-width:760px){.page{padding:0 10px}.page-header{flex-direction:column}.unit-grid,.element-head,.element-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>NCS 평가항목 목록</h1>
+      <p>등록된 교과목·능력단위·요소를 확인하고 실제 평가 등록 및 결과를 관리합니다.</p>
+    </div>
+    <div><button class="btn" onclick="history.back()">과정 상세</button></div>
+  </header>
+
+  <section class="card">
+    <div class="card-body">
+      <div class="course-banner">
+        <div>
+          <div class="course-name">[내일배움카드(실업자)] 한식 조리사 자격증 대비반</div>
+          <div class="course-meta">교육기간 2026.11.04 ~ 2027.01.16 · 진행중</div>
+        </div>
+        <div class="badges">
+          <span class="badge success">진행중</span>
+          <span class="badge blue">NCS 평가관리</span>
+          <span class="badge gray">생기부 오픈</span>
+        </div>
+      </div>
+
+      <div class="subnav">
+        <button class="btn btn-small active">NCS 평가항목 목록</button>
+        <button class="btn btn-small" onclick="alert('평가항목 등록 화면으로 이동')">NCS 평가항목 등록</button>
+        <button class="btn btn-small" onclick="alert('평가목록 화면으로 이동')">평가목록</button>
+        <button class="btn btn-small" onclick="alert('NCS 평가등록 화면으로 이동')">NCS 평가등록</button>
+        <button class="btn btn-small">사전평가결과</button>
+        <button class="btn btn-small">요소별 평가결과</button>
+        <button class="btn btn-small">능력단위 평가결과</button>
+      </div>
+
+      <div class="utility-row">
+        <button class="btn btn-small">항목 CSV 다운로드</button>
+        <button class="btn btn-small">항목 정렬</button>
+        <button class="btn btn-small btn-danger">모든 항목 삭제</button>
+      </div>
+
+      <div class="notice">
+        평가가 아직 등록되지 않은 항목은 <b>평가등록</b>, 평가가 등록된 항목은 <b>평가 및 결과확인</b> 버튼이 표시됩니다.
+        불합격자가 있는 완료 평가에는 <b>재평가 등록</b> 버튼이 추가됩니다.
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">교과목별 평가항목</div>
+      <div style="font-size:12px;color:var(--muted)">교과목 2개 · 능력단위 5개 · 요소 8개</div>
+    </div>
+    <div class="card-body" id="subjectList"></div>
+  </section>
+
+  <div class="footer-note">LMS 관리자 · NCS 평가항목 목록</div>
+</div>
+
+<script>
+const subjects=[
+  {
+    name:"바리스타",
+    units:[
+      {
+        name:"커피 원두 선택",code:"1301020302_13v1",hours:5,nonNcs:false,pretest:false,mixed:false,
+        elements:[
+          {name:"커피 원두 선택 이론(최종)",state:"done",failed:2},
+          {name:"원두 품질 판별",state:"ready",failed:0}
+        ]
+      },
+      {
+        name:"커피기계 운용",code:"1301020303_16v2",hours:5,nonNcs:false,pretest:false,mixed:false,
+        elements:[
+          {name:"커피기계 운용 이론(중간)",state:"active",failed:0},
+          {name:"커피기계 운용 실습(최종)",state:"done",failed:1}
+        ]
+      },
+      {
+        name:"사전평가",code:"",hours:0,nonNcs:false,pretest:true,mixed:false,
+        elements:[
+          {name:"바리스타 사전평가",state:"done",failed:0}
+        ]
+      }
+    ]
+  },
+  {
+    name:"위생관리",
+    units:[
+      {
+        name:"식품위생관리",code:"1301010101_17v1",hours:8,nonNcs:false,pretest:false,mixed:false,
+        elements:[
+          {name:"개인위생 및 작업장 위생관리",state:"none",failed:0}
+        ]
+      },
+      {
+        name:"비NCS 기초소양",code:"ETC-001",hours:4,nonNcs:true,pretest:false,mixed:true,
+        elements:[
+          {name:"직업윤리 및 서비스 기본",state:"ready",failed:0}
+        ]
+      }
+    ]
+  }
+];
+
+function stateLabel(state){
+  if(state==="none") return ["미등록","none"];
+  if(state==="ready") return ["평가등록","ready"];
+  if(state==="active") return ["평가진행중","active"];
+  return ["평가완료","done"];
+}
+
+function actionButtons(el){
+  if(el.state==="none"){
+    return `<button class="mini-btn primary" onclick="registerEval('${el.name}')">평가등록</button>`;
+  }
+  if(el.state==="ready"){
+    return `<button class="mini-btn result" onclick="openResult('${el.name}')">평가 및 결과확인</button>`;
+  }
+  if(el.state==="active"){
+    return `<button class="mini-btn result" onclick="openResult('${el.name}')">평가 및 결과확인</button>`;
+  }
+  let btn=`<button class="mini-btn result" onclick="openResult('${el.name}')">평가 및 결과확인</button>`;
+  if(el.failed>0){
+    btn += `<button class="mini-btn retest" onclick="registerRetest('${el.name}',${el.failed})">재평가 등록</button>`;
+  }
+  return btn;
+}
+
+function render(){
+  const root=document.getElementById("subjectList");
+  root.innerHTML="";
+
+  subjects.forEach((subject,sIdx)=>{
+    const subjectCard=document.createElement("div");
+    subjectCard.className="subject-card";
+
+    const unitsHtml=subject.units.map((unit,uIdx)=>{
+      const elementRows=unit.elements.map(el=>{
+        const [label,cls]=stateLabel(el.state);
+        return `
+          <div class="element-row">
+            <div>${el.name}</div>
+            <div class="center"><span class="eval-state ${cls}">${label}</span></div>
+            <div class="action-cell">${actionButtons(el)}</div>
+          </div>`;
+      }).join("");
+
+      return `
+        <div class="unit-block">
+          <div class="unit-grid">
+            <div><span class="unit-name">${unit.name}</span></div>
+            <div class="center">${unit.code || "-"}</div>
+            <div class="center">${unit.hours}시간</div>
+            <div class="center"><input class="checkbox-view" type="checkbox" ${unit.nonNcs?"checked":""} disabled></div>
+            <div class="center"><input class="checkbox-view" type="checkbox" ${unit.pretest?"checked":""} disabled></div>
+            <div class="center"><input class="checkbox-view" type="checkbox" ${unit.mixed?"checked":""} disabled></div>
+            <div class="action-cell">
+              <button class="mini-btn" onclick="alert('수행정도 등록: ${unit.name}')">수행정도등록</button>
+              <button class="mini-btn" onclick="alert('능력단위 수정: ${unit.name}')">수정</button>
+              <button class="mini-btn" onclick="alert('능력단위 삭제: ${unit.name}')">삭제</button>
+            </div>
+          </div>
+
+          <div class="element-wrap">
+            <div class="element-head">
+              <div>요소명</div>
+              <div>평가상태</div>
+              <div>평가관리</div>
+            </div>
+            ${elementRows}
+          </div>
+        </div>`;
+    }).join("");
+
+    subjectCard.innerHTML=`
+      <div class="subject-head">
+        <div class="subject-name">${subject.name}</div>
+        <div class="subject-actions">
+          <button class="btn btn-small" onclick="alert('교과목 수정: ${subject.name}')">수정</button>
+          <button class="btn btn-small btn-danger" onclick="alert('교과목 삭제: ${subject.name}')">삭제</button>
+        </div>
+      </div>
+      ${unitsHtml}
+      <div style="padding:12px 14px;background:#fbfcfe">
+        <button class="btn btn-small" onclick="alert('${subject.name} 능력단위 추가')">+ 능력단위 추가</button>
+      </div>`;
+
+    root.appendChild(subjectCard);
+  });
+}
+
+function registerEval(name){
+  alert(`"${name}" 평가 등록 화면으로 이동합니다.\n\n선택한 평가항목 정보가 자동으로 전달됩니다.`);
+}
+
+function openResult(name){
+  alert(`"${name}" 평가 및 결과확인 화면으로 이동합니다.`);
+}
+
+function registerRetest(name,failed){
+  alert(`"${name}" 재평가 등록 화면으로 이동합니다.\n불합격 대상자: ${failed}명`);
+}
+
+render();
+</script>
+</body>
+</html>

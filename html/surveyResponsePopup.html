@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>설문조사 응답</title>
+<style>
+:root{
+  --primary:#2f5fd0;
+  --primary-soft:#eef4ff;
+  --border:#d8e0eb;
+  --line:#e9edf3;
+  --text:#263246;
+  --muted:#768297;
+  --bg:#eef2f7;
+  --danger:#d9534f;
+  --soft:#f7f9fc;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+.overlay{
+  min-height:100vh;
+  padding:28px;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+}
+.popup{
+  width:min(1040px,100%);
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:0 24px 70px rgba(31,45,79,.18);
+  overflow:hidden;
+}
+.popup-head{
+  background:#343a40;
+  color:#fff;
+  padding:18px 24px;
+  text-align:center;
+}
+.popup-title{
+  font-size:20px;
+  font-weight:800;
+}
+.popup-sub{
+  margin-top:5px;
+  font-size:12px;
+  opacity:.8;
+}
+.popup-body{
+  padding:22px 26px 26px;
+}
+.progress-box{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:center;
+  margin-bottom:20px;
+}
+.progress-text{
+  font-size:12px;
+  color:var(--muted);
+  font-weight:700;
+}
+.progress-track{
+  flex:1;
+  max-width:420px;
+  height:8px;
+  border-radius:999px;
+  background:#edf1f6;
+  overflow:hidden;
+}
+.progress-bar{
+  width:33%;
+  height:100%;
+  background:var(--primary);
+}
+.question{
+  padding:18px 0 22px;
+  border-bottom:1px solid var(--line);
+}
+.question:last-of-type{
+  border-bottom:0;
+}
+.question-title{
+  font-size:17px;
+  font-weight:800;
+  line-height:1.5;
+  margin-bottom:14px;
+}
+.question-number{
+  color:var(--primary);
+  margin-right:5px;
+}
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.option{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:14px;
+  cursor:pointer;
+}
+.option input{
+  width:17px;
+  height:17px;
+}
+.answer-input{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:11px 12px;
+  outline:none;
+}
+.answer-input:focus{
+  border-color:#9fb2e6;
+  box-shadow:0 0 0 3px rgba(47,95,208,.08);
+}
+.section-divider{
+  margin:8px -26px 4px;
+  padding:12px 26px;
+  background:var(--soft);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  color:var(--danger);
+  font-size:16px;
+  font-weight:800;
+}
+.footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  padding-top:22px;
+}
+.note{
+  color:var(--muted);
+  font-size:12px;
+}
+.btn{
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  border-radius:9px;
+  padding:10px 16px;
+  font-size:13px;
+  font-weight:800;
+}
+.btn-primary{
+  background:var(--primary);
+  color:#fff;
+  border-color:var(--primary);
+}
+.complete{
+  display:none;
+  text-align:center;
+  padding:48px 20px 58px;
+}
+.complete-icon{
+  width:66px;height:66px;border-radius:50%;
+  margin:0 auto 16px;
+  background:var(--primary-soft);
+  color:var(--primary);
+  display:flex;align-items:center;justify-content:center;
+  font-size:30px;font-weight:800;
+}
+.complete h2{margin:0 0 8px}
+.complete p{margin:0;color:var(--muted);font-size:14px}
+@media(max-width:650px){
+  .overlay{padding:10px}
+  .popup-body{padding:18px 16px}
+  .section-divider{margin-left:-16px;margin-right:-16px;padding-left:16px;padding-right:16px}
+  .popup-title{font-size:17px}
+  .footer{flex-direction:column;align-items:stretch}
+}
+</style>
+</head>
+<body>
+<div class="overlay">
+  <div class="popup">
+    <div class="popup-head">
+      <div class="popup-title">모바일 디바이스를 위한 UI 디자인 (2026.03.04~2026.12.27) (2회차)</div>
+      <div class="popup-sub">교육생 설문조사</div>
+    </div>
+
+    <div class="popup-body" id="surveyForm">
+      <div class="progress-box">
+        <div class="progress-text">응답 진행률 <strong id="progressLabel">0 / 3</strong></div>
+        <div class="progress-track">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+
+      <section class="question">
+        <div class="question-title">
+          <span class="question-number">1.</span>
+          평가결과를 알려주고 부족한 부분을 보완하였는가
+        </div>
+
+        <div class="options">
+          <label class="option">
+            <input type="radio" name="q1" value="우수">
+            우수
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="보통">
+            보통
+          </label>
+          <label class="option">
+            <input type="radio" name="q1" value="미흡">
+            미흡
+          </label>
+        </div>
+      </section>
+
+      <section class="question">
+        <div class="question-title">
+          <span class="question-number">2.</span>
+          수준을 고려한 맞춤식 수업이 진행되었다고 생각하는가
+        </div>
+
+        <input
+          id="q2"
+          class="answer-input"
+          type="text"
+          placeholder="의견을 입력해 주세요."
+        >
+      </section>
+
+      <div class="section-divider">훈련과정에 대한 질문</div>
+
+      <section class="question">
+        <div class="question-title">
+          <span class="question-number">3.</span>
+          선호하는 취업(창업) 희망직종
+        </div>
+
+        <input
+          id="q3"
+          class="answer-input"
+          type="text"
+          placeholder="예: 웹 개발자, UI/UX 디자이너 등"
+        >
+      </section>
+
+      <div class="footer">
+        <div class="note">모든 문항에 응답한 후 저장해 주세요.</div>
+        <button class="btn btn-primary" onclick="saveSurvey()">저장</button>
+      </div>
+    </div>
+
+    <div class="complete" id="completeView">
+      <div class="complete-icon">✓</div>
+      <h2>설문 응답이 저장되었습니다.</h2>
+      <p>설문에 참여해 주셔서 감사합니다.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+function countAnswered(){
+  let count=0;
+
+  if(document.querySelector('input[name="q1"]:checked')) count++;
+  if(document.getElementById("q2").value.trim()) count++;
+  if(document.getElementById("q3").value.trim()) count++;
+
+  document.getElementById("progressLabel").textContent=`${count} / 3`;
+  document.getElementById("progressBar").style.width=`${(count/3)*100}%`;
+
+  return count;
+}
+
+document.querySelectorAll('input[name="q1"]').forEach(el=>{
+  el.addEventListener("change",countAnswered);
+});
+
+document.getElementById("q2").addEventListener("input",countAnswered);
+document.getElementById("q3").addEventListener("input",countAnswered);
+
+function saveSurvey(){
+  const answered=countAnswered();
+
+  if(answered<3){
+    alert("모든 설문 문항에 응답해 주세요.");
+    return;
+  }
+
+  const result={
+    q1:document.querySelector('input[name="q1"]:checked').value,
+    q2:document.getElementById("q2").value.trim(),
+    q3:document.getElementById("q3").value.trim()
+  };
+
+  localStorage.setItem("survey_response_demo",JSON.stringify(result));
+
+  document.getElementById("surveyForm").style.display="none";
+  document.getElementById("completeView").style.display="block";
+}
+
+countAnswered();
+</script>
+</body>
+</html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>설문조사 등록</title>
+<style>
+:root{
+  --primary:#2f5fd0;--primary-soft:#eef4ff;--border:#d8e0eb;--line:#e9edf3;
+  --text:#263246;--muted:#768297;--bg:#f3f6fa;--soft:#f7f9fc;
+  --success:#198754;--warning:#c47a10;--danger:#d9534f;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.page{max-width:1180px;margin:28px auto 60px;padding:0 18px}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}
+.page-title h1{margin:0;font-size:30px;font-weight:800}
+.page-title p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:9px;padding:10px 14px;font-weight:800;font-size:13px}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-danger{color:var(--danger)}
+.btn-small{padding:7px 10px;font-size:12px}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 34px rgba(31,45,79,.07);overflow:hidden;margin-bottom:18px}
+.card-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.section-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800}
+.section-title:before{content:"";width:5px;height:20px;border-radius:3px;background:var(--primary)}
+.card-body{padding:18px 22px 22px}
+.notice{background:#fff8f7;border:1px solid #ffd8d3;color:#b8443b;border-radius:12px;padding:13px 15px;margin-bottom:18px;font-size:12px;line-height:1.6}
+.notice strong{color:#d9534f}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px}
+.field{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center}
+.field.full{grid-column:1/-1}
+.label{font-size:13px;font-weight:800;color:#59667a}
+.control input,.control select,.control textarea{width:100%;border:1px solid var(--border);border-radius:9px;padding:10px 11px;outline:none;background:#fff}
+.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.question-layout{display:grid;grid-template-columns:1fr 320px;gap:18px}
+.question-list,.selected-list{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
+.panel-head{padding:12px 14px;background:var(--soft);font-size:13px;font-weight:800;border-bottom:1px solid var(--border)}
+.question-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.question-item:last-child{border-bottom:0}
+.question-item input{width:16px;height:16px}
+.question-text{flex:1;font-size:13px}
+.badge{display:inline-flex;align-items:center;justify-content:center;padding:4px 8px;border-radius:999px;background:var(--primary-soft);color:var(--primary);font-size:11px;font-weight:800}
+.selected-row{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.selected-row:last-child{border-bottom:0}
+.selected-index{width:24px;height:24px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800}
+.selected-text{flex:1;font-size:12px}
+.order-btns{display:flex;gap:4px}
+.icon-btn{width:28px;height:28px;border:1px solid var(--border);background:#fff;border-radius:6px;font-weight:800}
+.summary{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:10px;font-size:12px;color:var(--muted)}
+.footer-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+@media(max-width:900px){.form-grid,.question-layout{grid-template-columns:1fr}}
+@media(max-width:650px){.page{padding:0 10px}.page-header{flex-direction:column}.field{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>설문조사 등록</h1>
+      <p>과정별 설문조사를 생성하고 문항을 선택하여 회차별로 운영합니다.</p>
+    </div>
+    <div><button class="btn" onclick="history.back()">목록</button></div>
+  </header>
+
+  <section class="card">
+    <div class="card-body">
+      <div class="notice">
+        <strong>안내</strong><br>
+        · 교육생 설문은 현재 진행중인 과정에 대해 등록하는 것을 권장합니다.<br>
+        · 구분은 운영대장 출력 및 통계 분류에 사용됩니다.<br>
+        · 설문타입이 교육생설문인 경우 과정선택 후 설문제목을 작성합니다.<br>
+        · 설문타입이 공개설문인 경우 과정선택 없이 설문제목만 작성할 수 있습니다.
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <div class="label">설문타입</div>
+          <div class="control">
+            <select id="surveyType">
+              <option>교육생설문</option>
+              <option>공개설문</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">구분</div>
+          <div class="control">
+            <select id="surveyCategory">
+              <option>[과정] 훈련생수요 및 요구</option>
+              <option>[과정] 만족도조사</option>
+              <option>[취업] 취업희망조사</option>
+              <option>[사전] 사전평가</option>
+              <option>기타</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field full">
+          <div class="label">과정선택</div>
+          <div class="control">
+            <select id="courseSelect">
+              <option>모바일 디바이스를 위한 UI 디자인 (2026.03.04~2026.12.27)</option>
+              <option>AI 에이전트 클라우드·보안코딩 개발자 양성</option>
+              <option>[대구] 재직자를 위한 고급 JAVA 개발</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field full">
+          <div class="label">설문제목</div>
+          <div class="control inline">
+            <input id="surveyTitle" value="훈련생 수요 및 만족도 조사">
+            <button class="btn btn-small" onclick="copySurvey()">설문복제</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">비밀번호</div>
+          <div class="control"><input id="password" value="1234"></div>
+        </div>
+
+        <div class="field">
+          <div class="label">회차</div>
+          <div class="control inline">
+            <input id="round" type="number" min="1" value="1" style="max-width:100px">
+            <span>회차</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">상태</div>
+          <div class="control">
+            <select id="status">
+              <option>대기</option>
+              <option>설문중</option>
+              <option>종료</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">설문 문항 선택</div>
+      <div style="font-size:12px;color:var(--muted)">최대 30개 문항까지 선택 가능</div>
+    </div>
+    <div class="card-body">
+      <div class="question-layout">
+        <div class="question-list">
+          <div class="panel-head">문항 목록</div>
+          <div id="questionList"></div>
+        </div>
+
+        <div class="selected-list">
+          <div class="panel-head">선택된 문항</div>
+          <div id="selectedList"></div>
+        </div>
+      </div>
+
+      <div class="summary">
+        <div>선택된 문항 수 : <strong id="selectedCount" style="color:var(--primary)">0</strong>/30</div>
+        <div>문항 순서는 우측 ▲ ▼ 버튼으로 변경할 수 있습니다.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-actions">
+    <button class="btn" onclick="history.back()">목록</button>
+    <button class="btn btn-primary" onclick="saveSurvey()">저장</button>
+  </div>
+</div>
+
+<script>
+const questions = [
+  "평가결과를 알려주고 부족한 부분을 보완하였는가",
+  "수준을 고려한 맞춤식 수업이 진행되었다고 생각하는가",
+  "훈련과정에 대한 전반적인 만족도는 어떠한가",
+  "선호하는 취업(창업) 희망직종은 무엇인가",
+  "강사의 수업 준비와 설명은 충분했는가",
+  "실습환경 및 시설에 만족하는가",
+  "교재 및 학습자료의 품질에 만족하는가",
+  "과정 난이도는 적절했는가",
+  "취업지원 서비스가 도움이 되었는가",
+  "본 과정을 다른 사람에게 추천할 의향이 있는가"
+];
+
+let selected = [0,1,2,3];
+
+function renderQuestions(){
+  const list = document.getElementById("questionList");
+  list.innerHTML = "";
+  questions.forEach((q,i)=>{
+    const row=document.createElement("label");
+    row.className="question-item";
+    row.innerHTML=`
+      <input type="checkbox" ${selected.includes(i)?"checked":""} onchange="toggleQuestion(${i},this.checked)">
+      <div class="question-text">${q}</div>
+      <span class="badge">${i<4?"기본":"추가"}</span>`;
+    list.appendChild(row);
+  });
+  renderSelected();
+}
+
+function renderSelected(){
+  const box=document.getElementById("selectedList");
+  box.innerHTML="";
+  if(!selected.length){
+    box.innerHTML='<div style="padding:20px;color:#768297;font-size:12px;text-align:center">선택된 문항이 없습니다.</div>';
+  }else{
+    selected.forEach((idx,pos)=>{
+      const row=document.createElement("div");
+      row.className="selected-row";
+      row.innerHTML=`
+        <div class="selected-index">${pos+1}</div>
+        <div class="selected-text">${questions[idx]}</div>
+        <div class="order-btns">
+          <button class="icon-btn" onclick="moveItem(${pos},-1)">▲</button>
+          <button class="icon-btn" onclick="moveItem(${pos},1)">▼</button>
+          <button class="icon-btn" style="color:#d9534f" onclick="removeItem(${pos})">×</button>
+        </div>`;
+      box.appendChild(row);
+    });
+  }
+  document.getElementById("selectedCount").textContent=selected.length;
+}
+
+function toggleQuestion(idx,checked){
+  if(checked){
+    if(selected.length>=30){
+      alert("최대 30개 문항까지 선택할 수 있습니다.");
+      renderQuestions();
+      return;
+    }
+    if(!selected.includes(idx)) selected.push(idx);
+  }else{
+    selected=selected.filter(x=>x!==idx);
+  }
+  renderQuestions();
+}
+
+function moveItem(pos,dir){
+  const newPos=pos+dir;
+  if(newPos<0 || newPos>=selected.length) return;
+  [selected[pos],selected[newPos]]=[selected[newPos],selected[pos]];
+  renderSelected();
+}
+
+function removeItem(pos){
+  selected.splice(pos,1);
+  renderQuestions();
+}
+
+function copySurvey(){
+  alert("현재 설문을 복제하여 새 설문으로 생성하는 기능입니다.");
+}
+
+function saveSurvey(){
+  const title=document.getElementById("surveyTitle").value.trim();
+  if(!title){alert("설문제목을 입력하세요.");return;}
+  if(!selected.length){alert("설문 문항을 1개 이상 선택하세요.");return;}
+  alert(`설문조사 저장 완료\n제목: ${title}\n선택 문항: ${selected.length}개`);
+}
+
+renderQuestions();
+</script>
+</body>
+</html>

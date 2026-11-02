@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>입학접수 간편입력</title>
+<style>
+:root{
+  --primary:#2f5fd0;--primary-soft:#eef4ff;--border:#d8e0eb;--line:#e9edf3;
+  --text:#263246;--muted:#768297;--bg:#eef2f7;--soft:#f7f9fc;--danger:#d9534f;
+  --success:#198754;--warning:#c47a10;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.overlay{min-height:100vh;padding:28px}
+.modal{
+  max-width:1180px;margin:0 auto;background:#fff;border:1px solid var(--border);
+  border-radius:18px;box-shadow:0 22px 60px rgba(31,45,79,.18);overflow:hidden
+}
+.modal-head{padding:20px 24px 12px;border-bottom:1px solid var(--line)}
+.modal-title{font-size:24px;font-weight:800}
+.modal-sub{margin-top:6px;color:var(--muted);font-size:13px}
+.tabs{display:flex;gap:6px;padding:14px 20px 0;border-bottom:1px solid var(--border);background:#fbfcfe;flex-wrap:wrap}
+.tab{
+  border:1px solid var(--border);border-bottom:0;background:#fff;color:#59667a;
+  padding:10px 14px;border-radius:10px 10px 0 0;font-size:13px;font-weight:800
+}
+.tab.active{background:var(--primary-soft);color:var(--primary);border-color:#bfd0fb}
+.tab-panel{display:none;padding:22px}
+.tab-panel.active{display:block}
+.section-title{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800;margin-bottom:14px}
+.section-title:before{content:"";width:5px;height:18px;border-radius:3px;background:var(--primary)}
+.course-box{
+  border:1px solid var(--border);border-radius:12px;padding:14px;background:#fafcff;
+  margin-bottom:18px
+}
+.course-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px}
+.field{display:grid;grid-template-columns:130px 1fr;gap:10px;align-items:center}
+.label{font-size:13px;font-weight:800;color:#59667a}
+.control input,.control select,.control textarea{
+  width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 10px;outline:none;background:#fff
+}
+.control textarea{min-height:90px;resize:vertical}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 18px}
+.photo-wrap{display:grid;grid-template-columns:180px 1fr;gap:18px}
+.photo-box{
+  border:1px dashed #b8c5d8;border-radius:12px;height:210px;display:flex;align-items:center;
+  justify-content:center;flex-direction:column;background:#fafcff;color:var(--muted);font-size:12px
+}
+.photo-box img{max-width:100%;max-height:100%;display:none}
+.inline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:8px;padding:9px 13px;font-weight:800;font-size:13px}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-danger{color:var(--danger)}
+.btn-small{padding:6px 9px;font-size:12px}
+.searchbar{
+  display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap
+}
+.searchbar input,.searchbar select{border:1px solid var(--border);border-radius:8px;padding:9px 10px}
+.table-wrap{border:1px solid var(--border);border-radius:12px;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:950px}
+th{background:var(--soft);color:#59667a;font-size:12px;font-weight:800;padding:11px 8px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
+td{padding:10px 8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}
+tr:last-child td{border-bottom:0}th:last-child,td:last-child{border-right:0}
+.center{text-align:center}
+.history{line-height:1.5}
+.history .pass{color:var(--primary);font-weight:800}.history .ongoing{color:var(--success);font-weight:800}
+.select-cell{display:flex;gap:6px;align-items:center;justify-content:center;flex-direction:column}
+.select-cell select{border:1px solid var(--border);border-radius:7px;padding:6px 8px}
+.csv-box{
+  border:1px dashed #b8c5d8;border-radius:12px;padding:28px;text-align:center;background:#fafcff
+}
+.csv-box strong{display:block;margin-bottom:7px}.csv-box p{margin:0 0 14px;color:var(--muted);font-size:12px}
+.bottom{display:flex;justify-content:space-between;gap:8px;padding:14px 20px;border-top:1px solid var(--line);background:#fbfcfe}
+.note{font-size:12px;color:var(--muted);align-self:center}
+@media(max-width:900px){.course-grid,.form-grid,.photo-wrap{grid-template-columns:1fr}.field{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="overlay">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">입학접수 간편입력</div>
+      <div class="modal-sub">방문지원자 직접입력, 기존 접수자 선택, 회원선택, CSV 일괄등록을 한 화면에서 처리합니다.</div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="visitor">방문지원자입력</button>
+      <button class="tab" data-tab="trainee">훈련생(접수자)선택</button>
+      <button class="tab" data-tab="member">회원선택</button>
+      <button class="tab" data-tab="csv">CSV등록</button>
+    </div>
+
+    <!-- 방문지원자입력 -->
+    <section class="tab-panel active" id="visitor">
+      <div class="section-title">과정선택</div>
+      <div class="course-box">
+        <div class="course-grid">
+          <div class="field"><div class="label">훈련직종분류</div><div class="control"><select><option>내일배움카드(재직자)</option><option>국가기간전략산업</option><option>일반과정</option></select></div></div>
+          <div class="field"><div class="label">교육과정분류</div><div class="control"><select><option>프로그래밍</option><option>UI/UX디자인</option><option>컴퓨터활용</option></select></div></div>
+          <div class="field" style="grid-column:1/-1"><div class="label">과정명</div><div class="control"><select><option>[대구] 재직자를 위한 고급 JAVA 개발 (2026.11.21~2027.03.31)</option></select></div></div>
+        </div>
+      </div>
+
+      <div class="section-title">지원자 기본정보</div>
+      <div class="photo-wrap">
+        <div>
+          <div class="photo-box" id="photoBox">
+            <img id="photoPreview" alt="">
+            <span>사진을 등록하세요.</span>
+          </div>
+          <div class="inline" style="margin-top:8px">
+            <label class="btn btn-small btn-primary" for="photoInput">+ 추가</label>
+            <input id="photoInput" type="file" accept="image/*" hidden>
+            <button class="btn btn-small btn-danger" onclick="removePhoto()">삭제</button>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><div class="label">이름</div><div class="control"><input value="홍길동"></div></div>
+          <div class="field"><div class="label">생년월일</div><div class="control"><input type="date" value="1998-06-12"></div></div>
+          <div class="field"><div class="label">성별</div><div class="control inline"><label><input type="radio" name="gender" checked> 남성</label><label><input type="radio" name="gender"> 여성</label></div></div>
+          <div class="field"><div class="label">내/외국인</div><div class="control inline"><label><input type="radio" name="national" checked> 내국인</label><label><input type="radio" name="national"> 외국인</label></div></div>
+          <div class="field"><div class="label">대표연락처</div><div class="control"><input value="010-1234-5678"></div></div>
+          <div class="field"><div class="label">추가연락처</div><div class="control"><input placeholder="선택 입력"></div></div>
+          <div class="field"><div class="label">메일주소</div><div class="control"><input value="hong@example.com"></div></div>
+          <div class="field"><div class="label">지역</div><div class="control"><input value="서울 강서구"></div></div>
+          <div class="field" style="grid-column:1/-1"><div class="label">주소</div><div class="control"><input placeholder="상세주소 입력"></div></div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:22px">추가정보</div>
+      <div class="form-grid">
+        <div class="field"><div class="label">최종학교명</div><div class="control"><input value="한국대학교"></div></div>
+        <div class="field"><div class="label">최종학력</div><div class="control"><select><option>대졸</option><option>전문대졸</option><option>고졸</option></select></div></div>
+        <div class="field"><div class="label">졸업구분</div><div class="control"><select><option>졸업</option><option>졸업예정</option><option>중퇴</option></select></div></div>
+        <div class="field"><div class="label">지원경로</div><div class="control"><input value="고용24"></div></div>
+        <div class="field"><div class="label">접수방법</div><div class="control"><select><option>방문</option><option>인터넷</option><option>모바일</option><option>전화</option><option>팩스</option></select></div></div>
+        <div class="field"><div class="label">남기실 말씀</div><div class="control"><textarea>과정 상담 후 등록을 희망합니다.</textarea></div></div>
+      </div>
+
+      <div class="section-title" style="margin-top:22px">국민취업지원제도</div>
+      <div class="form-grid">
+        <div class="field"><div class="label">참여여부</div><div class="control inline"><label><input type="radio" name="support"> 유형</label><label><input type="radio" name="support"> II유형</label><label><input type="radio" name="support" checked> 미참여</label></div></div>
+        <div class="field"><div class="label">참여센터</div><div class="control"><input placeholder="참여센터"></div></div>
+        <div class="field"><div class="label">담당자</div><div class="control"><input placeholder="담당자"></div></div>
+        <div class="field"><div class="label">연락처</div><div class="control"><input placeholder="연락처"></div></div>
+      </div>
+    </section>
+
+    <!-- 훈련생선택 -->
+    <section class="tab-panel" id="trainee">
+      <div class="section-title">훈련생(접수자) 선택</div>
+      <div class="searchbar">
+        <select><option>접수자명</option><option>연락처</option></select>
+        <input id="traineeKeyword" placeholder="검색어 입력">
+        <button class="btn btn-primary" onclick="filterTrainees()">검색</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>이름</th><th>생년월일</th><th>대표연락처</th><th>지역</th><th>신청이력</th><th>선택</th></tr></thead>
+          <tbody id="traineeBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 회원선택 -->
+    <section class="tab-panel" id="member">
+      <div class="section-title">회원선택</div>
+      <div class="searchbar">
+        <select><option>통합검색</option><option>이름</option><option>연락처</option></select>
+        <input id="memberKeyword" placeholder="회원 검색">
+        <select><option>전체회원보기</option><option>교사</option><option>관리자</option></select>
+        <button class="btn btn-primary" onclick="filterMembers()">검색</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>레벨</th><th>이름</th><th>생년월일</th><th>대표연락처</th><th>지역</th><th>선택</th></tr></thead>
+          <tbody id="memberBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- CSV -->
+    <section class="tab-panel" id="csv">
+      <div class="section-title">CSV 일괄등록</div>
+      <div class="csv-box">
+        <strong>CSV 파일을 이용하여 접수자를 일괄 등록합니다.</strong>
+        <p>먼저 샘플 CSV를 내려받아 형식에 맞게 작성한 후 업로드하세요.</p>
+        <button class="btn" onclick="alert('샘플 CSV 다운로드 영역입니다.')">샘플 CSV파일 다운로드</button>
+        <div style="margin-top:18px">
+          <input id="csvFile" type="file" accept=".csv">
+        </div>
+        <div style="margin-top:14px">
+          <button class="btn btn-primary" onclick="saveCsv()">CSV 등록</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="bottom">
+      <div class="note">선택한 탭에 따라 등록 방식이 달라집니다.</div>
+      <div class="inline">
+        <button class="btn" onclick="alert('팝업을 닫습니다.')">취소</button>
+        <button class="btn btn-primary" onclick="saveCurrent()">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const trainees=[
+  {name:"김향단",birth:"1975-08-28",phone:"070-7538-3008",region:"달서구",history:"[합격] [진행중] 국가기간전략산업 / UI디자인"},
+  {name:"박용룡",birth:"1979-02-25",phone:"010-7777-8888",region:"",history:"[합격] [진행중] 모바일 디바이스를 위한 UI 디자인"},
+  {name:"최용룡",birth:"1988-08-28",phone:"010-6666-7777",region:"",history:"[합격] [진행중] 모바일 디바이스를 위한 UI 디자인"},
+  {name:"이용룡",birth:"1996-07-26",phone:"010-5555-6666",region:"",history:"[합격] [진행중] 모바일 디바이스를 위한 UI 디자인"},
+  {name:"성길동",birth:"1999-08-07",phone:"010-4444-5555",region:"종로구",history:"[합격] [진행중] 모바일 디바이스를 위한 UI 디자인"}
+];
+const members=[
+  {level:"교사 [50]",name:"김교사",birth:"1988-01-27",phone:"010-4808-1870",region:"남구"},
+  {level:"슈퍼관리자 [99]",name:"우리컴퍼런스",birth:"-",phone:"000-000-0000",region:""}
+];
+
+function renderTrainees(list=trainees){
+  document.getElementById("traineeBody").innerHTML=list.map(t=>`
+    <tr>
+      <td class="center" style="color:#1f6feb;font-weight:800">${t.name}</td>
+      <td class="center">${t.birth}</td>
+      <td class="center">${t.phone}</td>
+      <td class="center">${t.region||"-"}</td>
+      <td><div class="history"><span class="pass">[합격]</span> <span class="ongoing">[진행중]</span> ${t.history.replace("[합격] [진행중] ","")}</div></td>
+      <td class="center"><div class="select-cell"><select><option>접수방법</option><option>방문</option><option>전화</option><option>인터넷</option></select><button class="btn btn-small" onclick="selectPerson('${t.name}')">선택</button></div></td>
+    </tr>`).join("");
+}
+function renderMembers(list=members){
+  document.getElementById("memberBody").innerHTML=list.map(m=>`
+    <tr>
+      <td class="center">${m.level}</td><td class="center" style="color:#1f6feb;font-weight:800">${m.name}</td>
+      <td class="center">${m.birth}</td><td class="center">${m.phone}</td><td class="center">${m.region||"-"}</td>
+      <td class="center"><button class="btn btn-small" onclick="selectPerson('${m.name}')">선택</button></td>
+    </tr>`).join("");
+}
+function filterTrainees(){
+  const q=document.getElementById("traineeKeyword").value.trim();
+  renderTrainees(trainees.filter(x=>Object.values(x).join(" ").includes(q)));
+}
+function filterMembers(){
+  const q=document.getElementById("memberKeyword").value.trim();
+  renderMembers(members.filter(x=>Object.values(x).join(" ").includes(q)));
+}
+function selectPerson(name){alert(`"${name}" 을(를) 접수자로 선택했습니다.`)}
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.tab).classList.add("active");
+  });
+});
+document.getElementById("photoInput").addEventListener("change",e=>{
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{const img=document.getElementById("photoPreview");img.src=ev.target.result;img.style.display="block";};
+  reader.readAsDataURL(file);
+});
+function removePhoto(){const img=document.getElementById("photoPreview");img.src="";img.style.display="none";document.getElementById("photoInput").value=""}
+function saveCsv(){if(!document.getElementById("csvFile").files.length){alert("CSV 파일을 선택하세요.");return}alert("CSV 등록이 완료되었습니다.")}
+function saveCurrent(){const active=document.querySelector(".tab.active").textContent;alert(`${active} 방식으로 접수 정보를 등록합니다.`)}
+renderTrainees();renderMembers();
+</script>
+</body>
+</html>

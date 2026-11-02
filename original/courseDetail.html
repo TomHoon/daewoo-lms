@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>과정 상세</title>
+<style>
+:root{
+  --primary:#2f5fd0;--primary-soft:#eef4ff;--border:#d8e0eb;--line:#e9edf3;
+  --text:#263246;--muted:#768297;--bg:#f3f6fa;--soft:#f7f9fc;
+  --success:#198754;--warning:#c47a10;--danger:#d9534f;--purple:#7b2cbf;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.page{max-width:1500px;margin:28px auto 60px;padding:0 18px}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}
+.page-title h1{margin:0;font-size:30px;font-weight:800}.page-title p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:9px;padding:10px 14px;font-weight:800;font-size:13px}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-small{padding:7px 10px;font-size:12px}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 34px rgba(31,45,79,.07);overflow:hidden;margin-bottom:18px}
+.card-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.section-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800}
+.section-title:before{content:"";width:5px;height:20px;border-radius:3px;background:var(--primary)}
+.card-body{padding:18px 22px 22px}
+.course-hero{display:grid;grid-template-columns:1fr auto;gap:20px;align-items:start}
+.course-name{font-size:22px;font-weight:800;line-height:1.45}
+.course-meta{margin-top:8px;color:var(--muted);font-size:13px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.badge{display:inline-flex;align-items:center;justify-content:center;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800}
+.badge.success{background:#eaf8f0;color:var(--success)}
+.badge.blue{background:var(--primary-soft);color:var(--primary)}
+.badge.gray{background:#f2f4f7;color:#687386}
+.badge.warning{background:#fff6e5;color:var(--warning)}
+.hero-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.summary-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:18px}
+.summary-card{border:1px solid var(--border);border-radius:14px;padding:15px;background:#fff}
+.summary-label{font-size:12px;color:var(--muted);font-weight:800}
+.summary-value{margin-top:6px;font-size:24px;font-weight:800;color:var(--primary)}
+.info-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 22px}
+.info-row{display:grid;grid-template-columns:140px 1fr;gap:10px;align-items:center}
+.info-label{font-size:13px;font-weight:800;color:#59667a}
+.info-value{border-bottom:1px solid var(--line);padding:8px 2px;font-size:13px}
+.management-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.manage-btn{border:1px solid var(--border);background:#fff;border-radius:12px;padding:14px 10px;text-align:center;font-weight:800;font-size:13px}
+.manage-btn:hover{background:var(--primary-soft);border-color:#bfd0fb;color:var(--primary)}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.toolbar-left,.toolbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.toolbar select,.toolbar input{border:1px solid var(--border);border-radius:8px;padding:8px 9px;background:#fff}
+.table-wrap{border:1px solid var(--border);border-radius:12px;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:1450px}
+th{background:var(--soft);color:#59667a;font-size:12px;font-weight:800;padding:10px 8px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center}
+td{padding:10px 8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}
+th:last-child,td:last-child{border-right:0}
+tr:last-child td{border-bottom:0}
+.center{text-align:center}
+.photo{width:46px;height:58px;border-radius:8px;overflow:hidden;background:#eef1f5;margin:auto}
+.photo img{width:100%;height:100%;object-fit:cover}
+.student-name{font-weight:800;color:var(--primary)}
+.small-select{width:100%;border:1px solid var(--border);border-radius:8px;padding:6px 7px;background:#fff}
+.stat{font-weight:800}.stat.purple{color:var(--purple)}.stat.red{color:var(--danger)}.stat.blue{color:#0083b8}
+.row-actions{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}
+.mini-btn{border:1px solid var(--border);background:#fff;border-radius:7px;padding:6px 8px;font-size:12px;font-weight:800}
+.footer-note{margin-top:14px;text-align:right;color:var(--muted);font-size:12px}
+@media(max-width:1100px){.summary-grid{grid-template-columns:repeat(3,1fr)}.management-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:800px){.course-hero,.info-grid{grid-template-columns:1fr}.hero-actions{justify-content:flex-start}}
+@media(max-width:600px){.page{padding:0 10px}.summary-grid,.management-grid{grid-template-columns:1fr 1fr}.info-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>과정 상세</h1>
+      <p>선택한 과정의 운영정보와 훈련생 현황을 통합 관리합니다.</p>
+    </div>
+    <div><button class="btn" onclick="history.back()">과정목록</button></div>
+  </header>
+
+  <section class="card">
+    <div class="card-body">
+      <div class="course-hero">
+        <div>
+          <div class="course-name">[내일배움카드(실업자)] 한식 조리사 자격증 대비반</div>
+          <div class="course-meta">교육기간 2026.11.04 ~ 2027.01.16 · 본원 · 훈련코드 K-2026-041</div>
+          <div class="badges">
+            <span class="badge success">진행중</span>
+            <span class="badge blue">기간확정</span>
+            <span class="badge gray">생기부 차단</span>
+            <span class="badge warning">담임 김민수</span>
+          </div>
+        </div>
+        <div class="hero-actions">
+          <button class="btn" onclick="alert('과정 수정 화면으로 이동합니다.')">과정 수정</button>
+          <button class="btn btn-primary" onclick="alert('전체 인쇄 영역입니다.')">전체 인쇄</button>
+        </div>
+      </div>
+
+      <div class="summary-grid">
+        <div class="summary-card"><div class="summary-label">승인인원</div><div class="summary-value">20</div></div>
+        <div class="summary-card"><div class="summary-label">현재 훈련생</div><div class="summary-value">5</div></div>
+        <div class="summary-card"><div class="summary-label">출석률</div><div class="summary-value">94%</div></div>
+        <div class="summary-card"><div class="summary-label">상담건수</div><div class="summary-value">4</div></div>
+        <div class="summary-card"><div class="summary-label">취업현황</div><div class="summary-value">1</div></div>
+        <div class="summary-card"><div class="summary-label">수료예정</div><div class="summary-value">5</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div class="section-title">과정 기본정보</div></div>
+    <div class="card-body">
+      <div class="info-grid">
+        <div class="info-row"><div class="info-label">훈련직종분류</div><div class="info-value">내일배움카드(실업자)</div></div>
+        <div class="info-row"><div class="info-label">교육과정분류</div><div class="info-value">한식 조리사</div></div>
+        <div class="info-row"><div class="info-label">캠퍼스</div><div class="info-value">본원</div></div>
+        <div class="info-row"><div class="info-label">교육장소</div><div class="info-value">조리실습실 A</div></div>
+        <div class="info-row"><div class="info-label">수업시간</div><div class="info-value">09:00 ~ 18:00</div></div>
+        <div class="info-row"><div class="info-label">하루수업시간</div><div class="info-value">8시간</div></div>
+        <div class="info-row"><div class="info-label">수업요일</div><div class="info-value">월 ~ 금</div></div>
+        <div class="info-row"><div class="info-label">훈련수당</div><div class="info-value">월 116,000원</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div class="section-title">과정 관리 메뉴</div></div>
+    <div class="card-body">
+      <div class="management-grid">
+        <button class="manage-btn">훈련일지</button>
+        <button class="manage-btn">NCS 평가</button>
+        <button class="manage-btn">수료/이수증 발급</button>
+        <button class="manage-btn">월별 출결상황표</button>
+        <button class="manage-btn">자리배치도</button>
+        <button class="manage-btn">훈련생 보고서</button>
+        <button class="manage-btn">회계보고서</button>
+        <button class="manage-btn">교육정보등록</button>
+        <button class="manage-btn">점검 체크리스트</button>
+        <button class="manage-btn">능력단위 출석부</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">훈련생 목록</div>
+      <div style="font-size:12px;color:var(--muted)">이름을 클릭하면 훈련생 상세정보를 확인합니다.</div>
+    </div>
+    <div class="card-body">
+      <div class="toolbar">
+        <div class="toolbar-left">
+          <label><input type="checkbox"> 미취업자만 출력</label>
+          <select><option>전체 교육상태</option><option>훈련중</option><option>수료</option><option>중도탈락</option></select>
+          <input type="text" placeholder="이름/연락처 검색">
+          <button class="btn btn-small">검색</button>
+        </div>
+        <div class="toolbar-right">
+          <button class="btn btn-small">훈련생 리스트</button>
+          <button class="btn btn-small">훈련과정 보고서</button>
+          <button class="btn btn-small">훈련생 서명</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:42px"><input type="checkbox"></th>
+              <th style="width:80px">생기부</th>
+              <th style="width:100px">교육상태</th>
+              <th style="width:90px">이름</th>
+              <th style="width:100px">사진</th>
+              <th style="width:110px">생년월일</th>
+              <th style="width:130px">대표연락처</th>
+              <th style="width:110px">지역</th>
+              <th style="width:90px">교육상태</th>
+              <th>취업처</th>
+              <th style="width:75px">취업알선</th>
+              <th style="width:75px">자격증</th>
+              <th style="width:75px">상담</th>
+              <th style="width:85px">수료 후 상담</th>
+              <th style="width:80px">인쇄</th>
+            </tr>
+          </thead>
+          <tbody id="studentBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-note">LMS 관리자 · 과정 상세</div>
+</div>
+
+<script>
+const students=[
+  {name:"김조리",birth:"2000-03-12",phone:"010-3000-1111",region:"서울 강서구",edu:"훈련중",employment:"",job:0,cert:0,counsel:1,after:0},
+  {name:"나조리",birth:"1999-10-12",phone:"010-3000-2222",region:"경기 부천시",edu:"훈련중",employment:"",job:0,cert:0,counsel:0,after:0},
+  {name:"박조리",birth:"1998-09-04",phone:"010-3000-3333",region:"인천 계양구",edu:"훈련중",employment:"",job:0,cert:0,counsel:0,after:0},
+  {name:"이조리",birth:"1998-12-09",phone:"010-3000-4444",region:"서울 양천구",edu:"훈련중",employment:"ABC푸드",job:1,cert:1,counsel:2,after:0},
+  {name:"최조리",birth:"1989-09-11",phone:"010-3000-5555",region:"서울 영등포구",edu:"훈련중",employment:"",job:0,cert:0,counsel:1,after:0}
+];
+
+function render(){
+  const body=document.getElementById("studentBody");
+  body.innerHTML="";
+  students.forEach((s,i)=>{
+    const avatar=`https://i.pravatar.cc/100?img=${i+12}`;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td class="center"><input type="checkbox"></td>
+      <td class="center"><select class="small-select"><option>오픈</option><option>차단</option></select></td>
+      <td class="center"><select class="small-select"><option>${s.edu}</option><option>수료</option><option>중도탈락</option></select></td>
+      <td class="center"><button class="mini-btn" onclick="alert('${s.name} 상세정보')"><span class="student-name">${s.name}</span></button></td>
+      <td class="center"><div class="photo"><img src="${avatar}" alt=""></div></td>
+      <td class="center">${s.birth}</td>
+      <td class="center">${s.phone}</td>
+      <td class="center">${s.region}</td>
+      <td class="center" style="color:#ff7a00;font-weight:800">${s.edu}</td>
+      <td>${s.employment || "-"}</td>
+      <td class="center stat purple">${s.job}</td>
+      <td class="center stat red">${s.cert}</td>
+      <td class="center stat blue">${s.counsel}</td>
+      <td class="center stat red">${s.after}</td>
+      <td class="center"><button class="mini-btn" onclick="alert('${s.name} 인쇄')">인쇄</button></td>
+    `;
+    body.appendChild(tr);
+  });
+}
+render();
+</script>
+</body>
+</html>

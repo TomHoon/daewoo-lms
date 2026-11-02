@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NCS 평가 관리</title>
+<style>
+:root{
+  --primary:#2f5fd0;--primary-soft:#eef4ff;--border:#d8e0eb;--line:#e9edf3;
+  --text:#263246;--muted:#768297;--bg:#f3f6fa;--soft:#f7f9fc;
+  --success:#198754;--warning:#c47a10;--danger:#d9534f;--purple:#7b2cbf;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Pretendard,"Noto Sans KR",Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.page{max-width:1540px;margin:28px auto 60px;padding:0 18px}
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:18px}
+.page-title h1{margin:0;font-size:30px;font-weight:800}
+.page-title p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.btn{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:9px;padding:10px 14px;font-weight:800;font-size:13px}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-danger{color:var(--danger)}
+.btn-small{padding:7px 10px;font-size:12px}
+.card{background:#fff;border:1px solid var(--border);border-radius:18px;box-shadow:0 12px 34px rgba(31,45,79,.07);overflow:hidden;margin-bottom:18px}
+.card-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
+.section-title{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:800}
+.section-title:before{content:"";width:5px;height:20px;border-radius:3px;background:var(--primary)}
+.card-body{padding:18px 22px 22px}
+.course-banner{background:#f8faff;border:1px solid #dbe6ff;border-radius:14px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.course-name{font-weight:800;font-size:16px}
+.course-meta{margin-top:5px;color:var(--muted);font-size:12px}
+.badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:800}
+.badge.success{background:#eaf8f0;color:var(--success)}
+.badge.gray{background:#f2f4f7;color:#687386}
+.management-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:14px}
+.manage-btn{border:1px solid var(--border);background:#fff;border-radius:10px;padding:10px 8px;font-size:12px;font-weight:800}
+.manage-btn.active{background:var(--primary);border-color:var(--primary);color:#fff}
+.subnav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+.subnav .btn{padding:8px 11px}
+.filter-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 16px}
+.field{display:grid;grid-template-columns:105px 1fr;gap:10px;align-items:center}
+.label{font-size:13px;font-weight:800;color:#59667a}
+.control input,.control select{width:100%;border:1px solid var(--border);border-radius:8px;padding:9px 10px;background:#fff;outline:none}
+.filter-actions{display:flex;justify-content:center;gap:8px;margin-top:14px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tab{border:1px solid var(--border);background:#fff;border-radius:9px;padding:9px 13px;font-size:12px;font-weight:800;color:#50607a}
+.tab.active{background:var(--primary-soft);border-color:#bfd0fb;color:var(--primary)}
+.table-wrap{border:1px solid var(--border);border-radius:12px;overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:1650px}
+th{background:var(--soft);color:#59667a;font-size:12px;font-weight:800;padding:10px 8px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;vertical-align:middle}
+td{padding:10px 8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:13px;vertical-align:middle}
+th:last-child,td:last-child{border-right:0}
+tr:last-child td{border-bottom:0}
+.center{text-align:center}
+.small-select{width:100%;border:1px solid var(--border);border-radius:7px;padding:6px 7px;background:#fff}
+.tool-name{font-weight:800}
+.type-badge{display:inline-flex;padding:4px 8px;border-radius:999px;background:#f2efff;color:var(--purple);font-size:11px;font-weight:800}
+.pass{color:var(--success);font-weight:800}
+.red{color:var(--danger);font-weight:800}
+.purple{color:var(--purple);font-weight:800}
+.row-actions{display:flex;gap:5px;justify-content:center;flex-wrap:wrap}
+.mini-btn{border:1px solid var(--border);background:#fff;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:800}
+.mini-btn.delete{color:var(--danger)}
+.notice{margin-top:10px;font-size:12px;color:var(--danger);font-weight:700}
+.footer-note{margin-top:14px;text-align:right;color:var(--muted);font-size:12px}
+@media(max-width:1200px){.management-grid{grid-template-columns:repeat(4,1fr)}.filter-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.page{padding:0 10px}.page-header{flex-direction:column}.management-grid,.filter-grid{grid-template-columns:1fr}.field{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>NCS 평가 관리</h1>
+      <p>과정별 NCS 평가계획과 평가도구, 능력단위, 응시 및 결과를 관리합니다.</p>
+    </div>
+    <div><button class="btn" onclick="history.back()">과정 상세</button></div>
+  </header>
+
+  <section class="card">
+    <div class="card-body">
+      <div class="course-banner">
+        <div>
+          <div class="course-name">[내일배움카드(실업자)] 한식 조리사 자격증 대비반</div>
+          <div class="course-meta">교육기간 2026.11.04 ~ 2027.01.16 · 본원 · 진행중</div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="badge success">진행중</span>
+          <span class="badge gray">생기부 오픈</span>
+          <button class="btn btn-small">전체인쇄</button>
+        </div>
+      </div>
+
+      <div class="management-grid">
+        <button class="manage-btn">훈련일지</button>
+        <button class="manage-btn active">NCS 평가</button>
+        <button class="manage-btn">수료/이수증 발급</button>
+        <button class="manage-btn">월별출결상황표</button>
+        <button class="manage-btn">자리배치도</button>
+        <button class="manage-btn">점검 체크리스트</button>
+        <button class="manage-btn">능력단위 출석부</button>
+      </div>
+
+      <div class="subnav">
+        <button class="btn btn-small" onclick="alert('NCS 평가항목 목록')">NCS 평가항목 목록</button>
+        <button class="btn btn-small" onclick="alert('NCS 평가항목 등록')">NCS 평가항목 등록</button>
+        <button class="btn btn-small" onclick="alert('평가목록')">평가목록</button>
+        <button class="btn btn-small" onclick="alert('NCS 평가등록')">NCS 평가등록</button>
+        <button class="btn btn-small" onclick="alert('사전평가결과')">사전평가결과</button>
+        <button class="btn btn-small" onclick="alert('요소별 평가결과')">요소별 평가결과</button>
+        <button class="btn btn-small" onclick="alert('능력단위 평가결과')">능력단위 평가결과</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">평가 검색</div>
+      <label style="font-size:12px;color:var(--danger);font-weight:700"><input type="checkbox" checked> 평가관련 요약설명 숨기기</label>
+    </div>
+    <div class="card-body">
+      <div class="filter-grid">
+        <div class="field"><div class="label">대분류</div><div class="control"><select><option>전체</option><option>바리스타</option></select></div></div>
+        <div class="field"><div class="label">교과목</div><div class="control"><select><option>전체</option><option>커피 원두 선택</option><option>커피기계 운용</option></select></div></div>
+        <div class="field"><div class="label">능력단위</div><div class="control"><select><option>전체</option><option>커피 원두 선택</option><option>커피기계 운용</option></select></div></div>
+        <div class="field"><div class="label">평가도구</div><div class="control"><select><option>전체</option><option>서술형</option><option>작업장평가</option><option>체크리스트</option></select></div></div>
+      </div>
+      <div class="filter-actions">
+        <button class="btn btn-primary" onclick="render()">검색</button>
+        <button class="btn" onclick="resetFilter()">초기화</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">NCS 평가 목록</div>
+      <div style="font-size:12px;color:var(--muted)">서술형 평가는 점수를 직접 입력할 수 있습니다.</div>
+    </div>
+    <div class="card-body">
+      <div class="tabs">
+        <button class="tab active">전체보기</button>
+        <button class="tab">사전평가</button>
+        <button class="tab">중간평가</button>
+        <button class="tab">최종평가</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:42px"><input type="checkbox"></th>
+              <th style="width:120px">상태<br>출제자</th>
+              <th style="width:150px">구분</th>
+              <th style="width:140px">평가도구명<br>평가도구</th>
+              <th style="width:100px">학생별 항목<br>체크가능</th>
+              <th>교과목</th>
+              <th>능력단위<br>시험명</th>
+              <th style="width:150px">요소</th>
+              <th style="width:90px">재시험 여부</th>
+              <th style="width:110px">응시/사인 인원</th>
+              <th style="width:90px">비밀번호</th>
+              <th style="width:110px">평가일자</th>
+              <th style="width:90px">패스점수</th>
+              <th style="width:150px">관리</th>
+            </tr>
+          </thead>
+          <tbody id="evalBody"></tbody>
+        </table>
+      </div>
+      <div class="notice">※ 평가도구에 따라 학생별 점수입력 또는 체크리스트 채점 방식이 달라집니다.</div>
+    </div>
+  </section>
+
+  <div class="footer-note">LMS 관리자 · 과정 상세 &gt; NCS 평가 관리</div>
+</div>
+
+<script>
+const evals=[
+  {
+    status:"시험중",author:"김교사",category:"최종평가(능력단위)",tool:"서술형",
+    studentCheck:"-",subject:"바리스타 > 커피 원두 선택",
+    unit:"커피 원두 선택 평가",element:"원두 품질 확인",retest:"첫시험",
+    signed:"12/12",password:"1111",date:"2026.12.05",pass:60
+  },
+  {
+    status:"대기",author:"김교사",category:"중간평가(요소별)",tool:"서술형",
+    studentCheck:"-",subject:"바리스타 > 커피기계 운용",
+    unit:"커피기계 운용 이론",element:"기계 구조 이해",retest:"첫시험",
+    signed:"0/12",password:"1111",date:"2026.11.25",pass:60
+  },
+  {
+    status:"대기",author:"김교사",category:"최종평가(능력단위)",tool:"작업장평가",
+    studentCheck:"-",subject:"바리스타 > 커피기계 운용",
+    unit:"커피기계 운용 실습",element:"장비 운용",retest:"첫시험",
+    signed:"0/12",password:"1111",date:"2026.12.18",pass:60
+  },
+  {
+    status:"종료",author:"이교사",category:"사전평가",tool:"체크리스트",
+    studentCheck:"가능",subject:"바리스타 > 기본 위생관리",
+    unit:"기초 역량 사전평가",element:"위생관리 기본",retest:"없음",
+    signed:"12/12",password:"2222",date:"2026.11.03",pass:60
+  }
+];
+
+function render(){
+  const body=document.getElementById("evalBody");
+  body.innerHTML="";
+  evals.forEach((e,i)=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`
+      <td class="center"><input type="checkbox"></td>
+      <td class="center">
+        <select class="small-select" onchange="evals[${i}].status=this.value">
+          ${["대기","시험중","종료"].map(v=>`<option ${e.status===v?"selected":""}>${v}</option>`).join("")}
+        </select>
+        <div style="margin-top:6px"><select class="small-select"><option>${e.author}</option><option>이교사</option><option>박교사</option></select></div>
+      </td>
+      <td class="center"><span class="type-badge">${e.category}</span></td>
+      <td class="center"><div class="tool-name">${e.tool}</div><div class="pass" style="margin-top:4px">[점수직접입력형]</div></td>
+      <td class="center">${e.studentCheck}</td>
+      <td>${e.subject}</td>
+      <td><strong>${e.unit}</strong></td>
+      <td>${e.element}</td>
+      <td class="center purple">${e.retest}</td>
+      <td class="center">${e.signed}</td>
+      <td class="center red">${e.password}</td>
+      <td class="center">${e.date}</td>
+      <td class="center red">${e.pass}점</td>
+      <td class="center">
+        <div class="row-actions">
+          <button class="mini-btn" onclick="alert('평가 수정')">수정</button>
+          <button class="mini-btn delete" onclick="deleteEval(${i})">삭제</button>
+          <button class="mini-btn" onclick="alert('평가 인쇄')">인쇄</button>
+        </div>
+      </td>`;
+    body.appendChild(tr);
+  });
+}
+function deleteEval(i){
+  if(confirm("이 평가를 삭제하시겠습니까?")){
+    evals.splice(i,1);
+    render();
+  }
+}
+function resetFilter(){alert("검색조건을 초기화했습니다.")}
+render();
+</script>
+</body>
+</html>
