@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>교육과정 등록</title>
+<style>
+:root{
+  --primary:#2f5fd0;
+  --primary-soft:#eef4ff;
+  --border:#d8e0eb;
+  --line:#e9edf3;
+  --text:#263246;
+  --muted:#768297;
+  --bg:#f3f6fa;
+  --soft:#f7f9fc;
+  --danger:#d9534f;
+  --success:#198754;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Pretendard,"Noto Sans KR",Arial,sans-serif;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.page{max-width:1360px;margin:28px auto 60px;padding:0 18px}
+.page-header{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  gap:20px;margin-bottom:18px;
+}
+.page-title h1{margin:0;font-size:30px;font-weight:800}
+.page-title p{margin:8px 0 0;color:var(--muted);font-size:14px}
+.header-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--text);
+  border-radius:9px;
+  padding:10px 14px;
+  font-weight:800;
+  font-size:13px;
+}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-danger{color:var(--danger)}
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:0 12px 34px rgba(31,45,79,.07);
+  overflow:hidden;
+  margin-bottom:18px;
+}
+.card-head{
+  padding:18px 22px;
+  border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+}
+.section-title{
+  display:flex;align-items:center;gap:10px;
+  font-size:18px;font-weight:800;
+}
+.section-title:before{
+  content:"";width:5px;height:20px;border-radius:3px;background:var(--primary);
+}
+.card-body{padding:20px 22px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 20px}
+.field{display:grid;grid-template-columns:150px 1fr;gap:12px;align-items:center}
+.field.full{grid-column:1/-1}
+.label{font-size:13px;font-weight:800;color:#59667a}
+.control input,
+.control select,
+.control textarea{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:10px 11px;
+  outline:none;
+  background:#fff;
+  color:var(--text);
+}
+.control textarea{min-height:90px;resize:vertical;line-height:1.6}
+.control input:focus,.control select:focus,.control textarea:focus{
+  border-color:#9fb2e6;
+  box-shadow:0 0 0 3px rgba(47,95,208,.08);
+}
+.inline{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.help{font-size:12px;color:var(--muted)}
+.help.blue{color:var(--primary);font-weight:700}
+.color-preview{display:inline-flex;align-items:center;gap:8px}
+.color-swatch{width:84px;height:34px;border-radius:8px;border:1px solid var(--border);background:#000}
+.money{position:relative}
+.money:after{
+  content:"원";
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  color:var(--muted);font-size:12px;
+}
+.money input{padding-right:35px;text-align:right}
+.weekdays{display:flex;gap:8px;flex-wrap:wrap}
+.day{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:7px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;font-size:12px
+}
+.day.sun{color:#d9534f}.day.sat{color:#2f5fd0}
+.switch-line{display:flex;align-items:center;gap:8px}
+.switch-line input{width:16px;height:16px}
+
+.detail-layout{display:grid;grid-template-columns:320px 1fr;gap:22px}
+.image-box{
+  border:1px dashed #b8c5d8;
+  border-radius:14px;
+  min-height:260px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:10px;
+  background:#fafcff;
+  overflow:hidden;
+}
+.image-box img{max-width:100%;max-height:260px;display:none}
+.image-box strong{font-size:14px}
+.image-box span{font-size:12px;color:var(--muted)}
+.image-actions{display:flex;gap:8px;margin-top:10px}
+.rich-section{margin-top:16px}
+.rich-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 14px;
+  border:1px solid var(--border);
+  border-bottom:0;
+  border-radius:12px 12px 0 0;
+  background:var(--soft);
+}
+.rich-head strong{font-size:14px}
+.toolbar{
+  border:1px solid var(--border);
+  border-bottom:0;
+  padding:7px 9px;
+  background:#fbfcfe;
+  display:flex;gap:5px;flex-wrap:wrap
+}
+.tool{
+  min-width:30px;height:30px;
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:6px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-size:12px;
+  font-weight:800;
+}
+.editor{
+  min-height:145px;
+  border:1px solid var(--border);
+  border-radius:0 0 12px 12px;
+  padding:14px;
+  outline:none;
+  line-height:1.7;
+  background:#fff;
+}
+.editor:focus{box-shadow:inset 0 0 0 2px rgba(47,95,208,.12)}
+.info-banner{
+  background:#f7faff;border:1px solid #dbe6ff;color:var(--primary);
+  border-radius:10px;padding:10px 12px;font-size:12px;font-weight:700
+}
+.sticky-actions{
+  position:sticky;bottom:14px;
+  display:flex;justify-content:flex-end;gap:8px;
+  background:rgba(243,246,250,.92);
+  backdrop-filter:blur(8px);
+  padding:12px;border-radius:14px;
+  border:1px solid var(--border);
+  margin-top:18px;
+}
+@media(max-width:1000px){
+  .grid-2,.grid-3,.detail-layout{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .page{padding:0 10px}
+  .page-header{flex-direction:column}
+  .field{grid-template-columns:1fr}
+  .card-body{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="page-header">
+    <div class="page-title">
+      <h1>교육과정 등록</h1>
+      <p>과정의 기본정보, 수강료, 훈련수당, 수업정보 및 상세소개를 등록합니다.</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn" onclick="loadDraft()">임시저장 불러오기</button>
+      <button class="btn" onclick="saveDraft()">임시저장</button>
+      <button class="btn btn-primary" onclick="submitCourse()">과정 등록</button>
+    </div>
+  </header>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">기본정보</div>
+      <label class="switch-line">
+        <input type="checkbox" id="showBasicInfo" checked>
+        <span class="help" style="color:#d9534f;font-weight:700">기본설명을 모두 출력합니다.</span>
+      </label>
+    </div>
+    <div class="card-body">
+      <div class="grid-2">
+        <div class="field">
+          <div class="label">분류선택</div>
+          <div class="control inline">
+            <select id="jobCategory">
+              <option>훈련직종선택</option>
+              <option>국가기간전략산업</option>
+              <option>내일배움카드(실업자)</option>
+              <option>내일배움카드(재직자)</option>
+              <option>일반과정</option>
+            </select>
+            <select id="courseCategory">
+              <option>교육과정선택</option>
+              <option>컴퓨터활용</option>
+              <option>UI/UX디자인</option>
+              <option>프로그래밍</option>
+              <option>바리스타</option>
+              <option>한식 조리사</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">상태</div>
+          <div class="control inline">
+            <select id="courseStatus">
+              <option>임시등록</option>
+              <option>모집중</option>
+              <option>모집마감</option>
+              <option>진행중</option>
+              <option>종료</option>
+            </select>
+            <span class="help">과정을 노출하지 않습니다.</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">캠퍼스</div>
+          <div class="control">
+            <select id="campus">
+              <option>캠퍼스 선택</option>
+              <option>본원</option>
+              <option>강남캠퍼스</option>
+              <option>구로캠퍼스</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">훈련코드</div>
+          <div class="control"><input id="trainingCode" type="text" placeholder="훈련코드 입력"></div>
+        </div>
+
+        <div class="field">
+          <div class="label">과정명 / 구분</div>
+          <div class="control inline">
+            <input id="courseName" type="text" placeholder="과정명 입력" style="flex:1">
+            <span>/</span>
+            <input id="courseGroup" type="text" placeholder="구분 입력" style="max-width:230px">
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">과정명 색상</div>
+          <div class="control color-preview">
+            <input id="courseColor" type="color" value="#000000" style="width:52px;height:38px;padding:3px">
+            <span id="colorText">#000000</span>
+            <span class="color-swatch" id="colorSwatch"></span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">모집분류</div>
+          <div class="control inline">
+            <select id="recruitType">
+              <option>기간확정</option>
+              <option>상시모집</option>
+              <option>별도문의</option>
+            </select>
+            <span class="help blue">기간이 확정된 과정입니다.</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="label">교육기간</div>
+          <div class="control inline">
+            <input id="startDate" type="date">
+            <span>~</span>
+            <input id="endDate" type="date">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">교육과정 수강료 정보</div>
+    </div>
+    <div class="card-body">
+      <div class="grid-2">
+        <div class="field">
+          <div class="label">수강료</div>
+          <div class="control money"><input id="tuition" type="number" value="0"></div>
+        </div>
+        <div class="field">
+          <div class="label">노출여부</div>
+          <div class="control">
+            <select id="tuitionVisible">
+              <option>숨깁니다.</option>
+              <option>노출합니다.</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <div class="label">정부지원금</div>
+          <div class="control money"><input id="supportAmount" type="number" value="0"></div>
+        </div>
+        <div class="field">
+          <div class="label">본인부담금</div>
+          <div class="control">
+            <textarea id="selfPayment" placeholder="본인부담금 설명 입력"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">훈련수당 정보</div>
+    </div>
+    <div class="card-body">
+      <div class="grid-2">
+        <div class="field">
+          <div class="label">지급타입</div>
+          <div class="control inline">
+            <select id="allowanceType">
+              <option>매달지급</option>
+              <option>수료후지급</option>
+              <option>지급안함</option>
+            </select>
+            <span class="help" style="color:#7c4dff">매달지급 합니다.</span>
+          </div>
+        </div>
+        <div class="field">
+          <div class="label">훈련수당</div>
+          <div class="control money"><input id="allowanceAmount" type="number" value="0"></div>
+        </div>
+        <div class="field full">
+          <div class="label">수강료 / 훈련수당 설명</div>
+          <div class="control"><textarea id="allowanceDesc" placeholder="훈련수당 및 수강료 안내사항을 입력하세요."></textarea></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head">
+      <div class="section-title">상세정보</div>
+    </div>
+    <div class="card-body">
+      <div class="detail-layout">
+        <div>
+          <div class="image-box" id="imageBox">
+            <img id="previewImage" alt="대표이미지 미리보기">
+            <strong>대표이미지</strong>
+            <span>과정 대표이미지를 등록하세요.</span>
+          </div>
+          <div class="image-actions">
+            <label class="btn btn-primary" for="imageInput">+ 이미지 추가</label>
+            <input id="imageInput" type="file" accept="image/*" hidden>
+            <button class="btn btn-danger" onclick="removeImage()">삭제</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="grid-2">
+            <div class="field">
+              <div class="label">수업시간</div>
+              <div class="control inline">
+                <input id="startTime" type="time" value="09:00">
+                <span>~</span>
+                <input id="endTime" type="time" value="18:00">
+              </div>
+            </div>
+            <div class="field">
+              <div class="label">하루수업시간</div>
+              <div class="control"><input id="dailyHours" type="number" value="8"></div>
+            </div>
+
+            <div class="field full">
+              <div class="label">수업요일</div>
+              <div class="control weekdays">
+                <label class="day"><input type="checkbox" checked> 월</label>
+                <label class="day"><input type="checkbox" checked> 화</label>
+                <label class="day"><input type="checkbox" checked> 수</label>
+                <label class="day"><input type="checkbox" checked> 목</label>
+                <label class="day"><input type="checkbox" checked> 금</label>
+                <label class="day sat"><input type="checkbox"> 토</label>
+                <label class="day sun"><input type="checkbox"> 일</label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label">승인인원</div>
+              <div class="control inline">
+                <input id="capacity" type="number" value="20">
+                <span class="help">명</span>
+              </div>
+            </div>
+            <div class="field">
+              <div class="label">수업일수</div>
+              <div class="control inline">
+                <input id="classDays" type="number" value="0">
+                <span class="help">일</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label">교육장소</div>
+              <div class="control"><input id="location" type="text" placeholder="교육장소 입력"></div>
+            </div>
+            <div class="field">
+              <div class="label">담임교사</div>
+              <div class="control">
+                <select id="homeroomTeacher">
+                  <option>담임교사선택</option>
+                  <option>김강사</option>
+                  <option>이강사</option>
+                  <option>박강사</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field full">
+              <div class="label">교사선택</div>
+              <div class="control inline">
+                <button class="btn" onclick="toggleTeacher(this,'김강사')">김강사</button>
+                <button class="btn" onclick="toggleTeacher(this,'이강사')">이강사</button>
+                <button class="btn" onclick="toggleTeacher(this,'박강사')">박강사</button>
+                <span class="help" style="color:#d9534f">최대 10명까지 등록 가능합니다.</span>
+              </div>
+            </div>
+
+            <div class="field full">
+              <div class="label">HRD 링크</div>
+              <div class="control">
+                <input id="hrdLink" type="url" placeholder="https://www.work24.go.kr/...">
+                <div class="help" style="margin-top:6px">HRD/고용24 과정 주소를 입력하면 과정신청 영역에서 연결할 수 있습니다.</div>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="label">추가정보 1</div>
+              <div class="control"><input type="text" id="extraLabel1" placeholder="항목명"></div>
+            </div>
+            <div class="field">
+              <div class="label">내용</div>
+              <div class="control"><input type="text" id="extraValue1" placeholder="내용 입력"></div>
+            </div>
+            <div class="field">
+              <div class="label">추가정보 2</div>
+              <div class="control"><input type="text" id="extraLabel2" placeholder="항목명"></div>
+            </div>
+            <div class="field">
+              <div class="label">내용</div>
+              <div class="control"><input type="text" id="extraValue2" placeholder="내용 입력"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rich-section">
+        <div class="rich-head"><strong>과정소개</strong></div>
+        <div class="toolbar">
+          <button class="tool" onclick="cmd('bold')"><b>B</b></button>
+          <button class="tool" onclick="cmd('italic')"><i>I</i></button>
+          <button class="tool" onclick="cmd('underline')"><u>U</u></button>
+          <button class="tool" onclick="cmd('insertUnorderedList')">• 목록</button>
+          <button class="tool" onclick="cmd('justifyLeft')">좌</button>
+          <button class="tool" onclick="cmd('justifyCenter')">중</button>
+        </div>
+        <div class="editor" id="introEditor" contenteditable="true"></div>
+      </div>
+
+      <div class="rich-section">
+        <div class="rich-head"><strong>지원자격</strong></div>
+        <div class="toolbar">
+          <button class="tool" onclick="cmd('bold')"><b>B</b></button>
+          <button class="tool" onclick="cmd('italic')"><i>I</i></button>
+          <button class="tool" onclick="cmd('insertUnorderedList')">• 목록</button>
+        </div>
+        <div class="editor" id="qualificationEditor" contenteditable="true"></div>
+      </div>
+
+      <div class="rich-section">
+        <div class="rich-head"><strong>교육비 / 환급금액</strong></div>
+        <div class="toolbar">
+          <button class="tool" onclick="cmd('bold')"><b>B</b></button>
+          <button class="tool" onclick="cmd('insertUnorderedList')">• 목록</button>
+        </div>
+        <div class="editor" id="feeEditor" contenteditable="true"></div>
+      </div>
+
+      <div class="rich-section">
+        <div class="rich-head"><strong>교육내용</strong></div>
+        <div class="toolbar">
+          <button class="tool" onclick="cmd('bold')"><b>B</b></button>
+          <button class="tool" onclick="cmd('italic')"><i>I</i></button>
+          <button class="tool" onclick="cmd('insertOrderedList')">1. 목록</button>
+        </div>
+        <div class="editor" id="contentEditor" contenteditable="true"></div>
+      </div>
+
+      <div class="rich-section">
+        <div class="rich-head"><strong>수료 후 진로</strong></div>
+        <div class="toolbar">
+          <button class="tool" onclick="cmd('bold')"><b>B</b></button>
+          <button class="tool" onclick="cmd('insertUnorderedList')">• 목록</button>
+        </div>
+        <div class="editor" id="careerEditor" contenteditable="true"></div>
+      </div>
+
+      <div class="rich-section">
+        <div class="rich-head"><strong>관련자격증</strong></div>
+        <div class="toolbar">
+          <button class="tool" onclick="cmd('bold')"><b>B</b></button>
+          <button class="tool" onclick="cmd('insertUnorderedList')">• 목록</button>
+        </div>
+        <div class="editor" id="certificateEditor" contenteditable="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="sticky-actions">
+    <button class="btn" onclick="history.back()">취소</button>
+    <button class="btn" onclick="saveDraft()">임시저장</button>
+    <button class="btn btn-primary" onclick="submitCourse()">과정 등록</button>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY="course_registration_v1";
+const selectedTeachers=new Set();
+
+document.getElementById("courseColor").addEventListener("input",e=>{
+  document.getElementById("colorText").textContent=e.target.value.toUpperCase();
+  document.getElementById("colorSwatch").style.background=e.target.value;
+});
+
+document.getElementById("imageInput").addEventListener("change",e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=document.getElementById("previewImage");
+    img.src=ev.target.result;
+    img.style.display="block";
+  };
+  reader.readAsDataURL(file);
+});
+
+function removeImage(){
+  const img=document.getElementById("previewImage");
+  img.src="";
+  img.style.display="none";
+  document.getElementById("imageInput").value="";
+}
+
+function toggleTeacher(btn,name){
+  if(selectedTeachers.has(name)){
+    selectedTeachers.delete(name);
+    btn.style.background="#fff";
+    btn.style.color="";
+    btn.style.borderColor="";
+  }else{
+    if(selectedTeachers.size>=10){
+      alert("교사는 최대 10명까지 등록 가능합니다.");
+      return;
+    }
+    selectedTeachers.add(name);
+    btn.style.background="#eef4ff";
+    btn.style.color="#2f5fd0";
+    btn.style.borderColor="#9fb2e6";
+  }
+}
+
+function cmd(command){
+  document.execCommand(command,false,null);
+}
+
+function saveDraft(){
+  const ids=[
+    "jobCategory","courseCategory","courseStatus","campus","trainingCode","courseName","courseGroup",
+    "courseColor","recruitType","startDate","endDate","tuition","tuitionVisible","supportAmount",
+    "selfPayment","allowanceType","allowanceAmount","allowanceDesc","startTime","endTime","dailyHours",
+    "capacity","classDays","location","homeroomTeacher","hrdLink","extraLabel1","extraValue1","extraLabel2","extraValue2"
+  ];
+  const data={};
+  ids.forEach(id=>data[id]=document.getElementById(id).value);
+  data.showBasicInfo=document.getElementById("showBasicInfo").checked;
+  data.teachers=[...selectedTeachers];
+  data.editors={
+    introEditor:document.getElementById("introEditor").innerHTML,
+    qualificationEditor:document.getElementById("qualificationEditor").innerHTML,
+    feeEditor:document.getElementById("feeEditor").innerHTML,
+    contentEditor:document.getElementById("contentEditor").innerHTML,
+    careerEditor:document.getElementById("careerEditor").innerHTML,
+    certificateEditor:document.getElementById("certificateEditor").innerHTML
+  };
+  localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+  alert("임시저장했습니다.");
+}
+
+function loadDraft(){
+  const raw=localStorage.getItem(STORAGE_KEY);
+  if(!raw){alert("저장된 임시저장이 없습니다.");return}
+  const data=JSON.parse(raw);
+  Object.keys(data).forEach(key=>{
+    const el=document.getElementById(key);
+    if(el && typeof data[key]!=="object") el.value=data[key];
+  });
+  if(typeof data.showBasicInfo==="boolean") document.getElementById("showBasicInfo").checked=data.showBasicInfo;
+  (data.teachers||[]).forEach(name=>{
+    [...document.querySelectorAll(".inline .btn")].forEach(btn=>{
+      if(btn.textContent.trim()===name) toggleTeacher(btn,name);
+    });
+  });
+  if(data.editors){
+    Object.entries(data.editors).forEach(([id,value])=>{
+      const el=document.getElementById(id);
+      if(el)el.innerHTML=value;
+    });
+  }
+  document.getElementById("colorText").textContent=(data.courseColor||"#000000").toUpperCase();
+  document.getElementById("colorSwatch").style.background=data.courseColor||"#000000";
+}
+
+function submitCourse(){
+  const name=document.getElementById("courseName").value.trim();
+  if(!name){
+    alert("과정명을 입력하세요.");
+    document.getElementById("courseName").focus();
+    return;
+  }
+  if(document.getElementById("jobCategory").selectedIndex===0){
+    alert("훈련직종분류를 선택하세요.");
+    return;
+  }
+  if(document.getElementById("courseCategory").selectedIndex===0){
+    alert("교육과정분류를 선택하세요.");
+    return;
+  }
+  alert("과정 등록 검증이 완료되었습니다.\n실제 LMS에서는 서버 API로 저장됩니다.");
+}
+</script>
+</body>
+</html>
