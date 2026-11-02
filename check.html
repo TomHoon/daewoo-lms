@@ -204,6 +204,38 @@
       grid-template-columns: repeat(2, 1fr);
     }
 
+
+    .document-divider {
+      grid-column: 1 / -1;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 22px 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      background: #fff;
+    }
+
+    .document-divider::before,
+    .document-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .document-divider.first {
+      padding-top: 14px;
+    }
+
+    .document-divider.section-start {
+      margin-top: 6px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
     .document-item {
       display: flex;
       align-items: center;
@@ -408,274 +440,131 @@
         <span>화면명을 클릭하면 새 페이지로 이동합니다.</span>
       </div>
 
-      <div class="document-list">
-        <a class="document-item" href="/html/eduDiary.html">
-          <div class="document-icon">01</div>
-          <div class="document-info">
-            <div class="document-name">훈련일지 - 대우 양식</div>
-            <div class="document-path">html/eduDiary.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+      <div class="document-list" id="documentList"></div>
 
-        <a class="document-item" href="/html/trainDiary.html">
-          <div class="document-icon">02</div>
-          <div class="document-info">
-            <div class="document-name">교육훈련일지</div>
-            <div class="document-path">html/educationTrainingDiary.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+      <script>
+        /*
+         * 파일을 추가할 때는 이 배열에 "파일명.html"만 넣으면 됩니다.
+         * href 경로는 기존 규칙 그대로 /html/{파일명} 으로 자동 생성됩니다.
+         */
+        const documentFiles = [
+          "eduDiary.html",
+      "trainDiary.html",
+      "counselingDiary.html",
+      "scoringRubric.html",
+      "questionSheet.html",
+      "assessmentPlan.html",
+      "assessmentResultSummary.html",
+      "survey.html",
+      "examTeacher.html",
+      "examStudent.html",
+      "solvingCreateTeacher.html",
+      "scenarioStudent.html",
+      "scenarioTeacher.html",
+      "courseMangement.html",
+      "courseRegistration.html",
+      "courseList.html",
+      "courseDetail.html",
+      "ncsManagement.html",
+      "ncsList_v2.html",
+      "ncsRegistration.html",
+      "ncsExamRegistration.html",
+      "ncsExamSheetRegistration.html",
+      "admissionStatus.html",
+      "admissionApplicationList.html",
+      "entryPopup.html",
+      "surveyList.html",
+      "surveyRegistration.html",
+      "surveyResponsePopup.html"
+        ];
 
-        <a class="document-item" href="/html/counselingDiary.html">
-          <div class="document-icon">03</div>
-          <div class="document-info">
-            <div class="document-name">상담일지</div>
-            <div class="document-path">html/counselingDiary.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+        // 이 파일부터 아래쪽을 두 번째 그룹으로 구분합니다.
+        const DIVIDER_FILE = "courseMangement.html";
 
-        <a class="document-item" href="/html/scoringRubric.html">
-          <div class="document-icon">04</div>
-          <div class="document-info">
-            <div class="document-name">채점기준표</div>
-            <div class="document-path">html/scoringRubric.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+        function fallbackTitle(fileName) {
+          return fileName.replace(/\.html$/i, "");
+        }
 
-        <a class="document-item" href="/html/questionSheet.html">
-          <div class="document-icon">05</div>
-          <div class="document-info">
-            <div class="document-name">문제지</div>
-            <div class="document-path">html/questionSheet.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+        function createDivider(text, className = "") {
+          const divider = document.createElement("div");
+          divider.className = `document-divider ${className}`.trim();
+          divider.textContent = text;
+          return divider;
+        }
 
-        <a class="document-item" href="/html/assessmentPlan.html">
-          <div class="document-icon">06</div>
-          <div class="document-info">
-            <div class="document-name">평가계획서</div>
-            <div class="document-path">html/assessmentPlan.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+        function createDocumentItem(fileName, index) {
+          const item = document.createElement("a");
+          item.className = "document-item";
+          item.href = `/html/${fileName}`;
 
-        <a class="document-item" href="/html/assessmentResultSummary.html">
-          <div class="document-icon">07</div>
-          <div class="document-info">
-            <div class="document-name">평가결과 집계표</div>
-            <div class="document-path">html/assessmentResultSummary.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+          item.innerHTML = `
+            <div class="document-icon">${String(index + 1).padStart(2, "0")}</div>
+            <div class="document-info">
+              <div class="document-name">${fallbackTitle(fileName)}</div>
+              <div class="document-path">html/${fileName}</div>
+            </div>
+            <div class="status">완료</div>
+            <div class="arrow">›</div>
+          `;
 
-        <a class="document-item" href="/html/survey.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">경로조사</div>
-            <div class="document-path">html/survey.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+          return item;
+        }
 
-        <a class="document-item" href="/html/examTeacher.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">교사시험</div>
-            <div class="document-path">html/examStudent.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+        async function applyPageTitle(fileName, item) {
+          try {
+            const response = await fetch(`/html/${fileName}`);
+            if (!response.ok) return;
 
-        <a class="document-item" href="/html/examStudent.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">학생시험</div>
-            <div class="document-path">html/examStudent.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+            const html = await response.text();
+            const doc = new DOMParser().parseFromString(html, "text/html");
+            const pageTitle = doc.querySelector("title")?.textContent?.trim();
 
-        <a class="document-item" href="/html/solvingCreateTeacher.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">문제해결시나리오 시험지 생성-교사</div>
-            <div class="document-path">html/examStudent.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+            if (pageTitle) {
+              item.querySelector(".document-name").textContent = pageTitle;
+            }
+          } catch (error) {
+            // file:// 등 fetch가 제한된 환경에서는 파일명을 그대로 표시합니다.
+          }
+        }
 
-        <a class="document-item" href="/html/scenarioStudent.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">문제해결시나리오 시험지-학생</div>
-            <div class="document-path">html/examStudent.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+        function updateSummary(total) {
+          const values = document.querySelectorAll(".summary-value");
+          const subs = document.querySelectorAll(".summary-sub");
 
-        <a class="document-item" href="/html/scenarioTeacher.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">문제해결시나리오 결과-교사</div>
-            <div class="document-path">html/examStudent.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/courseMangement.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">훈련직종분류등록</div>
-            <div class="document-path">html/courseMangement.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/courseRegistration.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">과정등록</div>
-            <div class="document-path">html/courseRegistration.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/courseList.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">과정목록</div>
-            <div class="document-path">html/courseList.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/courseDetail.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">과정상세</div>
-            <div class="document-path">html/courseDetail.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/ncsManagement.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">NCS평가목록</div>
-            <div class="document-path">html/ncsManagement.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/ncsList_v2.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">NCS평가항목목록</div>
-            <div class="document-path">html/ncsList_v2.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/ncsRegistration.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">NCS평가항목등록</div>
-            <div class="document-path">html/ncsRegistration.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/ncsExamRegistration.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">NCS평가등록</div>
-            <div class="document-path">html/ncsExamRegistration.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-                <a class="document-item" href="/html/ncsExamSheetRegistration.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">NCS평가 문제등록</div>
-            <div class="document-path">html/ncsExamSheetRegistration.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/admissionStatus.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">입학목록</div>
-            <div class="document-path">html/admissionStatus.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/admissionApplicationList.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">입학접수목록</div>
-            <div class="document-path">html/admissionApplicationList.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/entryPopup.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">간편입력 팝업</div>
-            <div class="document-path">html/entryPopup.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/surveyList.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">설문조사 목록</div>
-            <div class="document-path">html/surveyList.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/surveyRegistration.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">설문조사 등록</div>
-            <div class="document-path">html/surveyRegistration.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
-        <a class="document-item" href="/html/surveyResponsePopup.html">
-          <div class="document-icon">08</div>
-          <div class="document-info">
-            <div class="document-name">설문조사 팝업</div>
-            <div class="document-path">html/surveyResponsePopup.html</div>
-          </div>
-          <div class="status">완료</div>
-          <div class="arrow">›</div>
-        </a>
+          if (values[0]) values[0].textContent = total;
+          if (values[1]) values[1].textContent = total;
+          if (values[2]) values[2].textContent = 0;
 
+          const progressRate = document.querySelector(".progress-rate");
+          if (progressRate) progressRate.textContent = "100%";
 
-      </div>
+          const progressBar = document.querySelector(".progress-bar");
+          if (progressBar) progressBar.style.width = "100%";
+
+          if (subs[0]) subs[0].textContent = `현재 등록된 ${total}개 화면 퍼블리싱 완료`;
+        }
+
+        function renderDocumentList() {
+          const list = document.getElementById("documentList");
+          list.innerHTML = "";
+
+          list.appendChild(createDivider("문서 / 평가 화면", "first"));
+
+          documentFiles.forEach((fileName, index) => {
+            if (fileName === DIVIDER_FILE) {
+              list.appendChild(createDivider("과정 / 운영 관리", "section-start"));
+            }
+
+            const item = createDocumentItem(fileName, index);
+            list.appendChild(item);
+            applyPageTitle(fileName, item);
+          });
+
+          updateSummary(documentFiles.length);
+        }
+
+        renderDocumentList();
+      </script>
     </section>
 
     <div class="footer-note">
