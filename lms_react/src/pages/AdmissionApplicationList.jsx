@@ -1,43 +1,79 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import PageHeader from '../components/PageHeader.jsx';
+import api from '../api/axios';
 import './AdmissionApplicationList.css';
 
 const STATUSES = ['가접수', '접수', '면접', '합격', '불합격', '취소', '후보', '대기'];
 const APPROVALS = ['미승인', '검토중', '승인', '반려'];
 
-const INITIAL_STUDENTS = [
-  { status: '접수', approval: '대기', name: '김민준', birth: '1998-03-14', gender: '남', phone: '010-4821-7732', region: '서울 강서구', date: '2026-10-28', history: '2026-10-28 온라인 접수 / 2026-10-29 상담완료', pretest: true, today: false },
-  { status: '면접', approval: '검토중', name: '이서연', birth: '2000-07-22', gender: '여', phone: '010-7754-2190', region: '경기 부천시', date: '2026-10-29', history: '온라인 접수 → 서류확인 → 11/03 면접예정', pretest: true, today: false },
-  { status: '합격', approval: '승인', name: '박지훈', birth: '1996-11-05', gender: '남', phone: '010-2388-5514', region: '서울 양천구', date: '2026-10-26', history: '전화문의 → 방문상담 → 면접완료 → 최종합격', pretest: true, today: false },
-  { status: '합격', approval: '승인', name: '최유진', birth: '1999-01-19', gender: '여', phone: '010-6613-9820', region: '인천 부평구', date: '2026-10-27', history: '고용24 접수 → 상담완료 → 사전시험 → 합격', pretest: true, today: false },
-  { status: '가접수', approval: '미승인', name: '정우성', birth: '1997-05-08', gender: '남', phone: '010-3145-7798', region: '서울 마포구', date: '2026-11-02', history: '과정문의 후 가접수 등록', pretest: false, today: true },
-  { status: '대기', approval: '검토중', name: '한지민', birth: '2001-09-11', gender: '여', phone: '010-8234-1612', region: '경기 고양시', date: '2026-11-02', history: '온라인 접수 → 서류보완 요청', pretest: false, today: true },
-  { status: '후보', approval: '검토중', name: '윤도현', birth: '1995-12-30', gender: '남', phone: '010-5018-2267', region: '서울 영등포구', date: '2026-10-25', history: '면접완료 / 정원초과로 후보 등록', pretest: true, today: false },
-  { status: '불합격', approval: '반려', name: '오세진', birth: '1998-06-17', gender: '남', phone: '010-4430-9001', region: '경기 광명시', date: '2026-10-24', history: '서류검토 → 면접완료 → 최종 불합격', pretest: true, today: false },
-];
-
 export default function AdmissionApplicationList() {
   const navigate = useNavigate();
-  const [students, setStudents] = useState(INITIAL_STUDENTS);
-  const [statusInput, setStatusInput] = useState('전체');
-  const [keywordInput, setKeywordInput] = useState('');
-  const [applied, setApplied] = useState({ status: '전체', keyword: '' });
+  const [searchParams] = useSearchParams();
+  const courseId = searchParams.get('courseId') || undefined;
+  const batchId = searchParams.get('batchId') || undefined;
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const [statusInput, setStatusInput] = useState(searchParams.get('status') || '');
+  const [keywordInput, setKeywordInput] = useState(searchParams.get('keyword') || '');
+  const [applied, setApplied] = useState({ status: searchParams.get('status') || '', keyword: searchParams.get('keyword') || '' });
+  const limit = 50;
+  const [offset, setOffset] = useState(0);
   const [checked, setChecked] = useState(() => new Set());
 
-  const filtered = students.filter((s) => {
-    if (applied.status !== '전체' && s.status !== applied.status) return false;
-    const kw = applied.keyword.trim().toLowerCase();
-    if (kw && ![s.name, s.phone, s.region].join(' ').toLowerCase().includes(kw)) return false;
-    return true;
-  });
+  useEffect(() => {
+    const controller = new AbortController();
+    const loadAdmissions = async () => {
+      setLoading(true);
+      setLoadError('');
+      setStudents([]);
+      setChecked(new Set());
+      try {
+        const {data} = await api.get('/v1/admissions', {
+          params: {courseId, batchId, keyword: applied.keyword.trim() || undefined, status: applied.status || undefined, limit, offset},
+          signal: controller.signal,
+        });
+        if (controller.signal.aborted) return;
+        if (!Array.isArray(data)) throw new Error('입학접수 응답이 배열이 아닙니다.');
+        const now = new Date();
+        const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+        setStudents(data.map((row, index) => {
+          const date = (row.createdAt ?? row.date ?? '').slice(0, 10);
+          return {
+            ...row,
+            id: row.admissionId ?? `row-${index}`,
+            name: row.applicantName ?? row.name ?? '',
+            birth: row.birthDate ?? row.birth ?? '-',
+            gender: {M: '남', F: '여'}[row.gender] ?? row.gender ?? '-',
+            phone: row.phone ?? '-',
+            region: row.region ?? '-',
+            status: row.status === 'RECEIVED' ? '접수' : row.status ?? '',
+            approval: row.approval ?? '',
+            history: row.history ?? '-',
+            date: date || '-',
+            today: date === today,
+          };
+        }));
+        setChecked(new Set());
+      } catch {
+        if (!controller.signal.aborted) setLoadError('입학접수목록을 불러오지 못했습니다. 새로고침해 주세요.');
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    };
+    void loadAdmissions();
+    return () => controller.abort();
+  }, [courseId, batchId, applied, offset]);
 
-  const selectedNames = filtered.filter((s) => checked.has(s.name)).map((s) => s.name);
+  const filtered = students;
+
+  const selectedNames = filtered.filter((s) => checked.has(s.id)).map((s) => s.id);
   const allChecked = filtered.length > 0 && selectedNames.length === filtered.length;
 
-  const patch = (name, p) => setStudents((list) => list.map((s) => (s.name === name ? { ...s, ...p } : s)));
+  const patch = (id, p) => setStudents((list) => list.map((s) => (s.id === id ? { ...s, ...p } : s)));
   const removeNames = (names) => {
-    setStudents((list) => list.filter((s) => !names.includes(s.name)));
+    setStudents((list) => list.filter((s) => !names.includes(s.id)));
     setChecked((c) => new Set([...c].filter((n) => !names.includes(n))));
   };
   const toggle = (name) =>
@@ -49,7 +85,7 @@ export default function AdmissionApplicationList() {
   const toggleAll = (on) =>
     setChecked((c) => {
       const n = new Set(c);
-      filtered.forEach((s) => (on ? n.add(s.name) : n.delete(s.name)));
+      filtered.forEach((s) => (on ? n.add(s.id) : n.delete(s.id)));
       return n;
     });
 
@@ -62,7 +98,7 @@ export default function AdmissionApplicationList() {
   };
 
   const SUMMARY = [
-    ['총 접수자', students.length],
+    ['현재 조회 접수자', students.length],
     ['합격', students.filter((s) => s.status === '합격').length],
     ['면접', students.filter((s) => s.status === '면접').length],
     ['대기/후보', students.filter((s) => s.status === '대기' || s.status === '후보').length],
@@ -80,8 +116,7 @@ export default function AdmissionApplicationList() {
           <div className="card-body">
             <div className="course-banner">
               <div>
-                <div className="course-main">[내일배움카드(재직자)] [대구] 재직자를 위한 고급 JAVA 개발</div>
-                <div className="course-sub">교육기간 2026.11.21 ~ 2027.03.31 · 모집/진행 · 승인인원 17명</div>
+                <div className="course-main">{courseId ? `과정 ID: ${courseId}${batchId ? ` · 기수 ID: ${batchId}` : ''}` : '전체 과정 입학접수목록'}</div>
               </div>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 <button className="btn btn-small" onClick={() => navigate('/entry-popup')}>간편입력</button>
@@ -94,7 +129,8 @@ export default function AdmissionApplicationList() {
               <div className="field">
                 <div className="label">과정상태</div>
                 <div className="control">
-                  <select defaultValue="모집/진행">
+                  <select defaultValue="">
+                    <option value="">과정상태 선택</option>
                     {['모집/진행', '모집중', '진행중', '종료'].map((o) => <option key={o}>{o}</option>)}
                   </select>
                 </div>
@@ -102,7 +138,8 @@ export default function AdmissionApplicationList() {
               <div className="field">
                 <div className="label">생기부오픈여부</div>
                 <div className="control">
-                  <select defaultValue="차단">
+                  <select defaultValue="">
+                    <option value="">오픈여부 선택</option>
                     <option>차단</option>
                     <option>허용</option>
                   </select>
@@ -111,11 +148,10 @@ export default function AdmissionApplicationList() {
               <div className="field">
                 <div className="label">접수상태</div>
                 <div className="control">
-                  <select value={statusInput} onChange={(e) => { setStatusInput(e.target.value); setApplied((a) => ({ ...a, status: e.target.value })); }}>
-                    <option value="전체">전체</option>
-                    {['가접수', '접수', '면접', '합격', '불합격', '후보', '대기', '취소'].map((o) => (
-                      <option key={o} value={o}>{o}</option>
-                    ))}
+                  <select value={statusInput} onChange={(e) => setStatusInput(e.target.value)}>
+                    <option value="">전체</option>
+                    <option value="RECEIVED">접수</option>
+                    {statusInput && statusInput !== 'RECEIVED' && <option value={statusInput}>{statusInput}</option>}
                   </select>
                 </div>
               </div>
@@ -133,13 +169,14 @@ export default function AdmissionApplicationList() {
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 14 }}>
-              <button className="btn btn-primary" onClick={() => setApplied({ status: statusInput, keyword: keywordInput })}>검색</button>
+              <button className="btn btn-primary" onClick={() => { setOffset(0); setApplied({ status: statusInput, keyword: keywordInput }); }}>검색</button>
               <button
                 className="btn"
                 onClick={() => {
-                  setStatusInput('전체');
+                  setStatusInput('');
                   setKeywordInput('');
-                  setApplied({ status: '전체', keyword: '' });
+                  setOffset(0);
+                  setApplied({ status: '', keyword: '' });
                 }}
               >
                 초기화
@@ -184,18 +221,25 @@ export default function AdmissionApplicationList() {
                   </tr>
                 </thead>
                 <tbody>
+                  {(loading || loadError || filtered.length === 0) && (
+                    <tr>
+                      <td colSpan={12} className="center" role={loadError ? 'alert' : undefined}>{loading ? '불러오는 중...' : loadError || '접수 내역이 없습니다.'}</td>
+                    </tr>
+                  )}
                   {filtered.map((s) => (
-                    <tr key={s.name}>
+                    <tr key={s.id}>
                       <td className="center">
-                        <input type="checkbox" checked={checked.has(s.name)} onChange={() => toggle(s.name)} />
+                        <input type="checkbox" checked={checked.has(s.id)} onChange={() => toggle(s.id)} />
                       </td>
                       <td className="center">
-                        <select className="small-select" value={s.status} onChange={(e) => patch(s.name, { status: e.target.value })}>
+                        <select className="small-select" value={s.status} onChange={(e) => patch(s.id, { status: e.target.value })}>
+                          {!STATUSES.includes(s.status) && <option value={s.status}>{s.status || '-'}</option>}
                           {STATUSES.map((v) => <option key={v}>{v}</option>)}
                         </select>
                       </td>
                       <td className="center">
-                        <select className="small-select" value={s.approval} onChange={(e) => patch(s.name, { approval: e.target.value })}>
+                        <select className="small-select" value={s.approval} onChange={(e) => patch(s.id, { approval: e.target.value })}>
+                          {!APPROVALS.includes(s.approval) && <option value={s.approval}>{s.approval || '-'}</option>}
                           {APPROVALS.map((v) => <option key={v}>{v}</option>)}
                         </select>
                       </td>
@@ -209,7 +253,7 @@ export default function AdmissionApplicationList() {
                       <td className="center">{s.date}</td>
                       <td><div className="history"><strong>{s.status}</strong> · {s.history}</div></td>
                       <td className="center">
-                        {s.pretest ? <span className="test-ok">응시</span> : <span className="test-no">미응시</span>}
+                        {s.pretest == null ? '-' : s.pretest ? <span className="test-ok">응시</span> : <span className="test-no">미응시</span>}
                       </td>
                       <td>
                         <div className="row-actions">
@@ -217,7 +261,7 @@ export default function AdmissionApplicationList() {
                           <button className="mini-btn" onClick={() => alert(`"${s.name}" 학생에게 문자 발송 화면을 엽니다.`)}>문자</button>
                           <button
                             className="mini-btn danger"
-                            onClick={() => confirm(`"${s.name}" 학생의 접수정보를 삭제하시겠습니까?`) && removeNames([s.name])}
+                            onClick={() => confirm(`"${s.name}" 학생의 접수정보를 삭제하시겠습니까?`) && removeNames([s.id])}
                           >
                             삭제
                           </button>
@@ -255,7 +299,9 @@ export default function AdmissionApplicationList() {
                 </button>
               </div>
               <div className="right-actions">
-                <span style={{ fontSize: 12, color: 'var(--muted)' }}>검색결과 {filtered.length}명</span>
+                <button className="btn btn-small" disabled={loading || offset === 0} onClick={() => setOffset((value) => Math.max(0, value - limit))}>이전</button>
+                <span style={{ fontSize: 12, color: 'var(--muted)' }}>{Math.floor(offset / limit) + 1}페이지 · 조회 {filtered.length}명</span>
+                <button className="btn btn-small" disabled={loading || Boolean(loadError) || students.length < limit} onClick={() => setOffset((value) => value + limit)}>다음</button>
               </div>
             </div>
           </div>

@@ -1,18 +1,22 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import PageHeader from '../components/PageHeader.jsx';
 import SubNav from '../components/SubNav.jsx';
 import './NcsRegistration.css';
 
-const INITIAL_UNITS = [
-  { name: '커피 원두 선택', code: '1601020101', hours: 20, nonNcs: false, pretest: true, elements: ['원두 특성 확인', '원두 품질 판별', '원두 보관 방법'] },
-  { name: '커피기계 운용', code: '1601020202', hours: 24, nonNcs: false, pretest: false, elements: ['커피기계 구조 이해', '기계 작동 점검', '기계 세척 및 관리'] },
-];
-
 export default function NcsRegistration() {
   const navigate = useNavigate();
-  const [subject, setSubject] = useState('바리스타');
-  const [units, setUnits] = useState(INITIAL_UNITS);
+  const {search, state} = useLocation();
+  const course = state?.course;
+  const courseTitle = course ? [
+    course.trainingJobCategoryName && `[${course.trainingJobCategoryName}]`,
+    course.educationCategoryName && `[${course.educationCategoryName}]`,
+    course.campus && `[${course.campus}]`,
+    course.name,
+  ].filter(Boolean).join(' ') : '선택된 과정이 없습니다.';
+  const openList = () => navigate(`/ncs-list${search}`, {state});
+  const [subject, setSubject] = useState('');
+  const [units, setUnits] = useState([]);
 
   const patchUnit = (i, p) => setUnits((l) => l.map((u, k) => (k === i ? { ...u, ...p } : u)));
   const setElement = (i, j, v) => patchUnit(i, { elements: units[i].elements.map((e, k) => (k === j ? v : e)) });
@@ -40,15 +44,15 @@ export default function NcsRegistration() {
     <div className="pg-ncs-registration">
       <div className="page">
         <PageHeader title="NCS 평가항목 등록" desc="교과목별 능력단위와 능력단위 요소를 등록합니다.">
-          <button className="btn" onClick={() => navigate('/ncs-list')}>NCS 평가목록</button>
+          <button className="btn" onClick={openList}>NCS 평가목록</button>
         </PageHeader>
 
         <section className="card">
           <div className="card-body">
             <div className="course-banner">
               <div>
-                <div className="course-name">[내일배움카드(실업자)] 한식 조리사 자격증 대비반</div>
-                <div className="course-meta">교육기간 2026.11.04 ~ 2027.01.16 · 진행중</div>
+                <div className="course-name" style={course?.color ? {color: course.color} : undefined}>{courseTitle}</div>
+                {course && <div className="course-meta">교육기간 {course.start || '-'} ~ {course.end || '-'}{course.status ? ` · ${course.status}` : ''}</div>}
               </div>
               <button className="btn btn-small" onClick={() => alert('CSV 등록 기능 영역입니다.')}>CSV 파일로 항목 등록</button>
             </div>
@@ -119,7 +123,7 @@ export default function NcsRegistration() {
         </section>
 
         <div className="footer-actions">
-          <button className="btn" onClick={() => navigate('/ncs-list')}>목록</button>
+          <button className="btn" onClick={openList}>목록</button>
           <button className="btn btn-primary" onClick={saveAll}>저장</button>
         </div>
       </div>

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../api/axios';
 import './EntryPopup.css';
 
 const TABS = [
@@ -9,17 +10,8 @@ const TABS = [
   ['csv', 'CSV등록'],
 ];
 
-const TRAINEES = [
-  { name: '김향단', birth: '1975-08-28', phone: '070-7538-3008', region: '달서구', history: '[합격] [진행중] 국가기간전략산업 / UI디자인' },
-  { name: '박용룡', birth: '1979-02-25', phone: '010-7777-8888', region: '', history: '[합격] [진행중] 모바일 디바이스를 위한 UI 디자인' },
-  { name: '최용룡', birth: '1988-08-28', phone: '010-6666-7777', region: '', history: '[합격] [진행중] 모바일 디바이스를 위한 UI 디자인' },
-  { name: '이용룡', birth: '1996-07-26', phone: '010-5555-6666', region: '', history: '[합격] [진행중] 모바일 디바이스를 위한 UI 디자인' },
-  { name: '성길동', birth: '1999-08-07', phone: '010-4444-5555', region: '종로구', history: '[합격] [진행중] 모바일 디바이스를 위한 UI 디자인' },
-];
-const MEMBERS = [
-  { level: '교사 [50]', name: '김교사', birth: '1988-01-27', phone: '010-4808-1870', region: '남구' },
-  { level: '슈퍼관리자 [99]', name: '우리컴퍼런스', birth: '-', phone: '000-000-0000', region: '' },
-];
+const TRAINEES = [];
+const MEMBERS = [];
 
 const selectPerson = (name) => alert(`"${name}" 을(를) 접수자로 선택했습니다.`);
 const match = (obj, q) => Object.values(obj).join(' ').includes(q);
@@ -40,6 +32,107 @@ export default function EntryPopup() {
   const [memberInput, setMemberInput] = useState('');
   const [traineeQuery, setTraineeQuery] = useState('');
   const [memberQuery, setMemberQuery] = useState('');
+  const [jobs, setJobs] = useState([]);
+  const [educationCategories, setEducationCategories] = useState([]);
+  const [trainingJobCategoryId, setTrainingJobCategoryId] = useState('');
+  const [educationCategoryId, setEducationCategoryId] = useState('');
+  const [courses, setCourses] = useState([]);
+  const [courseId, setCourseId] = useState('');
+  const [batchId, setBatchId] = useState('');
+  const [batches, setBatches] = useState([]);
+  const [batchLoading, setBatchLoading] = useState(false);
+  const [batchError, setBatchError] = useState('');
+  const [applicant, setApplicant] = useState({
+    applicantName: '', birthDate: '', gender: '', nationalityType: '', phone: '', email: '', receptionMethod: '',
+  });
+  const [submitting, setSubmitting] = useState(false);
+  const submitLock = useRef(false);
+  const applicantField = (name) => ({
+    value: applicant[name],
+    onChange: (e) => setApplicant((current) => ({...current, [name]: e.target.value})),
+  });
+  const [categoryLoading, setCategoryLoading] = useState(true);
+  const [courseLoading, setCourseLoading] = useState(false);
+  const [categoryErrors, setCategoryErrors] = useState({});
+  const [courseError, setCourseError] = useState('');
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const loadCategory = async (path, setter, key, label) => {
+      try {
+        const {data} = await api.get(path, {signal: controller.signal});
+        if (controller.signal.aborted) return;
+        if (!Array.isArray(data)) throw new Error('분류 응답이 배열이 아닙니다.');
+        setter(data);
+      } catch {
+        if (!controller.signal.aborted) {
+          setCategoryErrors((errors) => ({...errors, [key]: `${label} 목록을 불러오지 못했습니다.`}));
+        }
+      }
+    };
+    void Promise.all([
+      loadCategory('/v1/trainingJobCategories', setJobs, 'jobs', '훈련직종분류'),
+      loadCategory('/v1/educationCategories', setEducationCategories, 'education', '교육과정분류'),
+    ]).then(() => {
+      if (!controller.signal.aborted) setCategoryLoading(false);
+    });
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    if (!trainingJobCategoryId || !educationCategoryId) return;
+    const controller = new AbortController();
+    const loadCourses = async () => {
+      try {
+        const {data} = await api.get('/v1/courses', {
+          params: {trainingJobCategoryId, educationCategoryId},
+          signal: controller.signal,
+        });
+        if (controller.signal.aborted) return;
+        if (!Array.isArray(data)) throw new Error('과정 응답이 배열이 아닙니다.');
+        setCourses(data);
+      } catch {
+        if (!controller.signal.aborted) setCourseError('과정 목록을 불러오지 못했습니다.');
+      } finally {
+        if (!controller.signal.aborted) setCourseLoading(false);
+      }
+    };
+    void loadCourses();
+    return () => controller.abort();
+  }, [trainingJobCategoryId, educationCategoryId]);
+
+  useEffect(() => {
+    if (!courseId) return;
+    const controller = new AbortController();
+    const loadBatches = async () => {
+      try {
+        const {data} = await api.get(`/v1/courses/${encodeURIComponent(courseId)}/batches`, {
+          signal: controller.signal,
+        });
+        if (controller.signal.aborted) return;
+        if (!Array.isArray(data)) throw new Error('기수 응답이 배열이 아닙니다.');
+        setBatches(data);
+      } catch {
+        if (!controller.signal.aborted) setBatchError('기수 목록을 불러오지 못했습니다.');
+      } finally {
+        if (!controller.signal.aborted) setBatchLoading(false);
+      }
+    };
+    void loadBatches();
+    return () => controller.abort();
+  }, [courseId]);
+
+  const changeCategory = (setter, otherId) => (e) => {
+    setter(e.target.value);
+    setCourses([]);
+    setCourseId('');
+    setBatchId('');
+    setBatches([]);
+    setBatchLoading(false);
+    setBatchError('');
+    setCourseError('');
+    setCourseLoading(Boolean(e.target.value && otherId));
+  };
 
   const onPhoto = (e) => {
     const file = e.target.files[0];
@@ -53,9 +146,48 @@ export default function EntryPopup() {
     if (!csvFile) return alert('CSV 파일을 선택하세요.');
     alert('CSV 등록이 완료되었습니다.');
   };
-  const saveCurrent = () => {
-    const label = TABS.find(([k]) => k === tab)[1];
-    alert(`${label} 방식으로 접수 정보를 등록합니다.`);
+  const saveCurrent = async () => {
+    if (submitLock.current) return;
+    if (tab !== 'visitor') return alert('현재 방문지원자 입력 방식으로 등록할 수 있습니다.');
+    if (!courseId || !courses.some((course) => String(course.courseId) === courseId)) {
+      return alert('과정을 선택하세요.');
+    }
+    if (batchLoading || !batchId || !batches.some((batch) => String(batch.batchId) === batchId)) {
+      return alert('기수를 선택하세요.');
+    }
+    if (!applicant.applicantName.trim()) return alert('이름을 입력하세요.');
+    const now = new Date();
+    const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    if (!applicant.birthDate || applicant.birthDate > today) {
+      return alert('생년월일을 확인하세요.');
+    }
+    if (!applicant.gender) return alert('성별을 선택하세요.');
+    if (!applicant.nationalityType) return alert('내/외국인을 선택하세요.');
+    const phone = applicant.phone.replace(/[\s()-]/g, '');
+    if (!/^\d{9,11}$/.test(phone)) return alert('대표연락처를 확인하세요.');
+    if (applicant.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(applicant.email.trim())) {
+      return alert('메일주소를 확인하세요.');
+    }
+    if (!applicant.receptionMethod) return alert('접수방법을 선택하세요.');
+    const payload = {
+      inputType: 'VISITOR',
+      ...applicant,
+      applicantName: applicant.applicantName.trim(),
+      phone,
+      email: applicant.email.trim(),
+    };
+    submitLock.current = true;
+    setSubmitting(true);
+    try {
+      await api.post(`/v1/admissions/${encodeURIComponent(courseId)}/${encodeURIComponent(batchId)}`, payload);
+      alert('입학접수가 등록되었습니다.');
+      navigate(-1);
+    } catch {
+      alert('입학접수 등록에 실패했습니다. 입력값을 확인하고 다시 시도해 주세요.');
+    } finally {
+      submitLock.current = false;
+      setSubmitting(false);
+    }
   };
 
   const panel = (key) => 'tab-panel' + (tab === key ? ' active' : '');
@@ -81,13 +213,42 @@ export default function EntryPopup() {
             <div className="course-box">
               <div className="course-grid">
                 <Field label="훈련직종분류">
-                  <select><option>내일배움카드(재직자)</option><option>국가기간전략산업</option><option>일반과정</option></select>
+                  <select value={trainingJobCategoryId} onChange={changeCategory(setTrainingJobCategoryId, educationCategoryId)} disabled={categoryLoading}>
+                    <option value="">{categoryLoading ? '불러오는 중...' : '훈련직종분류 선택'}</option>
+                    {jobs.map((row) => <option key={row.trainingJobCategoryId} value={row.trainingJobCategoryId}>{row.categoryName}</option>)}
+                  </select>
+                  {categoryErrors.jobs && <span role="alert">{categoryErrors.jobs}</span>}
                 </Field>
                 <Field label="교육과정분류">
-                  <select><option>프로그래밍</option><option>UI/UX디자인</option><option>컴퓨터활용</option></select>
+                  <select value={educationCategoryId} onChange={changeCategory(setEducationCategoryId, trainingJobCategoryId)} disabled={categoryLoading}>
+                    <option value="">{categoryLoading ? '불러오는 중...' : '교육과정분류 선택'}</option>
+                    {educationCategories.map((row) => <option key={row.educationCategoryId} value={row.educationCategoryId}>{row.categoryName}</option>)}
+                  </select>
+                  {categoryErrors.education && <span role="alert">{categoryErrors.education}</span>}
                 </Field>
                 <Field label="과정명" full>
-                  <select><option>[대구] 재직자를 위한 고급 JAVA 개발 (2026.11.21~2027.03.31)</option></select>
+                  <select value={courseId} onChange={(e) => {
+                    setCourseId(e.target.value);
+                    setBatchId('');
+                    setBatches([]);
+                    setBatchError('');
+                    setBatchLoading(Boolean(e.target.value));
+                  }} disabled={!trainingJobCategoryId || !educationCategoryId || courseLoading}>
+                    <option value="">{courseLoading ? '불러오는 중...' : !trainingJobCategoryId || !educationCategoryId ? '분류를 먼저 선택하세요.' : courseError ? '과정 조회 실패' : courses.length ? '과정 선택' : '조회된 과정이 없습니다.'}</option>
+                    {courses.map((row) => <option key={row.courseId} value={row.courseId}>{row.courseName}</option>)}
+                  </select>
+                  {courseError && <span role="alert">{courseError}</span>}
+                </Field>
+                <Field label="기수">
+                  <select value={batchId} disabled={!courseId || batchLoading} onChange={(e) => setBatchId(e.target.value)}>
+                    <option value="">{batchLoading ? '불러오는 중...' : !courseId ? '과정을 먼저 선택하세요.' : batchError ? '기수 조회 실패' : batches.length ? '기수 선택' : '조회된 기수가 없습니다.'}</option>
+                    {batches.map((batch) => (
+                      <option key={batch.batchId} value={batch.batchId}>
+                        {batch.batchName || `${batch.batchNo ?? batch.batchId}기`}
+                      </option>
+                    ))}
+                  </select>
+                  {batchError && <span role="alert">{batchError}</span>}
                 </Field>
               </div>
             </div>
@@ -106,38 +267,41 @@ export default function EntryPopup() {
                 </div>
               </div>
               <div className="form-grid">
-                <Field label="이름"><input defaultValue="홍길동" /></Field>
-                <Field label="생년월일"><input type="date" defaultValue="1998-06-12" /></Field>
+                <Field label="이름"><input {...applicantField('applicantName')} /></Field>
+                <Field label="생년월일"><input type="date" {...applicantField('birthDate')} /></Field>
                 <Field label="성별">
                   <div className="inline">
-                    <label><input type="radio" name="gender" defaultChecked /> 남성</label>
-                    <label><input type="radio" name="gender" /> 여성</label>
+                    <label><input type="radio" name="gender" value="M" checked={applicant.gender === 'M'} onChange={applicantField('gender').onChange} /> 남성</label>
+                    <label><input type="radio" name="gender" value="F" checked={applicant.gender === 'F'} onChange={applicantField('gender').onChange} /> 여성</label>
                   </div>
                 </Field>
                 <Field label="내/외국인">
                   <div className="inline">
-                    <label><input type="radio" name="national" defaultChecked /> 내국인</label>
-                    <label><input type="radio" name="national" /> 외국인</label>
+                    <label><input type="radio" name="national" value="DOMESTIC" checked={applicant.nationalityType === 'DOMESTIC'} onChange={applicantField('nationalityType').onChange} /> 내국인</label>
+                    <label><input type="radio" name="national" value="FOREIGN" checked={applicant.nationalityType === 'FOREIGN'} onChange={applicantField('nationalityType').onChange} /> 외국인</label>
                   </div>
                 </Field>
-                <Field label="대표연락처"><input defaultValue="010-1234-5678" /></Field>
+                <Field label="대표연락처"><input type="tel" {...applicantField('phone')} /></Field>
                 <Field label="추가연락처"><input placeholder="선택 입력" /></Field>
-                <Field label="메일주소"><input defaultValue="hong@example.com" /></Field>
-                <Field label="지역"><input defaultValue="서울 강서구" /></Field>
+                <Field label="메일주소"><input type="email" {...applicantField('email')} /></Field>
+                <Field label="지역"><input /></Field>
                 <Field label="주소" full><input placeholder="상세주소 입력" /></Field>
               </div>
             </div>
 
             <div className="section-title" style={{ marginTop: 22 }}>추가정보</div>
             <div className="form-grid">
-              <Field label="최종학교명"><input defaultValue="한국대학교" /></Field>
-              <Field label="최종학력"><select><option>대졸</option><option>전문대졸</option><option>고졸</option></select></Field>
-              <Field label="졸업구분"><select><option>졸업</option><option>졸업예정</option><option>중퇴</option></select></Field>
-              <Field label="지원경로"><input defaultValue="고용24" /></Field>
+              <Field label="최종학교명"><input /></Field>
+              <Field label="최종학력"><select defaultValue=""><option value="">학력 선택</option><option>대졸</option><option>전문대졸</option><option>고졸</option></select></Field>
+              <Field label="졸업구분"><select defaultValue=""><option value="">졸업구분 선택</option><option>졸업</option><option>졸업예정</option><option>중퇴</option></select></Field>
+              <Field label="지원경로"><input /></Field>
               <Field label="접수방법">
-                <select>{['방문', '인터넷', '모바일', '전화', '팩스'].map((o) => <option key={o}>{o}</option>)}</select>
+                <select {...applicantField('receptionMethod')}>
+                  <option value="">접수방법 선택</option>
+                  {[['VISIT', '방문'], ['INTERNET', '인터넷'], ['MOBILE', '모바일'], ['PHONE', '전화'], ['FAX', '팩스']].map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                </select>
               </Field>
-              <Field label="남기실 말씀"><textarea defaultValue="과정 상담 후 등록을 희망합니다." /></Field>
+              <Field label="남기실 말씀"><textarea /></Field>
             </div>
 
             <div className="section-title" style={{ marginTop: 22 }}>국민취업지원제도</div>
@@ -146,7 +310,7 @@ export default function EntryPopup() {
                 <div className="inline">
                   <label><input type="radio" name="support" /> 유형</label>
                   <label><input type="radio" name="support" /> II유형</label>
-                  <label><input type="radio" name="support" defaultChecked /> 미참여</label>
+                  <label><input type="radio" name="support" /> 미참여</label>
                 </div>
               </Field>
               <Field label="참여센터"><input placeholder="참여센터" /></Field>
@@ -169,6 +333,9 @@ export default function EntryPopup() {
                   <tr><th>이름</th><th>생년월일</th><th>대표연락처</th><th>지역</th><th>신청이력</th><th>선택</th></tr>
                 </thead>
                 <tbody>
+                  {TRAINEES.filter((t) => match(t, traineeQuery)).length === 0 && (
+                    <tr><td colSpan={6} className="center">훈련생(접수자) 내역이 없습니다.</td></tr>
+                  )}
                   {TRAINEES.filter((t) => match(t, traineeQuery)).map((t) => (
                     <tr key={t.name}>
                       <td className="center" style={{ color: '#1f6feb', fontWeight: 800 }}>{t.name}</td>
@@ -177,8 +344,7 @@ export default function EntryPopup() {
                       <td className="center">{t.region || '-'}</td>
                       <td>
                         <div className="history">
-                          <span className="pass">[합격]</span> <span className="ongoing">[진행중]</span>{' '}
-                          {t.history.replace('[합격] [진행중] ', '')}
+                          {t.history || '-'}
                         </div>
                       </td>
                       <td className="center">
@@ -209,6 +375,9 @@ export default function EntryPopup() {
                   <tr><th>레벨</th><th>이름</th><th>생년월일</th><th>대표연락처</th><th>지역</th><th>선택</th></tr>
                 </thead>
                 <tbody>
+                  {MEMBERS.filter((m) => match(m, memberQuery)).length === 0 && (
+                    <tr><td colSpan={6} className="center">회원 내역이 없습니다.</td></tr>
+                  )}
                   {MEMBERS.filter((m) => match(m, memberQuery)).map((m) => (
                     <tr key={m.name}>
                       <td className="center">{m.level}</td>
@@ -244,7 +413,7 @@ export default function EntryPopup() {
             <div className="note">선택한 탭에 따라 등록 방식이 달라집니다.</div>
             <div className="inline">
               <button className="btn" onClick={() => navigate(-1)}>취소</button>
-              <button className="btn btn-primary" onClick={saveCurrent}>확인</button>
+              <button className="btn btn-primary" onClick={saveCurrent} disabled={submitting}>{submitting ? '등록 중...' : '확인'}</button>
             </div>
           </div>
         </div>

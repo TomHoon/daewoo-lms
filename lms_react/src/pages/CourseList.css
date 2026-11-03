@@ -273,6 +273,17 @@
   font-weight: 800;
   line-height: 1.45;
 }
+.pg-course-list .course-link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.pg-course-list .course-link:hover {
+  text-decoration: underline;
+}
 .pg-course-list .course-name.blue {
   color: #1570ef;
 }

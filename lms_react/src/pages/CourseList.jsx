@@ -1,27 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PageHeader from '../components/PageHeader.jsx';
+import api from '../api/axios';
 import './CourseList.css';
 
 const PAGE_SIZE = 6;
 const STATUS_OPTIONS = ['임시등록', '모집중', '모집진행', '진행중', '종료', '관리종료', '폐강'];
-const IMG = {
-  cook: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=200&q=60',
-  coffee: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=200&q=60',
-  code: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=200&q=60',
-  design: 'https://images.unsplash.com/photo-1558655146-9f40138edfeb?auto=format&fit=crop&w=200&q=60',
-};
-
-const INITIAL_COURSES = [
-  { id: 1, status: '진행중', ledger: '숨김', campus: '', code: '', image: IMG.cook, jobCategory: '내일배움카드(실업자)', courseCategory: '한식 조리사', name: '한식 조리사 자격증 대비반11111111 복사본', color: 'green', periodType: '기간확정', start: '2019.04.29', end: '2019.06.28', students: 0, clicks: 39 },
-  { id: 2, status: '임시등록', ledger: '숨김', campus: '', code: '', image: IMG.cook, jobCategory: '내일배움카드(실업자)', courseCategory: '한식 조리사', name: '한식 조리사 자격증 대비반 복사본', color: 'green', periodType: '기간확정', start: '2019.04.29', end: '2019.06.28', students: 0, clicks: 0 },
-  { id: 3, status: '진행중', ledger: '숨김', campus: '', code: '', image: IMG.cook, jobCategory: '내일배움카드(실업자)', courseCategory: '한식 조리사', name: '한식 조리사 자격증 대비반', color: 'green', periodType: '기간확정', start: '2019.04.29', end: '2019.06.28', students: 5, clicks: 48 },
-  { id: 4, status: '진행중', ledger: '숨김', campus: '', code: '', image: IMG.coffee, jobCategory: '일반과정', courseCategory: '바리스타', name: '커피 바리스타 과정 2회차 2019.03.05~04.15', color: 'orange', periodType: '기간확정', start: '2019.03.05', end: '2019.04.12', students: 4, clicks: 44 },
-  { id: 5, status: '진행중', ledger: '출력', campus: '', code: '', image: IMG.coffee, jobCategory: '내일배움카드(실업자)', courseCategory: '바리스타', name: '커피 바리스타 과정 1회차', color: 'red', periodType: '기간확정', start: '2019.01.02', end: '2019.02.15', students: 10, clicks: 188 },
-  { id: 6, status: '임시등록', ledger: '숨김', campus: '대구', code: '', image: IMG.coffee, jobCategory: '내일배움카드(실업자)', courseCategory: '바리스타', name: '커피 바리스타 과정 기본 2019.01.02~02.15', color: 'black', periodType: '기간확정', start: '2019.01.02', end: '2019.02.15', students: 0, clicks: 0 },
-  { id: 7, status: '모집진행', ledger: '숨김', campus: '대구', code: 'P-1004', image: IMG.code, jobCategory: '내일배움카드(재직자)', courseCategory: '프로그래밍', name: '재직자를 위한 고급 JAVA 개발', color: 'black', periodType: '기간확정', start: '2019.01.21', end: '2019.05.31', students: 0, clicks: 208 },
-  { id: 8, status: '종료', ledger: '출력', campus: '본원', code: 'UI-2301', image: IMG.design, jobCategory: '국가기간전략산업', courseCategory: 'UI/UX디자인', name: '실무형 UI/UX 디자이너 양성과정', color: 'blue', periodType: '기간확정', start: '2019.03.04', end: '2019.08.30', students: 9, clicks: 49 },
-];
 
 const TABS = [
   ['전체', '전체보기'], ['임시등록', '임시등록'], ['모집중', '모집중'], ['모집진행', '모집/진행'],
@@ -35,18 +19,86 @@ const EMPTY_FILTERS = {
 
 const parseDate = (s) => {
   if (!s) return null;
-  const [y, m, d] = s.split('.').map(Number);
+  const [y, m, d] = s.slice(0, 10).split(/[.-]/).map(Number);
   return new Date(y, m - 1, d);
 };
 
 export default function CourseList() {
   const navigate = useNavigate();
-  const [courses, setCourses] = useState(INITIAL_COURSES);
+  const [courses, setCourses] = useState([]);
+  const [jobs, setJobs] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const [categoryError, setCategoryError] = useState('');
   const [form, setForm] = useState(EMPTY_FILTERS);
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [tab, setTab] = useState('전체');
   const [page, setPage] = useState(1);
   const [checked, setChecked] = useState(() => new Set());
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const loadCategories = async () => {
+      try {
+        const [jobResponse, categoryResponse] = await Promise.all([
+          api.get('/v1/trainingJobCategories', {signal: controller.signal}),
+          api.get('/v1/educationCategories', {signal: controller.signal}),
+        ]);
+        if (controller.signal.aborted) return;
+        if (!Array.isArray(jobResponse.data) || !Array.isArray(categoryResponse.data)) throw new Error('분류 응답 오류');
+        setJobs(jobResponse.data);
+        setCategories(categoryResponse.data);
+      } catch {
+        if (!controller.signal.aborted) setCategoryError('분류 목록을 불러오지 못했습니다.');
+      }
+    };
+    void loadCategories();
+    return () => controller.abort();
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const loadCourses = async () => {
+      setLoading(true);
+      setLoadError('');
+      setCourses([]);
+      setChecked(new Set());
+      try {
+        const {data} = await api.get('/v1/courses', {
+          params: {
+            trainingJobCategoryId: filters.job === '전체' ? undefined : filters.job,
+            educationCategoryId: filters.course === '전체' ? undefined : filters.course,
+          },
+          signal: controller.signal,
+        });
+        if (controller.signal.aborted) return;
+        if (!Array.isArray(data)) throw new Error('과정 응답이 배열이 아닙니다.');
+        setCourses(data.map((row) => ({
+          ...row,
+          id: row.courseId,
+          name: row.courseName ?? '',
+          status: row.status === 'RECRUITING' ? '모집중' : row.status ?? '',
+          ledger: row.ledger ?? '',
+          campus: row.campusName ?? '',
+          code: row.trainingCode ?? '',
+          image: row.representativeFileUrl ?? '',
+          color: row.courseColor ?? '',
+          periodType: row.recruitType === 'FIXED' ? '기간확정' : row.recruitType ?? '-',
+          start: row.startDate ?? '',
+          end: row.endDate ?? '',
+          students: row.studentCount ?? '-',
+          clicks: row.clickCount ?? '-',
+        })));
+      } catch {
+        if (!controller.signal.aborted) setLoadError('과정 목록을 불러오지 못했습니다. 다시 검색해 주세요.');
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    };
+    void loadCourses();
+    return () => controller.abort();
+  }, [filters]);
 
   const tabMatch = (status) =>
     tab === '전체' ? true : tab === '모집진행' ? status === '모집중' || status === '모집진행' : status === tab;
@@ -54,8 +106,6 @@ export default function CourseList() {
   const filtered = courses.filter((c) => {
     if (!tabMatch(c.status)) return false;
     if (filters.status !== '전체' && c.status !== filters.status) return false;
-    if (filters.job !== '전체' && c.jobCategory !== filters.job) return false;
-    if (filters.course !== '전체' && c.courseCategory !== filters.course) return false;
     if (filters.campus !== '전체' && c.campus !== filters.campus) return false;
     if (filters.ledger !== '전체' && c.ledger !== filters.ledger) return false;
     const kw = filters.keyword.trim().toLowerCase();
@@ -63,8 +113,8 @@ export default function CourseList() {
       const target = filters.searchType === 'name' ? c.name : filters.searchType === 'code' ? c.code : c.campus;
       if (!(target || '').toLowerCase().includes(kw)) return false;
     }
-    if (filters.startDate && parseDate(c.end) < new Date(filters.startDate)) return false;
-    if (filters.endDate && parseDate(c.start) > new Date(filters.endDate)) return false;
+    if (filters.startDate && (!c.end || parseDate(c.end) < new Date(filters.startDate))) return false;
+    if (filters.endDate && (!c.start || parseDate(c.start) > new Date(filters.endDate))) return false;
     return true;
   });
 
@@ -90,17 +140,34 @@ export default function CourseList() {
     });
 
   const applyFilters = () => {
-    setFilters(form);
+    setFilters({...form});
     setPage(1);
   };
   const resetFilters = () => {
     setForm(EMPTY_FILTERS);
-    setFilters(EMPTY_FILTERS);
+    setFilters({...EMPTY_FILTERS});
     setTab('전체');
     setPage(1);
   };
   const remove = (c) => {
     if (confirm(`"${c.name}" 과정을 삭제하시겠습니까?`)) setCourses((list) => list.filter((x) => x.id !== c.id));
+  };
+
+  const openNcsList = (course) => {
+    if (course.id == null || course.batchId == null) {
+      alert('과정 또는 기수 ID가 없습니다. 과정 목록 응답을 확인해 주세요.');
+      return;
+    }
+    const params = new URLSearchParams({courseId: String(course.id), batchId: String(course.batchId)});
+    navigate(`/ncs-list?${params}`, {
+      state: {
+        course: {
+          ...course,
+          trainingJobCategoryName: jobs.find((row) => row.trainingJobCategoryId === course.trainingJobCategoryId)?.categoryName ?? '',
+          educationCategoryName: categories.find((row) => row.educationCategoryId === course.educationCategoryId)?.categoryName ?? '',
+        },
+      },
+    });
   };
 
   return (
@@ -160,12 +227,13 @@ export default function CourseList() {
                 <div className="control inline">
                   <select value={form.job} onChange={upd('job')}>
                     <option value="전체">훈련직종선택</option>
-                    {['국가기간전략산업', '내일배움카드(실업자)', '내일배움카드(재직자)', '일반과정'].map((o) => <option key={o}>{o}</option>)}
+                    {jobs.map((row) => <option key={row.trainingJobCategoryId} value={row.trainingJobCategoryId}>{row.categoryName}</option>)}
                   </select>
                   <select value={form.course} onChange={upd('course')}>
                     <option value="전체">교육과정선택</option>
-                    {['컴퓨터활용', 'UI/UX디자인', '프로그래밍', '바리스타', '한식 조리사'].map((o) => <option key={o}>{o}</option>)}
+                    {categories.map((row) => <option key={row.educationCategoryId} value={row.educationCategoryId}>{row.categoryName}</option>)}
                   </select>
+                  {categoryError && <span role="alert">{categoryError}</span>}
                 </div>
               </div>
               <div className="field">
@@ -173,7 +241,7 @@ export default function CourseList() {
                 <div className="control">
                   <select value={form.campus} onChange={upd('campus')}>
                     <option value="전체">전체 캠퍼스</option>
-                    {['본원', '대구', '강남'].map((o) => <option key={o}>{o}</option>)}
+                    {[...new Set(courses.map((course) => course.campus).filter(Boolean))].map((name) => <option key={name}>{name}</option>)}
                   </select>
                 </div>
               </div>
@@ -236,6 +304,9 @@ export default function CourseList() {
                   </tr>
                 </thead>
                 <tbody>
+                  {(loading || loadError || items.length === 0) && (
+                    <tr><td colSpan={14} className="center" role={loadError ? 'alert' : undefined}>{loading ? '불러오는 중...' : loadError || '조회된 과정이 없습니다.'}</td></tr>
+                  )}
                   {items.map((c) => (
                     <tr key={c.id}>
                       <td className="center">
@@ -243,22 +314,24 @@ export default function CourseList() {
                       </td>
                       <td>
                         <select className="small-select" value={c.status} onChange={(e) => patch(c.id, { status: e.target.value })}>
+                          {!STATUS_OPTIONS.includes(c.status) && <option value={c.status}>{c.status || '-'}</option>}
                           {STATUS_OPTIONS.map((v) => <option key={v}>{v}</option>)}
                         </select>
                       </td>
                       <td>
                         <select className="small-select" value={c.ledger} onChange={(e) => patch(c.id, { ledger: e.target.value })}>
+                          {!['숨김', '출력'].includes(c.ledger) && <option value={c.ledger}>{c.ledger || '-'}</option>}
                           {['숨김', '출력'].map((v) => <option key={v}>{v}</option>)}
                         </select>
                       </td>
                       <td className="center">{c.campus || '-'}</td>
                       <td className="center">{c.code || '-'}</td>
-                      <td className="center"><div className="thumb"><img src={c.image} alt="썸네일" /></div></td>
+                      <td className="center">{c.image ? <div className="thumb"><img src={c.image} alt="썸네일" /></div> : '-'}</td>
                       <td>
                         <div className="course-cell">
                           <div className="course-info">
-                            <div className="course-meta">{c.jobCategory} &gt; {c.courseCategory}</div>
-                            <div className={'course-name ' + (['green', 'orange', 'red', 'blue'].includes(c.color) ? c.color : '')}>{c.name}</div>
+                            <div className="course-meta">{jobs.find((row) => row.trainingJobCategoryId === c.trainingJobCategoryId)?.categoryName ?? '-'} &gt; {categories.find((row) => row.educationCategoryId === c.educationCategoryId)?.categoryName ?? '-'}</div>
+                            <button type="button" className="course-name course-link" style={c.color ? {color: c.color} : undefined} onClick={() => openNcsList(c)}>{c.name}</button>
                           </div>
                         </div>
                       </td>
@@ -271,8 +344,8 @@ export default function CourseList() {
                       </td>
                       <td className="center">{c.students}</td>
                       <td className="center">{c.clicks}</td>
-                      <td className="center"><button className="mini-btn admission" onClick={() => navigate('/admission-application-list')}>입학</button></td>
-                      <td className="center"><button className="mini-btn edu" onClick={() => navigate('/course-detail')}>교육</button></td>
+                      <td className="center"><button className="mini-btn admission" onClick={() => navigate(`/admission-application-list?courseId=${encodeURIComponent(c.id)}${c.batchId == null ? '' : `&batchId=${encodeURIComponent(c.batchId)}`}`)}>입학</button></td>
+                      <td className="center"><button className="mini-btn edu" onClick={() => openNcsList(c)}>교육</button></td>
                       <td className="center">
                         <div className="row-actions">
                           <button className="mini-btn" onClick={() => alert(`"${c.name}" 과정 수정 화면으로 이동합니다.`)}>수정</button>

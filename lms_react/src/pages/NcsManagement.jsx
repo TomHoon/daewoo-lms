@@ -50,11 +50,7 @@ export default function NcsManagement() {
 
             <div className="management-grid">
               {MANAGE_MENU.map(([label, to]) => (
-                <button
-                  key={label}
-                  className={'manage-btn' + (label === 'NCS 평가' ? ' active' : '')}
-                  onClick={() => to && navigate(to)}
-                >
+                <button key={label} className={'manage-btn' + (label === 'NCS 평가' ? ' active' : '')} onClick={() => to && navigate(to)}>
                   {label}
                 </button>
               ))}

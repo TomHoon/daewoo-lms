@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ITEMS = [
   ['NCS 평가항목 목록', '/ncs-list'],
@@ -13,13 +13,14 @@ const ITEMS = [
 /** NCS 평가 관련 화면 공통 서브 메뉴. 아직 화면이 없는 항목은 알림만 띄웁니다. */
 export default function SubNav({ active = -1 }) {
   const navigate = useNavigate();
+  const {search, state} = useLocation();
   return (
     <div className="subnav">
       {ITEMS.map(([label, to], i) => (
         <button
           key={label}
           className={'btn btn-small' + (i === active ? ' active' : '')}
-          onClick={() => (to ? navigate(to) : alert(`${label} 화면으로 이동`))}
+          onClick={() => (to ? navigate(`${to}${search}`, {state}) : alert(`${label} 화면으로 이동`))}
         >
           {label}
         </button>

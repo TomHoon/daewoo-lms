@@ -1,30 +1,9 @@
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import api from '../api/axios';
 import PageHeader from '../components/PageHeader.jsx';
 import SubNav from '../components/SubNav.jsx';
 import './NcsList.css';
-
-const SUBJECTS = [
-  {
-    name: '바리스타',
-    units: [
-      { name: '커피 원두 선택', code: '1301020302_13v1', hours: 5, nonNcs: false, pretest: false, mixed: false,
-        elements: [{ name: '커피 원두 선택 이론(최종)', state: 'done', failed: 2 }, { name: '원두 품질 판별', state: 'ready', failed: 0 }] },
-      { name: '커피기계 운용', code: '1301020303_16v2', hours: 5, nonNcs: false, pretest: false, mixed: false,
-        elements: [{ name: '커피기계 운용 이론(중간)', state: 'active', failed: 0 }, { name: '커피기계 운용 실습(최종)', state: 'done', failed: 1 }] },
-      { name: '사전평가', code: '', hours: 0, nonNcs: false, pretest: true, mixed: false,
-        elements: [{ name: '바리스타 사전평가', state: 'done', failed: 0 }] },
-    ],
-  },
-  {
-    name: '위생관리',
-    units: [
-      { name: '식품위생관리', code: '1301010101_17v1', hours: 8, nonNcs: false, pretest: false, mixed: false,
-        elements: [{ name: '개인위생 및 작업장 위생관리', state: 'none', failed: 0 }] },
-      { name: '비NCS 기초소양', code: 'ETC-001', hours: 4, nonNcs: true, pretest: false, mixed: true,
-        elements: [{ name: '직업윤리 및 서비스 기본', state: 'ready', failed: 0 }] },
-    ],
-  },
-];
 
 const STATE_LABEL = {
   none: ['미등록', 'none'],
@@ -35,9 +14,72 @@ const STATE_LABEL = {
 
 export default function NcsList() {
   const navigate = useNavigate();
+  const {state} = useLocation();
+  const course = state?.course;
+  const [searchParams] = useSearchParams();
+  const courseId = searchParams.get('courseId') || String(course?.courseId ?? course?.id ?? '');
+  const batchId = searchParams.get('batchId') || String(course?.batchId ?? '');
+  const [subjects, setSubjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const hasIds = Boolean(courseId && batchId);
 
-  const unitCount = SUBJECTS.reduce((s, sub) => s + sub.units.length, 0);
-  const elementCount = SUBJECTS.reduce((s, sub) => s + sub.units.reduce((a, u) => a + u.elements.length, 0), 0);
+  useEffect(() => {
+    if (!courseId || !batchId) return;
+    const controller = new AbortController();
+    const loadUnits = async () => {
+      setLoading(true);
+      setLoadError('');
+      setSubjects([]);
+      try {
+        const {data} = await api.get(`/v1/ncs/${encodeURIComponent(courseId)}/${encodeURIComponent(batchId)}/units`, {
+          params: {includeInactive: false},
+          signal: controller.signal,
+        });
+        if (controller.signal.aborted) return;
+        if (!Array.isArray(data)) throw new Error('능력단위 응답이 배열이 아닙니다.');
+        const grouped = new Map();
+        data.forEach((unit, index) => {
+          const key = unit.subjectId ?? unit.subjectName ?? 'unclassified';
+          if (!grouped.has(key)) grouped.set(key, {
+            id: key, name: unit.subjectName ?? '교과목 정보 없음', units: [],
+          });
+          grouped.get(key).units.push({
+            ...unit,
+            id: unit.unitId ?? index,
+            name: unit.unitName ?? unit.name ?? '',
+            code: unit.unitCode ?? unit.code ?? '',
+            hours: unit.trainingHours ?? unit.hours ?? '-',
+            nonNcs: unit.nonNcsYn != null ? unit.nonNcsYn === 'Y' : Boolean(unit.nonNcs),
+            pretest: unit.pretestYn != null ? unit.pretestYn === 'Y' : Boolean(unit.pretest),
+            mixed: unit.mixedYn != null ? unit.mixedYn === 'Y' : Boolean(unit.mixed),
+            elements: Array.isArray(unit.elements) ? unit.elements.map((element, elementIndex) => ({
+              ...element,
+              id: element.elementId ?? elementIndex,
+              name: element.elementName ?? element.name ?? '',
+            })) : [],
+          });
+        });
+        setSubjects([...grouped.values()]);
+      } catch {
+        if (!controller.signal.aborted) setLoadError('평가항목 목록을 불러오지 못했습니다. 새로고침해 주세요.');
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    };
+    void loadUnits();
+    return () => controller.abort();
+  }, [courseId, batchId]);
+  const courseTitle = course ? [
+    course.trainingJobCategoryName && `[${course.trainingJobCategoryName}]`,
+    course.educationCategoryName && `[${course.educationCategoryName}]`,
+    course.campus && `[${course.campus}]`,
+    course.name,
+  ].filter(Boolean).join(' ') : '선택된 과정이 없습니다.';
+
+  const visibleSubjects = hasIds ? subjects : [];
+  const unitCount = visibleSubjects.reduce((s, sub) => s + sub.units.length, 0);
+  const elementCount = visibleSubjects.reduce((s, sub) => s + sub.units.reduce((a, u) => a + u.elements.length, 0), 0);
 
   const registerEval = (name) =>
     alert(`"${name}" 평가 등록 화면으로 이동합니다.\n\n선택한 평가항목 정보가 자동으로 전달됩니다.`);
@@ -45,7 +87,8 @@ export default function NcsList() {
   const registerRetest = (name, failed) =>
     alert(`"${name}" 재평가 등록 화면으로 이동합니다.\n불합격 대상자: ${failed}명`);
 
-  const ActionButtons = ({ el }) => {
+  const actionButtons = (el) => {
+    if (!STATE_LABEL[el.state]) return '-';
     if (el.state === 'none') {
       return <button className="mini-btn primary" onClick={() => registerEval(el.name)}>평가등록</button>;
     }
@@ -63,20 +106,20 @@ export default function NcsList() {
     <div className="pg-ncs-list">
       <div className="page">
         <PageHeader title="NCS 평가항목 목록" desc="등록된 교과목·능력단위·요소를 확인하고 실제 평가 등록 및 결과를 관리합니다.">
-          <button className="btn" onClick={() => navigate('/course-detail')}>과정 상세</button>
+          <button className="btn" onClick={() => navigate('/course-list')}>과정 목록</button>
         </PageHeader>
 
         <section className="card">
           <div className="card-body">
             <div className="course-banner">
               <div>
-                <div className="course-name">[내일배움카드(실업자)] 한식 조리사 자격증 대비반</div>
-                <div className="course-meta">교육기간 2026.11.04 ~ 2027.01.16 · 진행중</div>
+                <div className="course-name" style={course?.color ? {color: course.color} : undefined}>{courseTitle}</div>
+                {course && <div className="course-meta">교육기간 {course.start || '-'} ~ {course.end || '-'}{course.status ? ` · ${course.status}` : ''}</div>}
               </div>
               <div className="badges">
-                <span className="badge success">진행중</span>
+                {course?.status && <span className="badge success">{course.status}</span>}
                 <span className="badge blue">NCS 평가관리</span>
-                <span className="badge gray">생기부 오픈</span>
+                {course?.ledger && <span className="badge gray">운영대장 {course.ledger}</span>}
               </div>
             </div>
 
@@ -99,12 +142,13 @@ export default function NcsList() {
           <div className="card-head">
             <div className="section-title">교과목별 평가항목</div>
             <div style={{ fontSize: 12, color: 'var(--muted)' }}>
-              교과목 {SUBJECTS.length}개 · 능력단위 {unitCount}개 · 요소 {elementCount}개
+              교과목 {visibleSubjects.length}개 · 능력단위 {unitCount}개 · 요소 {elementCount}개
             </div>
           </div>
           <div className="card-body">
-            {SUBJECTS.map((subject) => (
-              <div className="subject-card" key={subject.name}>
+            {!hasIds ? <p>과정목록에서 기수 정보가 있는 과정을 선택해 주세요.</p> : loading ? <p>불러오는 중...</p> : loadError ? <p role="alert">{loadError}</p> : subjects.length === 0 && <p>등록된 평가항목이 없습니다.</p>}
+            {visibleSubjects.map((subject) => (
+              <div className="subject-card" key={subject.id}>
                 <div className="subject-head">
                   <div className="subject-name">{subject.name}</div>
                   <div className="subject-actions">
@@ -114,7 +158,7 @@ export default function NcsList() {
                 </div>
 
                 {subject.units.map((unit) => (
-                  <div className="unit-block" key={unit.name}>
+                  <div className="unit-block" key={unit.id}>
                     <div className="unit-grid">
                       <div><span className="unit-name">{unit.name}</span></div>
                       <div className="center">{unit.code || '-'}</div>
@@ -136,12 +180,12 @@ export default function NcsList() {
                         <div>평가관리</div>
                       </div>
                       {unit.elements.map((el) => {
-                        const [label, cls] = STATE_LABEL[el.state];
+                        const [label, cls] = STATE_LABEL[el.state] ?? ['-', 'none'];
                         return (
-                          <div className="element-row" key={el.name}>
+                          <div className="element-row" key={el.id}>
                             <div>{el.name}</div>
                             <div className="center"><span className={'eval-state ' + cls}>{label}</span></div>
-                            <div className="action-cell"><ActionButtons el={el} /></div>
+                            <div className="action-cell">{actionButtons(el)}</div>
                           </div>
                         );
                       })}
