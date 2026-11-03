@@ -1,0 +1,16 @@
+.pg-home {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+  font-family: Pretendard, "Noto Sans KR", Arial, sans-serif;
+  color: #263246;
+}
+.pg-home h1 { margin: 0 0 6px; font-size: 28px; }
+.pg-home p { margin: 0 0 28px; color: #768297; }
+.pg-home h2 { margin: 26px 0 10px; font-size: 16px; color: #2f5fd0; }
+.pg-home ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+.pg-home li a {
+  display: block; padding: 11px 14px; border: 1px solid #d8e0eb; border-radius: 10px;
+  background: #fff; color: inherit; text-decoration: none; font-size: 14px; font-weight: 700;
+}
+.pg-home li a:hover { background: #eef4ff; border-color: #bfd0fb; color: #2f5fd0; }

@@ -1,0 +1,379 @@
+/* NcsExamSheetRegistration — 원본: ncsExamSheetRegistration.html
+   모든 선택자는 .pg-ncs-exam-sheet-registration 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-ncs-exam-sheet-registration {
+  min-height: 100vh;
+}
+
+.pg-ncs-exam-sheet-registration {
+  --primary: #2f5fd0;
+  --primary-soft: #eef4ff;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #f3f6fa;
+  --soft: #f7f9fc;
+  --success: #198754;
+  --warning: #c47a10;
+  --danger: #d9534f;
+  --purple: #7b2cbf;
+}
+.pg-ncs-exam-sheet-registration,
+.pg-ncs-exam-sheet-registration * {
+  box-sizing: border-box;
+}
+.pg-ncs-exam-sheet-registration {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Pretendard,"Noto Sans KR",Arial,sans-serif;
+}
+.pg-ncs-exam-sheet-registration button,
+.pg-ncs-exam-sheet-registration input,
+.pg-ncs-exam-sheet-registration select,
+.pg-ncs-exam-sheet-registration textarea {
+  font: inherit;
+}
+.pg-ncs-exam-sheet-registration button {
+  cursor: pointer;
+}
+.pg-ncs-exam-sheet-registration .page {
+  max-width: 1460px;
+  margin: 28px auto 60px;
+  padding: 0 18px;
+}
+.pg-ncs-exam-sheet-registration .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.pg-ncs-exam-sheet-registration .page-title h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+}
+.pg-ncs-exam-sheet-registration .page-title p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.pg-ncs-exam-sheet-registration .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 13px;
+}
+.pg-ncs-exam-sheet-registration .btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-ncs-exam-sheet-registration .btn-success {
+  background: var(--success);
+  border-color: var(--success);
+  color: #fff;
+}
+.pg-ncs-exam-sheet-registration .btn-danger {
+  color: var(--danger);
+}
+.pg-ncs-exam-sheet-registration .btn-small {
+  padding: 7px 10px;
+  font-size: 12px;
+}
+.pg-ncs-exam-sheet-registration .card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(31,45,79,.07);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.pg-ncs-exam-sheet-registration .card-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.pg-ncs-exam-sheet-registration .section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.pg-ncs-exam-sheet-registration .section-title:before {
+  content: "";
+  width: 5px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-ncs-exam-sheet-registration .card-body {
+  padding: 18px 22px 22px;
+}
+.pg-ncs-exam-sheet-registration .course-banner {
+  background: #f8faff;
+  border: 1px solid #dbe6ff;
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.pg-ncs-exam-sheet-registration .course-name {
+  font-size: 16px;
+  font-weight: 800;
+}
+.pg-ncs-exam-sheet-registration .course-meta {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-ncs-exam-sheet-registration .subnav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 14px;
+}
+.pg-ncs-exam-sheet-registration .subnav .btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.pg-ncs-exam-sheet-registration .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px 20px;
+}
+.pg-ncs-exam-sheet-registration .field {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.pg-ncs-exam-sheet-registration .field.full {
+  grid-column: 1/-1;
+}
+.pg-ncs-exam-sheet-registration .label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #59667a;
+}
+.pg-ncs-exam-sheet-registration .control input,
+.pg-ncs-exam-sheet-registration .control select,
+.pg-ncs-exam-sheet-registration .control textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 11px;
+  outline: none;
+  background: #fff;
+}
+.pg-ncs-exam-sheet-registration .inline {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.pg-ncs-exam-sheet-registration .help {
+  font-size: 11px;
+  color: var(--danger);
+}
+.pg-ncs-exam-sheet-registration .editor-wrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pg-ncs-exam-sheet-registration .editor-toolbar {
+  padding: 8px 10px;
+  background: var(--soft);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.pg-ncs-exam-sheet-registration .tool {
+  min-width: 30px;
+  height: 30px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-ncs-exam-sheet-registration .editor {
+  min-height: 150px;
+  padding: 14px;
+  outline: none;
+  line-height: 1.7;
+  background: #fff;
+}
+.pg-ncs-exam-sheet-registration .performance-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.pg-ncs-exam-sheet-registration .performance-table th,
+.pg-ncs-exam-sheet-registration .performance-table td {
+  border: 1px solid var(--border);
+  padding: 9px;
+  font-size: 13px;
+}
+.pg-ncs-exam-sheet-registration .performance-table th {
+  background: var(--soft);
+  color: #59667a;
+}
+.pg-ncs-exam-sheet-registration .performance-table input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 7px 8px;
+}
+.pg-ncs-exam-sheet-registration .center {
+  text-align: center;
+}
+.pg-ncs-exam-sheet-registration .question-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 18px;
+}
+.pg-ncs-exam-sheet-registration .question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pg-ncs-exam-sheet-registration .question-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pg-ncs-exam-sheet-registration .question-head {
+  display: grid;
+  grid-template-columns: 60px 130px 100px 1fr 90px 90px;
+  gap: 8px;
+  align-items: end;
+  padding: 11px 12px;
+  background: var(--soft);
+  border-bottom: 1px solid var(--border);
+}
+.pg-ncs-exam-sheet-registration .qfield label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #667287;
+}
+.pg-ncs-exam-sheet-registration .qfield input,
+.pg-ncs-exam-sheet-registration .qfield select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 7px 8px;
+  background: #fff;
+}
+.pg-ncs-exam-sheet-registration .question-body {
+  padding: 12px;
+}
+.pg-ncs-exam-sheet-registration .question-body textarea {
+  width: 100%;
+  min-height: 90px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  resize: vertical;
+}
+.pg-ncs-exam-sheet-registration .options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 10px;
+}
+.pg-ncs-exam-sheet-registration .option-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.pg-ncs-exam-sheet-registration .option-row input[type="text"] {
+  flex: 1;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 7px 8px;
+}
+.pg-ncs-exam-sheet-registration .question-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 10px;
+}
+.pg-ncs-exam-sheet-registration .summary-panel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pg-ncs-exam-sheet-registration .summary-panel .panel-head {
+  padding: 12px 14px;
+  background: var(--soft);
+  font-size: 13px;
+  font-weight: 800;
+  border-bottom: 1px solid var(--border);
+}
+.pg-ncs-exam-sheet-registration .summary-panel .panel-body {
+  padding: 14px;
+}
+.pg-ncs-exam-sheet-registration .summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.pg-ncs-exam-sheet-registration .summary-row:last-child {
+  border-bottom: 0;
+}
+.pg-ncs-exam-sheet-registration .summary-value {
+  font-weight: 800;
+  color: var(--primary);
+}
+.pg-ncs-exam-sheet-registration .notice {
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: #fff8f7;
+  border: 1px solid #ffd8d3;
+  color: #b8443b;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.pg-ncs-exam-sheet-registration .footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+@media (max-width:1100px) {
+  .pg-ncs-exam-sheet-registration .form-grid,
+  .pg-ncs-exam-sheet-registration .question-layout {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width:760px) {
+  .pg-ncs-exam-sheet-registration .page {
+    padding: 0 10px;
+  }
+  .pg-ncs-exam-sheet-registration .page-header {
+    flex-direction: column;
+  }
+  .pg-ncs-exam-sheet-registration .form-grid,
+  .pg-ncs-exam-sheet-registration .question-layout {
+    grid-template-columns: 1fr;
+  }
+  .pg-ncs-exam-sheet-registration .field {
+    grid-template-columns: 1fr;
+  }
+  .pg-ncs-exam-sheet-registration .question-head {
+    grid-template-columns: 1fr 1fr;
+  }
+}

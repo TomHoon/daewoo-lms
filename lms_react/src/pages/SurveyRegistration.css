@@ -1,0 +1,280 @@
+/* SurveyRegistration — 원본: surveyRegistration.html
+   모든 선택자는 .pg-survey-registration 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-survey-registration {
+  min-height: 100vh;
+}
+
+.pg-survey-registration {
+  --primary: #2f5fd0;
+  --primary-soft: #eef4ff;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #f3f6fa;
+  --soft: #f7f9fc;
+  --success: #198754;
+  --warning: #c47a10;
+  --danger: #d9534f;
+}
+.pg-survey-registration,
+.pg-survey-registration * {
+  box-sizing: border-box;
+}
+.pg-survey-registration {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Pretendard,"Noto Sans KR",Arial,sans-serif;
+}
+.pg-survey-registration button,
+.pg-survey-registration input,
+.pg-survey-registration select,
+.pg-survey-registration textarea {
+  font: inherit;
+}
+.pg-survey-registration button {
+  cursor: pointer;
+}
+.pg-survey-registration .page {
+  max-width: 1180px;
+  margin: 28px auto 60px;
+  padding: 0 18px;
+}
+.pg-survey-registration .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.pg-survey-registration .page-title h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+}
+.pg-survey-registration .page-title p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.pg-survey-registration .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 13px;
+}
+.pg-survey-registration .btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-survey-registration .btn-danger {
+  color: var(--danger);
+}
+.pg-survey-registration .btn-small {
+  padding: 7px 10px;
+  font-size: 12px;
+}
+.pg-survey-registration .card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(31,45,79,.07);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.pg-survey-registration .card-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.pg-survey-registration .section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.pg-survey-registration .section-title:before {
+  content: "";
+  width: 5px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-survey-registration .card-body {
+  padding: 18px 22px 22px;
+}
+.pg-survey-registration .notice {
+  background: #fff8f7;
+  border: 1px solid #ffd8d3;
+  color: #b8443b;
+  border-radius: 12px;
+  padding: 13px 15px;
+  margin-bottom: 18px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.pg-survey-registration .notice strong {
+  color: #d9534f;
+}
+.pg-survey-registration .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 20px;
+}
+.pg-survey-registration .field {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.pg-survey-registration .field.full {
+  grid-column: 1/-1;
+}
+.pg-survey-registration .label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #59667a;
+}
+.pg-survey-registration .control input,
+.pg-survey-registration .control select,
+.pg-survey-registration .control textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 11px;
+  outline: none;
+  background: #fff;
+}
+.pg-survey-registration .inline {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.pg-survey-registration .question-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 18px;
+}
+.pg-survey-registration .question-list,
+.pg-survey-registration .selected-list {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+.pg-survey-registration .panel-head {
+  padding: 12px 14px;
+  background: var(--soft);
+  font-size: 13px;
+  font-weight: 800;
+  border-bottom: 1px solid var(--border);
+}
+.pg-survey-registration .question-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.pg-survey-registration .question-item:last-child {
+  border-bottom: 0;
+}
+.pg-survey-registration .question-item input {
+  width: 16px;
+  height: 16px;
+}
+.pg-survey-registration .question-text {
+  flex: 1;
+  font-size: 13px;
+}
+.pg-survey-registration .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--primary-soft);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 800;
+}
+.pg-survey-registration .selected-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.pg-survey-registration .selected-row:last-child {
+  border-bottom: 0;
+}
+.pg-survey-registration .selected-index {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+}
+.pg-survey-registration .selected-text {
+  flex: 1;
+  font-size: 12px;
+}
+.pg-survey-registration .order-btns {
+  display: flex;
+  gap: 4px;
+}
+.pg-survey-registration .icon-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 6px;
+  font-weight: 800;
+}
+.pg-survey-registration .summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.pg-survey-registration .footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 18px;
+}
+@media (max-width:900px) {
+  .pg-survey-registration .form-grid,
+  .pg-survey-registration .question-layout {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width:650px) {
+  .pg-survey-registration .page {
+    padding: 0 10px;
+  }
+  .pg-survey-registration .page-header {
+    flex-direction: column;
+  }
+  .pg-survey-registration .field {
+    grid-template-columns: 1fr;
+  }
+}

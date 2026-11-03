@@ -1,0 +1,507 @@
+/* TrainDiary — 원본: trainDiary.html
+   모든 선택자는 .pg-train-diary 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-train-diary {
+  min-height: 100vh;
+}
+
+.pg-train-diary {
+  --primary: #2f5fd0;
+  --primary-dark: #244ea9;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #f3f6fa;
+  --white: #fff;
+  --danger: #c94a4a;
+  --shadow: 0 12px 34px rgba(31,45,79,.08);
+}
+.pg-train-diary,
+.pg-train-diary * {
+  box-sizing: border-box;
+}
+.pg-train-diary {
+  margin: 0;
+  font-family: Pretendard,"Noto Sans KR",Arial,sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+.pg-train-diary button,
+.pg-train-diary input,
+.pg-train-diary textarea {
+  font: inherit;
+}
+.pg-train-diary button {
+  cursor: pointer;
+}
+.pg-train-diary .page {
+  max-width: 1220px;
+  margin: 26px auto 50px;
+  padding: 0 18px;
+}
+.pg-train-diary .toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.pg-train-diary .group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pg-train-diary .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.pg-train-diary .btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.pg-train-diary .btn-small {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.pg-train-diary .sheet {
+  background: #fff;
+  border: 1px solid #e0e6ee;
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.pg-train-diary .sheet-header {
+  padding: 28px 34px 22px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(#fff,#fcfdff);
+}
+.pg-train-diary .header-top {
+  display: grid;
+  grid-template-columns: 1fr 390px;
+  gap: 30px;
+  align-items: start;
+}
+.pg-train-diary .title-box {
+  text-align: center;
+  padding-top: 8px;
+}
+.pg-train-diary .title-box h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 14px;
+}
+.pg-train-diary .title-box .sub {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.pg-train-diary .approval-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+}
+.pg-train-diary .approval-table th,
+.pg-train-diary .approval-table td {
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.pg-train-diary .approval-table th {
+  height: 34px;
+  background: #f7f9fc;
+  color: #59667a;
+}
+.pg-train-diary .approval-table td {
+  height: 76px;
+}
+.pg-train-diary .approval-state {
+  color: #a0a9b7;
+  font-size: 12px;
+}
+.pg-train-diary .stamp {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid #d95858;
+  color: #d95858;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+  transform: rotate(-7deg);
+}
+.pg-train-diary .approve-btn {
+  border: 1px solid #b7c1d0;
+  background: #fff;
+  border-radius: 7px;
+  padding: 6px 9px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.pg-train-diary .meta-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 28px;
+}
+.pg-train-diary .meta-item {
+  display: grid;
+  grid-template-columns: 105px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.pg-train-diary .meta-label {
+  color: #6e7a8f;
+  font-size: 13px;
+  font-weight: 800;
+}
+.pg-train-diary .meta-input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #dfe5ec;
+  padding: 7px 4px;
+  outline: none;
+  color: var(--text);
+  font-weight: 700;
+  background: transparent;
+}
+.pg-train-diary .meta-input:focus {
+  border-bottom-color: var(--primary);
+}
+.pg-train-diary .section {
+  padding: 24px 34px;
+  border-bottom: 1px solid var(--line);
+}
+.pg-train-diary .section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.pg-train-diary .section-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 800;
+  font-size: 17px;
+}
+.pg-train-diary .section-title:before {
+  content: "";
+  width: 5px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-train-diary .section-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.pg-train-diary .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pg-train-diary .summary-item {
+  border-right: 1px solid var(--border);
+  min-height: 74px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.pg-train-diary .summary-item:last-child {
+  border-right: 0;
+}
+.pg-train-diary .summary-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f9fc;
+  color: #5f6b7f;
+  font-size: 13px;
+  font-weight: 800;
+}
+.pg-train-diary .summary-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-weight: 800;
+  color: var(--primary);
+}
+.pg-train-diary .summary-value input {
+  width: 62px;
+  border: 0;
+  text-align: center;
+  outline: none;
+  background: transparent;
+  font-weight: 800;
+  color: inherit;
+}
+.pg-train-diary .attendance-grid {
+  display: grid;
+  grid-template-columns: repeat(6,1fr);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pg-train-diary .att-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 54px;
+  border-right: 1px solid var(--border);
+}
+.pg-train-diary .att-item:last-child {
+  border-right: 0;
+}
+.pg-train-diary .att-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8fafc;
+  font-size: 13px;
+  color: #5e697c;
+  font-weight: 800;
+}
+.pg-train-diary .att-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+}
+.pg-train-diary .att-value input {
+  width: 48px;
+  border: 0;
+  outline: none;
+  text-align: center;
+  background: transparent;
+  font-weight: 800;
+}
+.pg-train-diary .table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: auto;
+}
+.pg-train-diary .data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 920px;
+}
+.pg-train-diary .data-table th {
+  background: #f7f9fc;
+  border-right: 1px solid var(--border);
+  padding: 12px 10px;
+  font-size: 13px;
+  color: #556176;
+  text-align: center;
+}
+.pg-train-diary .data-table td {
+  border-right: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  padding: 0;
+}
+.pg-train-diary .data-table input {
+  width: 100%;
+  border: 0;
+  outline: none;
+  padding: 12px 10px;
+  background: transparent;
+  color: var(--text);
+}
+.pg-train-diary .data-table input:focus {
+  background: #f9fbff;
+  box-shadow: inset 0 0 0 2px rgba(47,95,208,.16);
+}
+.pg-train-diary .period {
+  text-align: center;
+  font-weight: 800;
+}
+.pg-train-diary .row-actions {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  padding: 7px;
+}
+.pg-train-diary .row-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 7px;
+  padding: 5px 7px;
+  font-size: 11px;
+}
+.pg-train-diary .notice-box {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pg-train-diary .notice-label {
+  background: #f7f9fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 134px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.pg-train-diary .notice-body {
+  padding: 14px;
+}
+.pg-train-diary .notice-body textarea {
+  width: 100%;
+  min-height: 92px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 11px 12px;
+  outline: none;
+  line-height: 1.6;
+}
+.pg-train-diary .char-count {
+  text-align: right;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-train-diary .special-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+}
+.pg-train-diary .special-table th,
+.pg-train-diary .special-table td {
+  border: 1px solid var(--border);
+  padding: 11px 12px;
+  font-size: 14px;
+}
+.pg-train-diary .special-table th {
+  width: 160px;
+  text-align: center;
+  background: #f7f9fc;
+  color: #59667a;
+}
+.pg-train-diary .special-table input {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+}
+.pg-train-diary .helper {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.pg-train-diary .footer-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 34px;
+  background: #fbfcfe;
+}
+.pg-train-diary .save-state {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #657286;
+  font-size: 13px;
+}
+.pg-train-diary .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b7bfca;
+}
+.pg-train-diary .dot.saved {
+  background: #1ba366;
+}
+@media (max-width:950px) {
+  .pg-train-diary .header-top {
+    grid-template-columns: 1fr;
+  }
+  .pg-train-diary .approval-wrap {
+    max-width: 520px;
+    margin: auto;
+  }
+  .pg-train-diary .meta-grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-train-diary .summary-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+  .pg-train-diary .attendance-grid {
+    grid-template-columns: repeat(3,1fr);
+  }
+}
+@media (max-width:650px) {
+  .pg-train-diary .page {
+    padding: 0 8px;
+  }
+  .pg-train-diary .sheet-header,
+  .pg-train-diary .section {
+    padding: 20px 15px;
+  }
+  .pg-train-diary .title-box h1 {
+    font-size: 23px;
+    letter-spacing: 9px;
+  }
+  .pg-train-diary .meta-item {
+    grid-template-columns: 90px 1fr;
+  }
+  .pg-train-diary .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-train-diary .attendance-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+  .pg-train-diary .notice-box {
+    grid-template-columns: 1fr;
+  }
+  .pg-train-diary .notice-label {
+    min-height: 48px;
+  }
+  .pg-train-diary .footer-status {
+    padding: 14px 15px;
+    flex-direction: column;
+  }
+}
+@media print {
+  .pg-train-diary {
+    background: #fff;
+  }
+  .pg-train-diary .page {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pg-train-diary .toolbar,
+  .pg-train-diary .section-actions,
+  .pg-train-diary .row-actions,
+  .pg-train-diary .footer-status {
+    display: none!important;
+  }
+  .pg-train-diary .sheet {
+    box-shadow: none;
+    border: 0;
+    border-radius: 0;
+  }
+  .pg-train-diary .sheet-header,
+  .pg-train-diary .section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

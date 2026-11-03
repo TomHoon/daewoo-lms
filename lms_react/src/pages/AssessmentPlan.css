@@ -1,0 +1,466 @@
+/* AssessmentPlan — 원본: assessmentPlan.html
+   모든 선택자는 .pg-assessment-plan 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-assessment-plan {
+  min-height: 100vh;
+}
+
+.pg-assessment-plan {
+  --primary: #2f5fd0;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #f3f6fa;
+}
+.pg-assessment-plan,
+.pg-assessment-plan * {
+  box-sizing: border-box;
+}
+.pg-assessment-plan {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Pretendard,"Noto Sans KR",Arial,sans-serif;
+}
+.pg-assessment-plan button,
+.pg-assessment-plan input,
+.pg-assessment-plan textarea,
+.pg-assessment-plan select {
+  font: inherit;
+}
+.pg-assessment-plan button {
+  cursor: pointer;
+}
+.pg-assessment-plan .page {
+  max-width: 1220px;
+  margin: 26px auto 50px;
+  padding: 0 18px;
+}
+.pg-assessment-plan .toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.pg-assessment-plan .group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pg-assessment-plan .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.pg-assessment-plan .btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.pg-assessment-plan .btn-small {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.pg-assessment-plan .sheet {
+  background: #fff;
+  border: 1px solid #e0e6ee;
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(31,45,79,.08);
+  overflow: hidden;
+}
+.pg-assessment-plan .sheet-header {
+  padding: 28px 34px 22px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(#fff,#fcfdff);
+}
+.pg-assessment-plan .header-top {
+  display: grid;
+  grid-template-columns: 1fr 390px;
+  gap: 30px;
+  align-items: start;
+}
+.pg-assessment-plan .title-box {
+  text-align: center;
+  padding-top: 8px;
+}
+.pg-assessment-plan .title-box h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 12px;
+}
+.pg-assessment-plan .title-box .sub {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-assessment-plan .approval-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+}
+.pg-assessment-plan .approval-table th,
+.pg-assessment-plan .approval-table td {
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.pg-assessment-plan .approval-table th {
+  height: 34px;
+  background: #f7f9fc;
+  color: #59667a;
+}
+.pg-assessment-plan .approval-table td {
+  height: 76px;
+}
+.pg-assessment-plan .approval-state {
+  font-size: 12px;
+  color: #a0a9b7;
+}
+.pg-assessment-plan .stamp {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid #d95858;
+  color: #d95858;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+  transform: rotate(-7deg);
+}
+.pg-assessment-plan .approve-btn {
+  border: 1px solid #b7c1d0;
+  background: #fff;
+  border-radius: 7px;
+  padding: 6px 9px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.pg-assessment-plan .meta-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 28px;
+}
+.pg-assessment-plan .meta-item {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.pg-assessment-plan .meta-label {
+  color: #6e7a8f;
+  font-size: 13px;
+  font-weight: 800;
+}
+.pg-assessment-plan .meta-input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #dfe5ec;
+  padding: 7px 4px;
+  outline: none;
+  color: var(--text);
+  font-weight: 700;
+  background: transparent;
+}
+.pg-assessment-plan .section {
+  padding: 24px 34px;
+  border-bottom: 1px solid var(--line);
+}
+.pg-assessment-plan .section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.pg-assessment-plan .section-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 17px;
+  font-weight: 800;
+}
+.pg-assessment-plan .section-title:before {
+  content: "";
+  width: 5px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-assessment-plan .section-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.pg-assessment-plan .form-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 14px 20px;
+}
+.pg-assessment-plan .form-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pg-assessment-plan .form-row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  border-bottom: 1px solid var(--line);
+}
+.pg-assessment-plan .form-row:last-child {
+  border-bottom: 0;
+}
+.pg-assessment-plan .form-label {
+  background: #f7f9fc;
+  padding: 12px 14px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #59667a;
+  display: flex;
+  align-items: center;
+}
+.pg-assessment-plan .form-control {
+  padding: 8px 10px;
+}
+.pg-assessment-plan .form-control input,
+.pg-assessment-plan .form-control select,
+.pg-assessment-plan .form-control textarea {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  padding: 4px;
+}
+.pg-assessment-plan .table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: auto;
+}
+.pg-assessment-plan .data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px;
+}
+.pg-assessment-plan .data-table th {
+  background: #f7f9fc;
+  border-right: 1px solid var(--border);
+  padding: 12px 10px;
+  font-size: 13px;
+  color: #556176;
+  text-align: center;
+}
+.pg-assessment-plan .data-table td {
+  border-right: 1px solid var(--line);
+  border-top: 1px solid var(--line);
+  padding: 0;
+  vertical-align: middle;
+}
+.pg-assessment-plan .data-table input,
+.pg-assessment-plan .data-table select,
+.pg-assessment-plan .data-table textarea {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  padding: 11px 10px;
+}
+.pg-assessment-plan .data-table textarea {
+  min-height: 54px;
+  resize: vertical;
+  line-height: 1.5;
+}
+.pg-assessment-plan .center {
+  text-align: center;
+}
+.pg-assessment-plan .row-actions {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  padding: 7px;
+}
+.pg-assessment-plan .row-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 7px;
+  padding: 5px 7px;
+  font-size: 11px;
+}
+.pg-assessment-plan .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pg-assessment-plan .summary-item {
+  border-right: 1px solid var(--border);
+  min-height: 72px;
+  display: grid;
+  grid-template-rows: 32px 1fr;
+}
+.pg-assessment-plan .summary-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f9fc;
+  color: #5f6b7f;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-assessment-plan .summary-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: var(--primary);
+}
+.pg-assessment-plan .summary-value input {
+  width: 86px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  text-align: center;
+  font-weight: 800;
+  color: inherit;
+}
+.pg-assessment-plan .notice-box {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pg-assessment-plan .notice-label {
+  background: #f7f9fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 128px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+.pg-assessment-plan .notice-body {
+  padding: 14px;
+}
+.pg-assessment-plan .notice-body textarea {
+  width: 100%;
+  min-height: 88px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 11px 12px;
+  outline: none;
+  line-height: 1.6;
+}
+.pg-assessment-plan .helper {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-assessment-plan .footer-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 34px;
+  background: #fbfcfe;
+}
+.pg-assessment-plan .save-state {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #657286;
+  font-size: 13px;
+}
+.pg-assessment-plan .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b7bfca;
+}
+.pg-assessment-plan .dot.saved {
+  background: #1ba366;
+}
+@media (max-width:1000px) {
+  .pg-assessment-plan .header-top {
+    grid-template-columns: 1fr;
+  }
+  .pg-assessment-plan .approval-wrap {
+    max-width: 520px;
+    margin: auto;
+  }
+  .pg-assessment-plan .meta-grid,
+  .pg-assessment-plan .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width:650px) {
+  .pg-assessment-plan .page {
+    padding: 0 8px;
+  }
+  .pg-assessment-plan .sheet-header,
+  .pg-assessment-plan .section {
+    padding: 20px 15px;
+  }
+  .pg-assessment-plan .title-box h1 {
+    font-size: 23px;
+    letter-spacing: 8px;
+  }
+  .pg-assessment-plan .meta-item {
+    grid-template-columns: 92px 1fr;
+  }
+  .pg-assessment-plan .form-row {
+    grid-template-columns: 110px 1fr;
+  }
+  .pg-assessment-plan .summary-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+  .pg-assessment-plan .notice-box {
+    grid-template-columns: 1fr;
+  }
+  .pg-assessment-plan .notice-label {
+    min-height: 48px;
+  }
+  .pg-assessment-plan .footer-status {
+    padding: 14px 15px;
+    flex-direction: column;
+  }
+}
+@media print {
+  .pg-assessment-plan {
+    background: #fff;
+  }
+  .pg-assessment-plan .page {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pg-assessment-plan .toolbar,
+  .pg-assessment-plan .section-actions,
+  .pg-assessment-plan .row-actions,
+  .pg-assessment-plan .footer-status {
+    display: none!important;
+  }
+  .pg-assessment-plan .sheet {
+    box-shadow: none;
+    border: 0;
+    border-radius: 0;
+  }
+  .pg-assessment-plan .sheet-header,
+  .pg-assessment-plan .section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

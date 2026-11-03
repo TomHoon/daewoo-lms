@@ -1,0 +1,354 @@
+/* AdmissionApplicationList — 원본: admissionApplicationList.html
+   모든 선택자는 .pg-admission-application-list 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-admission-application-list {
+  min-height: 100vh;
+}
+
+.pg-admission-application-list {
+  --primary: #2f5fd0;
+  --primary-soft: #eef4ff;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #f3f6fa;
+  --soft: #f7f9fc;
+  --success: #198754;
+  --warning: #c47a10;
+  --danger: #d9534f;
+  --purple: #7b2cbf;
+}
+.pg-admission-application-list,
+.pg-admission-application-list * {
+  box-sizing: border-box;
+}
+.pg-admission-application-list {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;
+}
+.pg-admission-application-list button,
+.pg-admission-application-list input,
+.pg-admission-application-list select {
+  font: inherit;
+}
+.pg-admission-application-list button {
+  cursor: pointer;
+}
+.pg-admission-application-list .page {
+  max-width: 1500px;
+  margin: 28px auto 56px;
+  padding: 0 18px;
+}
+.pg-admission-application-list .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.pg-admission-application-list .page-title h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+}
+.pg-admission-application-list .page-title p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.pg-admission-application-list .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 13px;
+}
+.pg-admission-application-list .btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-admission-application-list .btn-danger {
+  color: var(--danger);
+}
+.pg-admission-application-list .btn-small {
+  padding: 7px 10px;
+  font-size: 12px;
+}
+.pg-admission-application-list .card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(31,45,79,.07);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.pg-admission-application-list .card-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.pg-admission-application-list .section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.pg-admission-application-list .section-title:before {
+  content: "";
+  width: 5px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-admission-application-list .card-body {
+  padding: 18px 22px 22px;
+}
+.pg-admission-application-list .course-banner {
+  background: #f8faff;
+  border: 1px solid #dbe6ff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.pg-admission-application-list .course-main {
+  font-weight: 800;
+  font-size: 15px;
+}
+.pg-admission-application-list .course-sub {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-admission-application-list .controls {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 12px 16px;
+  margin-top: 16px;
+}
+.pg-admission-application-list .field {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.pg-admission-application-list .label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #59667a;
+}
+.pg-admission-application-list .control input,
+.pg-admission-application-list .control select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 9px 10px;
+  outline: none;
+  background: #fff;
+}
+.pg-admission-application-list .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.pg-admission-application-list .summary-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 15px;
+  background: #fff;
+}
+.pg-admission-application-list .summary-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 800;
+}
+.pg-admission-application-list .summary-value {
+  margin-top: 5px;
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--primary);
+}
+.pg-admission-application-list .table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: auto;
+}
+.pg-admission-application-list table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1500px;
+}
+.pg-admission-application-list th {
+  background: var(--soft);
+  color: #59667a;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 11px 8px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.pg-admission-application-list td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  font-size: 13px;
+  vertical-align: middle;
+}
+.pg-admission-application-list th:last-child,
+.pg-admission-application-list td:last-child {
+  border-right: 0;
+}
+.pg-admission-application-list tr:last-child td {
+  border-bottom: 0;
+}
+.pg-admission-application-list tbody tr:hover {
+  background: #fbfcff;
+}
+.pg-admission-application-list .center {
+  text-align: center;
+}
+.pg-admission-application-list .small-select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 8px;
+  background: #fff;
+}
+.pg-admission-application-list .name-btn {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--primary);
+  font-weight: 800;
+  cursor: pointer;
+}
+.pg-admission-application-list .status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-admission-application-list .status-chip.receipt {
+  background: #eef4ff;
+  color: #2f5fd0;
+}
+.pg-admission-application-list .status-chip.interview {
+  background: #fff6e5;
+  color: #c47a10;
+}
+.pg-admission-application-list .status-chip.pass {
+  background: #eaf8f0;
+  color: #198754;
+}
+.pg-admission-application-list .status-chip.fail {
+  background: #fdecec;
+  color: #d9534f;
+}
+.pg-admission-application-list .status-chip.wait {
+  background: #f3efff;
+  color: #7b2cbf;
+}
+.pg-admission-application-list .status-chip.cancel {
+  background: #f7f7f8;
+  color: #768297;
+}
+.pg-admission-application-list .history {
+  line-height: 1.55;
+  color: #5d6b80;
+}
+.pg-admission-application-list .history strong {
+  color: #263246;
+}
+.pg-admission-application-list .test-ok {
+  color: var(--success);
+  font-weight: 800;
+}
+.pg-admission-application-list .test-no {
+  color: var(--muted);
+  font-weight: 800;
+}
+.pg-admission-application-list .row-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+.pg-admission-application-list .mini-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: #44536b;
+  border-radius: 7px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-admission-application-list .mini-btn.primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-admission-application-list .mini-btn.danger {
+  color: var(--danger);
+}
+.pg-admission-application-list .bottom-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.pg-admission-application-list .left-actions,
+.pg-admission-application-list .right-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pg-admission-application-list .footer-note {
+  margin-top: 14px;
+  text-align: right;
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width:1000px) {
+  .pg-admission-application-list .controls {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pg-admission-application-list .summary-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+@media (max-width:650px) {
+  .pg-admission-application-list .page {
+    padding: 0 10px;
+  }
+  .pg-admission-application-list .page-header {
+    flex-direction: column;
+  }
+  .pg-admission-application-list .controls {
+    grid-template-columns: 1fr;
+  }
+  .pg-admission-application-list .field {
+    grid-template-columns: 1fr;
+  }
+  .pg-admission-application-list .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,352 @@
+/* NcsManagement — 원본: ncsManagement.html
+   모든 선택자는 .pg-ncs-management 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-ncs-management {
+  min-height: 100vh;
+}
+
+.pg-ncs-management {
+  --primary: #2f5fd0;
+  --primary-soft: #eef4ff;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #f3f6fa;
+  --soft: #f7f9fc;
+  --success: #198754;
+  --warning: #c47a10;
+  --danger: #d9534f;
+  --purple: #7b2cbf;
+}
+.pg-ncs-management,
+.pg-ncs-management * {
+  box-sizing: border-box;
+}
+.pg-ncs-management {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Pretendard,"Noto Sans KR",Arial,sans-serif;
+}
+.pg-ncs-management button,
+.pg-ncs-management input,
+.pg-ncs-management select {
+  font: inherit;
+}
+.pg-ncs-management button {
+  cursor: pointer;
+}
+.pg-ncs-management .page {
+  max-width: 1540px;
+  margin: 28px auto 60px;
+  padding: 0 18px;
+}
+.pg-ncs-management .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.pg-ncs-management .page-title h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+}
+.pg-ncs-management .page-title p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.pg-ncs-management .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 13px;
+}
+.pg-ncs-management .btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-ncs-management .btn-danger {
+  color: var(--danger);
+}
+.pg-ncs-management .btn-small {
+  padding: 7px 10px;
+  font-size: 12px;
+}
+.pg-ncs-management .card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(31,45,79,.07);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.pg-ncs-management .card-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.pg-ncs-management .section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.pg-ncs-management .section-title:before {
+  content: "";
+  width: 5px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-ncs-management .card-body {
+  padding: 18px 22px 22px;
+}
+.pg-ncs-management .course-banner {
+  background: #f8faff;
+  border: 1px solid #dbe6ff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pg-ncs-management .course-name {
+  font-weight: 800;
+  font-size: 16px;
+}
+.pg-ncs-management .course-meta {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-ncs-management .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-ncs-management .badge.success {
+  background: #eaf8f0;
+  color: var(--success);
+}
+.pg-ncs-management .badge.gray {
+  background: #f2f4f7;
+  color: #687386;
+}
+.pg-ncs-management .management-grid {
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  gap: 8px;
+  margin-top: 14px;
+}
+.pg-ncs-management .manage-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 10px;
+  padding: 10px 8px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-ncs-management .manage-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-ncs-management .subnav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 16px;
+}
+.pg-ncs-management .subnav .btn {
+  padding: 8px 11px;
+}
+.pg-ncs-management .filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 12px 16px;
+}
+.pg-ncs-management .field {
+  display: grid;
+  grid-template-columns: 105px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.pg-ncs-management .label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #59667a;
+}
+.pg-ncs-management .control input,
+.pg-ncs-management .control select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 10px;
+  background: #fff;
+  outline: none;
+}
+.pg-ncs-management .filter-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+.pg-ncs-management .tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.pg-ncs-management .tab {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 9px;
+  padding: 9px 13px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #50607a;
+}
+.pg-ncs-management .tab.active {
+  background: var(--primary-soft);
+  border-color: #bfd0fb;
+  color: var(--primary);
+}
+.pg-ncs-management .table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: auto;
+}
+.pg-ncs-management table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1650px;
+}
+.pg-ncs-management th {
+  background: var(--soft);
+  color: #59667a;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 10px 8px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  vertical-align: middle;
+}
+.pg-ncs-management td {
+  padding: 10px 8px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  vertical-align: middle;
+}
+.pg-ncs-management th:last-child,
+.pg-ncs-management td:last-child {
+  border-right: 0;
+}
+.pg-ncs-management tr:last-child td {
+  border-bottom: 0;
+}
+.pg-ncs-management .center {
+  text-align: center;
+}
+.pg-ncs-management .small-select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 6px 7px;
+  background: #fff;
+}
+.pg-ncs-management .tool-name {
+  font-weight: 800;
+}
+.pg-ncs-management .type-badge {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #f2efff;
+  color: var(--purple);
+  font-size: 11px;
+  font-weight: 800;
+}
+.pg-ncs-management .pass {
+  color: var(--success);
+  font-weight: 800;
+}
+.pg-ncs-management .red {
+  color: var(--danger);
+  font-weight: 800;
+}
+.pg-ncs-management .purple {
+  color: var(--purple);
+  font-weight: 800;
+}
+.pg-ncs-management .row-actions {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.pg-ncs-management .mini-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 7px;
+  padding: 6px 8px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.pg-ncs-management .mini-btn.delete {
+  color: var(--danger);
+}
+.pg-ncs-management .notice {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--danger);
+  font-weight: 700;
+}
+.pg-ncs-management .footer-note {
+  margin-top: 14px;
+  text-align: right;
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width:1200px) {
+  .pg-ncs-management .management-grid {
+    grid-template-columns: repeat(4,1fr);
+  }
+  .pg-ncs-management .filter-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width:700px) {
+  .pg-ncs-management .page {
+    padding: 0 10px;
+  }
+  .pg-ncs-management .page-header {
+    flex-direction: column;
+  }
+  .pg-ncs-management .management-grid,
+  .pg-ncs-management .filter-grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-ncs-management .field {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,320 @@
+/* SurveyList — 원본: surveyList.html
+   모든 선택자는 .pg-survey-list 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-survey-list {
+  min-height: 100vh;
+}
+
+.pg-survey-list {
+  --primary: #2f5fd0;
+  --primary-soft: #eef4ff;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #f3f6fa;
+  --soft: #f7f9fc;
+  --success: #198754;
+  --warning: #c47a10;
+  --danger: #d9534f;
+  --purple: #7b2cbf;
+}
+.pg-survey-list,
+.pg-survey-list * {
+  box-sizing: border-box;
+}
+.pg-survey-list {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif;
+}
+.pg-survey-list button,
+.pg-survey-list input,
+.pg-survey-list select {
+  font: inherit;
+}
+.pg-survey-list button {
+  cursor: pointer;
+}
+.pg-survey-list .page {
+  max-width: 1480px;
+  margin: 28px auto 60px;
+  padding: 0 18px;
+}
+.pg-survey-list .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.pg-survey-list .page-title h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+}
+.pg-survey-list .page-title p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.pg-survey-list .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 13px;
+}
+.pg-survey-list .btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-survey-list .btn-danger {
+  color: var(--danger);
+}
+.pg-survey-list .btn-small {
+  padding: 7px 10px;
+  font-size: 12px;
+}
+.pg-survey-list .card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(31,45,79,.07);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.pg-survey-list .card-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.pg-survey-list .section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.pg-survey-list .section-title:before {
+  content: "";
+  width: 5px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-survey-list .card-body {
+  padding: 18px 22px 22px;
+}
+.pg-survey-list .filter-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 12px 18px;
+}
+.pg-survey-list .field {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.pg-survey-list .label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #59667a;
+}
+.pg-survey-list .control input,
+.pg-survey-list .control select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 9px 10px;
+  outline: none;
+  background: #fff;
+}
+.pg-survey-list .inline {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.pg-survey-list .filter-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+.pg-survey-list .summary-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.pg-survey-list .summary-text {
+  font-size: 14px;
+  font-weight: 800;
+}
+.pg-survey-list .summary-text strong {
+  color: var(--primary);
+}
+.pg-survey-list .table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: auto;
+}
+.pg-survey-list table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1400px;
+}
+.pg-survey-list th {
+  background: var(--soft);
+  color: #59667a;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 11px 8px;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.pg-survey-list td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  font-size: 13px;
+  vertical-align: middle;
+}
+.pg-survey-list th:last-child,
+.pg-survey-list td:last-child {
+  border-right: 0;
+}
+.pg-survey-list tr:last-child td {
+  border-bottom: 0;
+}
+.pg-survey-list tbody tr:hover {
+  background: #fbfcff;
+}
+.pg-survey-list .center {
+  text-align: center;
+}
+.pg-survey-list .survey-title {
+  font-weight: 800;
+  line-height: 1.45;
+}
+.pg-survey-list .survey-meta {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.pg-survey-list .status-select {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 8px;
+  background: #fff;
+}
+.pg-survey-list .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-survey-list .badge.wait {
+  background: #f2f4f7;
+  color: #768297;
+}
+.pg-survey-list .badge.active {
+  background: #eaf8f0;
+  color: var(--success);
+}
+.pg-survey-list .badge.end {
+  background: #fdecec;
+  color: var(--danger);
+}
+.pg-survey-list .action-stack {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.pg-survey-list .mini-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: #44536b;
+  border-radius: 7px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-survey-list .mini-btn.preview {
+  background: #f7faff;
+  color: var(--primary);
+}
+.pg-survey-list .mini-btn.result {
+  background: #eef7ff;
+  color: #1f6feb;
+}
+.pg-survey-list .mini-btn.print {
+  background: #f2efff;
+  color: var(--purple);
+}
+.pg-survey-list .mini-btn.delete {
+  color: var(--danger);
+}
+.pg-survey-list .bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.pg-survey-list .pager {
+  display: flex;
+  gap: 6px;
+}
+.pg-survey-list .page-btn {
+  min-width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 8px;
+  font-weight: 800;
+}
+.pg-survey-list .page-btn.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-survey-list .footer-note {
+  margin-top: 14px;
+  text-align: right;
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width:1000px) {
+  .pg-survey-list .filter-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width:650px) {
+  .pg-survey-list .page {
+    padding: 0 10px;
+  }
+  .pg-survey-list .page-header {
+    flex-direction: column;
+  }
+  .pg-survey-list .field {
+    grid-template-columns: 1fr;
+  }
+}

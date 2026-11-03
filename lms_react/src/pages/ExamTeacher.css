@@ -1,0 +1,321 @@
+/* ExamTeacher — 원본: examTeacher.html
+   모든 선택자는 .pg-exam-teacher 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-exam-teacher {
+  min-height: 100vh;
+}
+
+.pg-exam-teacher,
+.pg-exam-teacher * {
+  box-sizing: border-box;
+}
+.pg-exam-teacher {
+  margin: 0;
+  font-family: Arial,"Noto Sans KR",sans-serif;
+  background: #f3f6fb;
+  color: #172033;
+}
+.pg-exam-teacher button,
+.pg-exam-teacher input,
+.pg-exam-teacher select,
+.pg-exam-teacher textarea {
+  font: inherit;
+}
+.pg-exam-teacher .page {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 28px;
+}
+.pg-exam-teacher .topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.pg-exam-teacher h1 {
+  margin: 0;
+  font-size: 26px;
+}
+.pg-exam-teacher .subtitle {
+  margin: 7px 0 0;
+  color: #71809a;
+  font-size: 14px;
+}
+.pg-exam-teacher .actions {
+  display: flex;
+  gap: 8px;
+}
+.pg-exam-teacher .btn {
+  border: 1px solid #d8e0ec;
+  background: #fff;
+  color: #31415d;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.pg-exam-teacher .btn.primary {
+  background: #2f65d9;
+  border-color: #2f65d9;
+  color: #fff;
+}
+.pg-exam-teacher .btn.danger {
+  color: #c43d4b;
+  border-color: #efcdd2;
+  background: #fff7f8;
+}
+.pg-exam-teacher .card {
+  background: #fff;
+  border: 1px solid #dfe6f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(38,58,90,.05);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.pg-exam-teacher .card-head {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e8edf5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fbfcfe;
+}
+.pg-exam-teacher .card-head h2 {
+  margin: 0;
+  font-size: 17px;
+}
+.pg-exam-teacher .card-body {
+  padding: 20px;
+}
+.pg-exam-teacher .grid {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 16px;
+}
+.pg-exam-teacher .field.span-2 {
+  grid-column: span 2;
+}
+.pg-exam-teacher .field.span-4 {
+  grid-column: span 4;
+}
+.pg-exam-teacher .field label {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #46536b;
+}
+.pg-exam-teacher .required:after {
+  content: " *";
+  color: #e25555;
+}
+.pg-exam-teacher input,
+.pg-exam-teacher select,
+.pg-exam-teacher textarea {
+  width: 100%;
+  border: 1px solid #d9e1ec;
+  border-radius: 8px;
+  padding: 10px 12px;
+  outline: none;
+  background: #fff;
+}
+.pg-exam-teacher textarea {
+  resize: vertical;
+  min-height: 82px;
+}
+.pg-exam-teacher .question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.pg-exam-teacher .question {
+  border: 1px solid #dfe6f0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+.pg-exam-teacher .question-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: #f8faff;
+  border-bottom: 1px solid #e6ebf3;
+}
+.pg-exam-teacher .q-title {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.pg-exam-teacher .q-no {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: #eaf1ff;
+  color: #2f65d9;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+}
+.pg-exam-teacher .q-actions {
+  display: flex;
+  gap: 6px;
+}
+.pg-exam-teacher .question-body {
+  padding: 18px;
+  display: grid;
+  grid-template-columns: 1.5fr .8fr;
+  gap: 18px;
+}
+.pg-exam-teacher .left-col,
+.pg-exam-teacher .right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pg-exam-teacher .inline-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.pg-exam-teacher .criteria-box {
+  border: 1px solid #dfe6f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.pg-exam-teacher .criteria-head,
+.pg-exam-teacher .criteria-row {
+  display: grid;
+  grid-template-columns: 50px 1fr 110px 50px;
+}
+.pg-exam-teacher .criteria-head {
+  background: #f6f8fc;
+  border-bottom: 1px solid #dfe6f0;
+  font-size: 12px;
+  font-weight: 800;
+  color: #59677f;
+}
+.pg-exam-teacher .criteria-head div,
+.pg-exam-teacher .criteria-row>div {
+  padding: 10px;
+  border-right: 1px solid #e6ebf3;
+}
+.pg-exam-teacher .criteria-row {
+  border-bottom: 1px solid #edf1f6;
+  align-items: center;
+}
+.pg-exam-teacher .criteria-row:last-child {
+  border-bottom: 0;
+}
+.pg-exam-teacher .criteria-row input {
+  padding: 7px 9px;
+}
+.pg-exam-teacher .remove-criteria {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: #c94c5b;
+  font-size: 18px;
+}
+.pg-exam-teacher .add-criteria {
+  margin-top: 8px;
+  border: 1px dashed #b9c8de;
+  background: #fbfcff;
+  border-radius: 8px;
+  padding: 9px;
+  cursor: pointer;
+  color: #47658d;
+  font-weight: 700;
+}
+.pg-exam-teacher .score-box {
+  padding: 14px;
+  border-radius: 10px;
+  background: #f5f8ff;
+  border: 1px solid #dce6fb;
+}
+.pg-exam-teacher .score-box .big {
+  font-size: 28px;
+  font-weight: 800;
+  color: #2f65d9;
+}
+.pg-exam-teacher .score-box span {
+  color: #71809a;
+  font-size: 13px;
+}
+.pg-exam-teacher .footer-summary {
+  position: sticky;
+  bottom: 0;
+  background: rgba(255,255,255,.96);
+  border: 1px solid #dfe6f0;
+  border-radius: 12px;
+  box-shadow: 0 -6px 24px rgba(38,58,90,.08);
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pg-exam-teacher .summary-left {
+  display: flex;
+  gap: 24px;
+}
+.pg-exam-teacher .summary-item {
+  font-size: 13px;
+  color: #6a7890;
+}
+.pg-exam-teacher .summary-item strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 18px;
+  color: #1c2a42;
+}
+.pg-exam-teacher .badge {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #2f65d9;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-exam-teacher .help {
+  margin-top: 6px;
+  color: #8a96a9;
+  font-size: 12px;
+}
+@media (max-width:1000px) {
+  .pg-exam-teacher .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pg-exam-teacher .field.span-4 {
+    grid-column: span 2;
+  }
+  .pg-exam-teacher .question-body {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width:650px) {
+  .pg-exam-teacher .page {
+    padding: 14px;
+  }
+  .pg-exam-teacher .topbar {
+    align-items: flex-start;
+    gap: 12px;
+    flex-direction: column;
+  }
+  .pg-exam-teacher .grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-exam-teacher .field.span-2,
+  .pg-exam-teacher .field.span-4 {
+    grid-column: span 1;
+  }
+  .pg-exam-teacher .inline-grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-exam-teacher .footer-summary {
+    align-items: stretch;
+    gap: 12px;
+    flex-direction: column;
+  }
+  .pg-exam-teacher .summary-left {
+    flex-wrap: wrap;
+  }
+}

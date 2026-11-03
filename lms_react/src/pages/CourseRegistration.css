@@ -1,0 +1,358 @@
+/* CourseRegistration — 원본: courseRegistration.html
+   모든 선택자는 .pg-course-registration 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-course-registration {
+  min-height: 100vh;
+}
+
+.pg-course-registration {
+  --primary: #2f5fd0;
+  --primary-soft: #eef4ff;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #f3f6fa;
+  --soft: #f7f9fc;
+  --danger: #d9534f;
+  --success: #198754;
+}
+.pg-course-registration,
+.pg-course-registration * {
+  box-sizing: border-box;
+}
+.pg-course-registration {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Pretendard,"Noto Sans KR",Arial,sans-serif;
+}
+.pg-course-registration button,
+.pg-course-registration input,
+.pg-course-registration select,
+.pg-course-registration textarea {
+  font: inherit;
+}
+.pg-course-registration button {
+  cursor: pointer;
+}
+.pg-course-registration .page {
+  max-width: 1360px;
+  margin: 28px auto 60px;
+  padding: 0 18px;
+}
+.pg-course-registration .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+.pg-course-registration .page-title h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+}
+.pg-course-registration .page-title p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.pg-course-registration .header-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pg-course-registration .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 13px;
+}
+.pg-course-registration .btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-course-registration .btn-danger {
+  color: var(--danger);
+}
+.pg-course-registration .card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(31,45,79,.07);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.pg-course-registration .card-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.pg-course-registration .section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.pg-course-registration .section-title:before {
+  content: "";
+  width: 5px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-course-registration .card-body {
+  padding: 20px 22px;
+}
+.pg-course-registration .grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+}
+.pg-course-registration .grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 16px 20px;
+}
+.pg-course-registration .field {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+.pg-course-registration .field.full {
+  grid-column: 1/-1;
+}
+.pg-course-registration .label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #59667a;
+}
+.pg-course-registration .control input,
+.pg-course-registration .control select,
+.pg-course-registration .control textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 11px;
+  outline: none;
+  background: #fff;
+  color: var(--text);
+}
+.pg-course-registration .control textarea {
+  min-height: 90px;
+  resize: vertical;
+  line-height: 1.6;
+}
+.pg-course-registration .control input:focus,
+.pg-course-registration .control select:focus,
+.pg-course-registration .control textarea:focus {
+  border-color: #9fb2e6;
+  box-shadow: 0 0 0 3px rgba(47,95,208,.08);
+}
+.pg-course-registration .inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pg-course-registration .help {
+  font-size: 12px;
+  color: var(--muted);
+}
+.pg-course-registration .help.blue {
+  color: var(--primary);
+  font-weight: 700;
+}
+.pg-course-registration .color-preview {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.pg-course-registration .color-swatch {
+  width: 84px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #000;
+}
+.pg-course-registration .money {
+  position: relative;
+}
+.pg-course-registration .money:after {
+  content: "원";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-course-registration .money input {
+  padding-right: 35px;
+  text-align: right;
+}
+.pg-course-registration .weekdays {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pg-course-registration .day {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  font-size: 12px;
+}
+.pg-course-registration .day.sun {
+  color: #d9534f;
+}
+.pg-course-registration .day.sat {
+  color: #2f5fd0;
+}
+.pg-course-registration .switch-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.pg-course-registration .switch-line input {
+  width: 16px;
+  height: 16px;
+}
+.pg-course-registration .detail-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 22px;
+}
+.pg-course-registration .image-box {
+  border: 1px dashed #b8c5d8;
+  border-radius: 14px;
+  min-height: 260px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  background: #fafcff;
+  overflow: hidden;
+}
+.pg-course-registration .image-box img {
+  max-width: 100%;
+  max-height: 260px;
+  display: none;
+}
+.pg-course-registration .image-box strong {
+  font-size: 14px;
+}
+.pg-course-registration .image-box span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.pg-course-registration .image-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.pg-course-registration .rich-section {
+  margin-top: 16px;
+}
+.pg-course-registration .rich-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  background: var(--soft);
+}
+.pg-course-registration .rich-head strong {
+  font-size: 14px;
+}
+.pg-course-registration .toolbar {
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  padding: 7px 9px;
+  background: #fbfcfe;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.pg-course-registration .tool {
+  min-width: 30px;
+  height: 30px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-course-registration .editor {
+  min-height: 145px;
+  border: 1px solid var(--border);
+  border-radius: 0 0 12px 12px;
+  padding: 14px;
+  outline: none;
+  line-height: 1.7;
+  background: #fff;
+}
+.pg-course-registration .editor:focus {
+  box-shadow: inset 0 0 0 2px rgba(47,95,208,.12);
+}
+.pg-course-registration .info-banner {
+  background: #f7faff;
+  border: 1px solid #dbe6ff;
+  color: var(--primary);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.pg-course-registration .sticky-actions {
+  position: sticky;
+  bottom: 14px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  background: rgba(243,246,250,.92);
+  backdrop-filter: blur(8px);
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  margin-top: 18px;
+}
+@media (max-width:1000px) {
+  .pg-course-registration .grid-2,
+  .pg-course-registration .grid-3,
+  .pg-course-registration .detail-layout {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width:700px) {
+  .pg-course-registration .page {
+    padding: 0 10px;
+  }
+  .pg-course-registration .page-header {
+    flex-direction: column;
+  }
+  .pg-course-registration .field {
+    grid-template-columns: 1fr;
+  }
+  .pg-course-registration .card-body {
+    padding: 16px;
+  }
+}

@@ -1,0 +1,257 @@
+/* AdmissionStatus — 원본: admissionStatus.html
+   모든 선택자는 .pg-admission-status 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-admission-status {
+  min-height: 100vh;
+}
+
+.pg-admission-status {
+  --primary: #2f5fd0;
+  --primary-soft: #eef4ff;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #f3f6fa;
+  --soft: #f7f9fc;
+  --success: #198754;
+  --danger: #d9534f;
+  --pink: #e83e8c;
+  --purple: #8a2be2;
+  --warning: #c47a10;
+}
+.pg-admission-status,
+.pg-admission-status * {
+  box-sizing: border-box;
+}
+.pg-admission-status {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Pretendard,"Noto Sans KR",Arial,sans-serif;
+}
+.pg-admission-status button {
+  font: inherit;
+  cursor: pointer;
+}
+.pg-admission-status .page {
+  max-width: 1500px;
+  margin: 28px auto 60px;
+  padding: 0 18px;
+}
+.pg-admission-status .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.pg-admission-status .page-title h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+}
+.pg-admission-status .page-title p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.pg-admission-status .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 13px;
+}
+.pg-admission-status .btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-admission-status .card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(31,45,79,.07);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.pg-admission-status .card-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.pg-admission-status .section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.pg-admission-status .section-title:before {
+  content: "";
+  width: 5px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-admission-status .card-body {
+  padding: 18px 22px 22px;
+}
+.pg-admission-status .tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.pg-admission-status .tab {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 10px;
+  padding: 9px 13px;
+  font-size: 13px;
+  font-weight: 800;
+  color: #50607a;
+}
+.pg-admission-status .tab.active {
+  background: var(--primary-soft);
+  border-color: #bfd0fb;
+  color: var(--primary);
+}
+.pg-admission-status .group-block {
+  margin-top: 18px;
+}
+.pg-admission-status .group-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.pg-admission-status .group-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #59667a;
+}
+.pg-admission-status .group-title strong {
+  color: var(--primary);
+}
+.pg-admission-status .table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: auto;
+}
+.pg-admission-status table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1450px;
+}
+.pg-admission-status th {
+  background: var(--soft);
+  color: #59667a;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 10px 8px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.pg-admission-status td {
+  padding: 10px 8px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  vertical-align: middle;
+}
+.pg-admission-status tr:last-child td {
+  border-bottom: 0;
+}
+.pg-admission-status th:last-child,
+.pg-admission-status td:last-child {
+  border-right: 0;
+}
+.pg-admission-status .center {
+  text-align: center;
+}
+.pg-admission-status .course-name {
+  font-weight: 800;
+}
+.pg-admission-status .date-range {
+  font-weight: 800;
+  line-height: 1.45;
+}
+.pg-admission-status .date-range .start {
+  color: #1f6feb;
+}
+.pg-admission-status .date-range .end {
+  color: #d9534f;
+}
+.pg-admission-status .stat {
+  font-weight: 800;
+}
+.pg-admission-status .stat.pass {
+  color: var(--success);
+}
+.pg-admission-status .stat.fail {
+  color: var(--danger);
+}
+.pg-admission-status .stat.cancel {
+  color: var(--pink);
+}
+.pg-admission-status .stat.today {
+  color: var(--purple);
+}
+.pg-admission-status .empty {
+  padding: 34px!important;
+  text-align: center;
+  color: var(--muted);
+}
+.pg-admission-status .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(5,1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.pg-admission-status .summary-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #fff;
+  padding: 16px;
+}
+.pg-admission-status .summary-label {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 800;
+}
+.pg-admission-status .summary-value {
+  margin-top: 6px;
+  font-size: 25px;
+  font-weight: 800;
+  color: var(--primary);
+}
+.pg-admission-status .footer-note {
+  margin-top: 14px;
+  text-align: right;
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width:900px) {
+  .pg-admission-status .summary-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+@media (max-width:650px) {
+  .pg-admission-status .page {
+    padding: 0 10px;
+  }
+  .pg-admission-status .page-header {
+    flex-direction: column;
+  }
+  .pg-admission-status .summary-grid {
+    grid-template-columns: 1fr;
+  }
+}

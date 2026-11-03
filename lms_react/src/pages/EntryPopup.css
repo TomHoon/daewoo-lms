@@ -1,0 +1,312 @@
+/* EntryPopup — 원본: entryPopup.html
+   모든 선택자는 .pg-entry-popup 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-entry-popup {
+  min-height: 100vh;
+}
+
+.pg-entry-popup {
+  --primary: #2f5fd0;
+  --primary-soft: #eef4ff;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #eef2f7;
+  --soft: #f7f9fc;
+  --danger: #d9534f;
+  --success: #198754;
+  --warning: #c47a10;
+}
+.pg-entry-popup,
+.pg-entry-popup * {
+  box-sizing: border-box;
+}
+.pg-entry-popup {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Pretendard,"Noto Sans KR",Arial,sans-serif;
+}
+.pg-entry-popup button,
+.pg-entry-popup input,
+.pg-entry-popup select,
+.pg-entry-popup textarea {
+  font: inherit;
+}
+.pg-entry-popup button {
+  cursor: pointer;
+}
+.pg-entry-popup .overlay {
+  min-height: 100vh;
+  padding: 28px;
+}
+.pg-entry-popup .modal {
+  max-width: 1180px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 22px 60px rgba(31,45,79,.18);
+  overflow: hidden;
+}
+.pg-entry-popup .modal-head {
+  padding: 20px 24px 12px;
+  border-bottom: 1px solid var(--line);
+}
+.pg-entry-popup .modal-title {
+  font-size: 24px;
+  font-weight: 800;
+}
+.pg-entry-popup .modal-sub {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.pg-entry-popup .tabs {
+  display: flex;
+  gap: 6px;
+  padding: 14px 20px 0;
+  border-bottom: 1px solid var(--border);
+  background: #fbfcfe;
+  flex-wrap: wrap;
+}
+.pg-entry-popup .tab {
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  background: #fff;
+  color: #59667a;
+  padding: 10px 14px;
+  border-radius: 10px 10px 0 0;
+  font-size: 13px;
+  font-weight: 800;
+}
+.pg-entry-popup .tab.active {
+  background: var(--primary-soft);
+  color: var(--primary);
+  border-color: #bfd0fb;
+}
+.pg-entry-popup .tab-panel {
+  display: none;
+  padding: 22px;
+}
+.pg-entry-popup .tab-panel.active {
+  display: block;
+}
+.pg-entry-popup .section-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 17px;
+  font-weight: 800;
+  margin-bottom: 14px;
+}
+.pg-entry-popup .section-title:before {
+  content: "";
+  width: 5px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-entry-popup .course-box {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  background: #fafcff;
+  margin-bottom: 18px;
+}
+.pg-entry-popup .course-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+}
+.pg-entry-popup .field {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.pg-entry-popup .label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #59667a;
+}
+.pg-entry-popup .control input,
+.pg-entry-popup .control select,
+.pg-entry-popup .control textarea {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 10px;
+  outline: none;
+  background: #fff;
+}
+.pg-entry-popup .control textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+.pg-entry-popup .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 18px;
+}
+.pg-entry-popup .photo-wrap {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 18px;
+}
+.pg-entry-popup .photo-box {
+  border: 1px dashed #b8c5d8;
+  border-radius: 12px;
+  height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: #fafcff;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-entry-popup .photo-box img {
+  max-width: 100%;
+  max-height: 100%;
+  display: none;
+}
+.pg-entry-popup .inline {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.pg-entry-popup .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 8px;
+  padding: 9px 13px;
+  font-weight: 800;
+  font-size: 13px;
+}
+.pg-entry-popup .btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-entry-popup .btn-danger {
+  color: var(--danger);
+}
+.pg-entry-popup .btn-small {
+  padding: 6px 9px;
+  font-size: 12px;
+}
+.pg-entry-popup .searchbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.pg-entry-popup .searchbar input,
+.pg-entry-popup .searchbar select {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 10px;
+}
+.pg-entry-popup .table-wrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: auto;
+}
+.pg-entry-popup table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 950px;
+}
+.pg-entry-popup th {
+  background: var(--soft);
+  color: #59667a;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 11px 8px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.pg-entry-popup td {
+  padding: 10px 8px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  vertical-align: middle;
+}
+.pg-entry-popup tr:last-child td {
+  border-bottom: 0;
+}
+.pg-entry-popup th:last-child,
+.pg-entry-popup td:last-child {
+  border-right: 0;
+}
+.pg-entry-popup .center {
+  text-align: center;
+}
+.pg-entry-popup .history {
+  line-height: 1.5;
+}
+.pg-entry-popup .history .pass {
+  color: var(--primary);
+  font-weight: 800;
+}
+.pg-entry-popup .history .ongoing {
+  color: var(--success);
+  font-weight: 800;
+}
+.pg-entry-popup .select-cell {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.pg-entry-popup .select-cell select {
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 6px 8px;
+}
+.pg-entry-popup .csv-box {
+  border: 1px dashed #b8c5d8;
+  border-radius: 12px;
+  padding: 28px;
+  text-align: center;
+  background: #fafcff;
+}
+.pg-entry-popup .csv-box strong {
+  display: block;
+  margin-bottom: 7px;
+}
+.pg-entry-popup .csv-box p {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-entry-popup .bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 14px 20px;
+  border-top: 1px solid var(--line);
+  background: #fbfcfe;
+}
+.pg-entry-popup .note {
+  font-size: 12px;
+  color: var(--muted);
+  align-self: center;
+}
+@media (max-width:900px) {
+  .pg-entry-popup .course-grid,
+  .pg-entry-popup .form-grid,
+  .pg-entry-popup .photo-wrap {
+    grid-template-columns: 1fr;
+  }
+  .pg-entry-popup .field {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,304 @@
+/* SolvingCreateTeacher — 원본: solvingCreateTeacher.html
+   모든 선택자는 .pg-solving-create-teacher 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-solving-create-teacher {
+  min-height: 100vh;
+}
+
+.pg-solving-create-teacher,
+.pg-solving-create-teacher * {
+  box-sizing: border-box;
+}
+.pg-solving-create-teacher {
+  margin: 0;
+  font-family: Arial,"Noto Sans KR",sans-serif;
+  background: #f3f6fb;
+  color: #172033;
+}
+.pg-solving-create-teacher button,
+.pg-solving-create-teacher input,
+.pg-solving-create-teacher select,
+.pg-solving-create-teacher textarea {
+  font: inherit;
+}
+.pg-solving-create-teacher .page {
+  max-width: 1450px;
+  margin: 0 auto;
+  padding: 24px;
+}
+.pg-solving-create-teacher .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.pg-solving-create-teacher .header h1 {
+  margin: 0;
+  font-size: 26px;
+}
+.pg-solving-create-teacher .header p {
+  margin: 7px 0 0;
+  color: #71809a;
+  font-size: 14px;
+}
+.pg-solving-create-teacher .actions {
+  display: flex;
+  gap: 8px;
+}
+.pg-solving-create-teacher .btn {
+  border: 1px solid #d5deeb;
+  background: #fff;
+  color: #32415b;
+  border-radius: 8px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.pg-solving-create-teacher .btn.primary {
+  background: #2f65d9;
+  border-color: #2f65d9;
+  color: #fff;
+}
+.pg-solving-create-teacher .btn.danger {
+  color: #c24453;
+  background: #fff7f8;
+  border-color: #efcbd1;
+}
+.pg-solving-create-teacher .card {
+  background: #fff;
+  border: 1px solid #dfe6f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(38,58,90,.05);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.pg-solving-create-teacher .card-head {
+  padding: 15px 18px;
+  border-bottom: 1px solid #e8edf5;
+  background: #fbfcfe;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pg-solving-create-teacher .card-head h2 {
+  margin: 0;
+  font-size: 17px;
+}
+.pg-solving-create-teacher .card-body {
+  padding: 18px;
+}
+.pg-solving-create-teacher .grid {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 14px;
+}
+.pg-solving-create-teacher .span-2 {
+  grid-column: span 2;
+}
+.pg-solving-create-teacher .span-4 {
+  grid-column: span 4;
+}
+.pg-solving-create-teacher .field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: #536178;
+  margin-bottom: 6px;
+}
+.pg-solving-create-teacher .required:after {
+  content: " *";
+  color: #df4b59;
+}
+.pg-solving-create-teacher input,
+.pg-solving-create-teacher select,
+.pg-solving-create-teacher textarea {
+  width: 100%;
+  border: 1px solid #d9e1ec;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  outline: none;
+}
+.pg-solving-create-teacher textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.pg-solving-create-teacher .help {
+  margin-top: 6px;
+  color: #8b97aa;
+  font-size: 12px;
+}
+.pg-solving-create-teacher .badge {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #2f65d9;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-solving-create-teacher .problem-mode {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.pg-solving-create-teacher .mode-card {
+  flex: 1;
+  min-width: 260px;
+  border: 1px solid #dce4ef;
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  background: #fff;
+}
+.pg-solving-create-teacher .mode-card.active {
+  border-color: #2f65d9;
+  background: #f5f8ff;
+}
+.pg-solving-create-teacher .mode-card strong {
+  display: block;
+  margin-bottom: 5px;
+}
+.pg-solving-create-teacher .mode-card span {
+  font-size: 12px;
+  color: #7a8799;
+}
+.pg-solving-create-teacher .upload-box {
+  border: 2px dashed #b8c6d9;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  background: #fbfcff;
+}
+.pg-solving-create-teacher .file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  border: 1px solid #dfe6f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.pg-solving-create-teacher .score-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.pg-solving-create-teacher .score-table th,
+.pg-solving-create-teacher .score-table td {
+  border: 1px solid #dfe6f0;
+  padding: 9px;
+  vertical-align: middle;
+}
+.pg-solving-create-teacher .score-table th {
+  background: #f6f8fc;
+}
+.pg-solving-create-teacher .score-table input {
+  padding: 8px;
+}
+.pg-solving-create-teacher .criteria-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+.pg-solving-create-teacher .total-box {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 10px;
+  background: #f7f9fc;
+  margin-top: 12px;
+}
+.pg-solving-create-teacher .total-box strong {
+  font-size: 22px;
+  color: #2f65d9;
+}
+.pg-solving-create-teacher .req-list {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 12px;
+}
+.pg-solving-create-teacher .req-item {
+  border: 1px solid #dfe6f0;
+  border-radius: 10px;
+  padding: 12px;
+  background: #fff;
+}
+.pg-solving-create-teacher .req-item label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-weight: 700;
+}
+.pg-solving-create-teacher .req-item input[type="checkbox"] {
+  width: auto;
+}
+.pg-solving-create-teacher .footer {
+  position: sticky;
+  bottom: 0;
+  background: rgba(255,255,255,.96);
+  backdrop-filter: blur(10px);
+  border: 1px solid #dfe6f0;
+  border-radius: 12px;
+  box-shadow: 0 -6px 24px rgba(38,58,90,.08);
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pg-solving-create-teacher .summary {
+  display: flex;
+  gap: 22px;
+  font-size: 13px;
+  color: #6d7b90;
+}
+.pg-solving-create-teacher .summary strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 18px;
+  color: #1f2e47;
+}
+.pg-solving-create-teacher .hidden {
+  display: none;
+}
+@media (max-width:1000px) {
+  .pg-solving-create-teacher .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .pg-solving-create-teacher .span-4 {
+    grid-column: span 2;
+  }
+  .pg-solving-create-teacher .req-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width:650px) {
+  .pg-solving-create-teacher .page {
+    padding: 14px;
+  }
+  .pg-solving-create-teacher .header {
+    flex-direction: column;
+  }
+  .pg-solving-create-teacher .grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-solving-create-teacher .span-2,
+  .pg-solving-create-teacher .span-4 {
+    grid-column: span 1;
+  }
+  .pg-solving-create-teacher .req-list {
+    grid-template-columns: 1fr;
+  }
+  .pg-solving-create-teacher .footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .pg-solving-create-teacher .summary {
+    flex-wrap: wrap;
+  }
+}

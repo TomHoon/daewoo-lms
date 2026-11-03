@@ -1,0 +1,278 @@
+/* NcsRegistration — 원본: ncsRegistration.html
+   모든 선택자는 .pg-ncs-registration 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-ncs-registration {
+  min-height: 100vh;
+}
+
+.pg-ncs-registration {
+  --primary: #2f5fd0;
+  --primary-soft: #eef4ff;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #f3f6fa;
+  --soft: #f7f9fc;
+  --success: #198754;
+  --danger: #d9534f;
+  --warning: #c47a10;
+}
+.pg-ncs-registration,
+.pg-ncs-registration * {
+  box-sizing: border-box;
+}
+.pg-ncs-registration {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Pretendard,"Noto Sans KR",Arial,sans-serif;
+}
+.pg-ncs-registration button,
+.pg-ncs-registration input,
+.pg-ncs-registration select {
+  font: inherit;
+}
+.pg-ncs-registration button {
+  cursor: pointer;
+}
+.pg-ncs-registration .page {
+  max-width: 1480px;
+  margin: 28px auto 60px;
+  padding: 0 18px;
+}
+.pg-ncs-registration .page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.pg-ncs-registration .page-title h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+}
+.pg-ncs-registration .page-title p {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+.pg-ncs-registration .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  border-radius: 9px;
+  padding: 10px 14px;
+  font-weight: 800;
+  font-size: 13px;
+}
+.pg-ncs-registration .btn-primary {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
+.pg-ncs-registration .btn-danger {
+  color: var(--danger);
+}
+.pg-ncs-registration .btn-small {
+  padding: 7px 10px;
+  font-size: 12px;
+}
+.pg-ncs-registration .card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(31,45,79,.07);
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.pg-ncs-registration .card-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.pg-ncs-registration .section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 800;
+}
+.pg-ncs-registration .section-title:before {
+  content: "";
+  width: 5px;
+  height: 20px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-ncs-registration .card-body {
+  padding: 18px 22px 22px;
+}
+.pg-ncs-registration .course-banner {
+  background: #f8faff;
+  border: 1px solid #dbe6ff;
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.pg-ncs-registration .course-name {
+  font-size: 16px;
+  font-weight: 800;
+}
+.pg-ncs-registration .course-meta {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-ncs-registration .subnav {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 14px;
+}
+.pg-ncs-registration .subnav .btn.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.pg-ncs-registration .notice {
+  margin-top: 12px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: #fff8f7;
+  border: 1px solid #ffd8d3;
+  color: #b8443b;
+  font-size: 12px;
+}
+.pg-ncs-registration .form-row {
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  gap: 10px;
+  align-items: center;
+}
+.pg-ncs-registration .form-row .label {
+  font-size: 13px;
+  font-weight: 800;
+  color: #59667a;
+}
+.pg-ncs-registration .form-row input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 10px;
+  outline: none;
+  background: #fff;
+}
+.pg-ncs-registration .unit-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 16px;
+}
+.pg-ncs-registration .unit-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+.pg-ncs-registration .unit-head {
+  background: var(--soft);
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 1fr 120px 110px 90px 90px 80px;
+  gap: 10px;
+  align-items: end;
+  border-bottom: 1px solid var(--border);
+}
+.pg-ncs-registration .field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #667287;
+}
+.pg-ncs-registration .field input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 9px;
+  outline: none;
+  background: #fff;
+}
+.pg-ncs-registration .checkbox-field {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+}
+.pg-ncs-registration .element-section {
+  padding: 14px;
+}
+.pg-ncs-registration .element-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.pg-ncs-registration .element-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #59667a;
+}
+.pg-ncs-registration .element-row {
+  display: grid;
+  grid-template-columns: 1fr 90px;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.pg-ncs-registration .element-row input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 9px;
+  outline: none;
+}
+.pg-ncs-registration .footer-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.pg-ncs-registration .empty {
+  padding: 18px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width:1100px) {
+  .pg-ncs-registration .unit-head {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .pg-ncs-registration .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width:650px) {
+  .pg-ncs-registration .page {
+    padding: 0 10px;
+  }
+  .pg-ncs-registration .page-header {
+    flex-direction: column;
+  }
+  .pg-ncs-registration .unit-head {
+    grid-template-columns: 1fr;
+  }
+  .pg-ncs-registration .element-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,466 @@
+/* QuestionSheet — 원본: questionSheet.html
+   모든 선택자는 .pg-question-sheet 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-question-sheet {
+  min-height: 100vh;
+}
+
+.pg-question-sheet {
+  --primary: #2f5fd0;
+  --border: #d8e0eb;
+  --line: #e9edf3;
+  --text: #263246;
+  --muted: #768297;
+  --bg: #f3f6fa;
+}
+.pg-question-sheet,
+.pg-question-sheet * {
+  box-sizing: border-box;
+}
+.pg-question-sheet {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Pretendard,"Noto Sans KR",Arial,sans-serif;
+}
+.pg-question-sheet button,
+.pg-question-sheet input,
+.pg-question-sheet textarea,
+.pg-question-sheet select {
+  font: inherit;
+}
+.pg-question-sheet button {
+  cursor: pointer;
+}
+.pg-question-sheet .page {
+  max-width: 1220px;
+  margin: 26px auto 50px;
+  padding: 0 18px;
+}
+.pg-question-sheet .toolbar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.pg-question-sheet .group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.pg-question-sheet .btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  padding: 9px 14px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 14px;
+}
+.pg-question-sheet .btn-primary {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+.pg-question-sheet .btn-small {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.pg-question-sheet .sheet {
+  background: #fff;
+  border: 1px solid #e0e6ee;
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(31,45,79,.08);
+  overflow: hidden;
+}
+.pg-question-sheet .sheet-header {
+  padding: 28px 34px 22px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(#fff,#fcfdff);
+}
+.pg-question-sheet .header-top {
+  display: grid;
+  grid-template-columns: 1fr 390px;
+  gap: 30px;
+  align-items: start;
+}
+.pg-question-sheet .title-box {
+  text-align: center;
+  padding-top: 8px;
+}
+.pg-question-sheet .title-box h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: 14px;
+}
+.pg-question-sheet .title-box .sub {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-question-sheet .approval-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+}
+.pg-question-sheet .approval-table th,
+.pg-question-sheet .approval-table td {
+  border: 1px solid var(--border);
+  text-align: center;
+}
+.pg-question-sheet .approval-table th {
+  height: 34px;
+  background: #f7f9fc;
+  color: #59667a;
+}
+.pg-question-sheet .approval-table td {
+  height: 76px;
+}
+.pg-question-sheet .approval-state {
+  font-size: 12px;
+  color: #a0a9b7;
+}
+.pg-question-sheet .stamp {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid #d95858;
+  color: #d95858;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.2;
+  transform: rotate(-7deg);
+}
+.pg-question-sheet .approve-btn {
+  border: 1px solid #b7c1d0;
+  background: #fff;
+  border-radius: 7px;
+  padding: 6px 9px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.pg-question-sheet .meta-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 28px;
+}
+.pg-question-sheet .meta-item {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.pg-question-sheet .meta-label {
+  color: #6e7a8f;
+  font-size: 13px;
+  font-weight: 800;
+}
+.pg-question-sheet .meta-input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #dfe5ec;
+  padding: 7px 4px;
+  outline: none;
+  color: var(--text);
+  font-weight: 700;
+  background: transparent;
+}
+.pg-question-sheet .section {
+  padding: 24px 34px;
+  border-bottom: 1px solid var(--line);
+}
+.pg-question-sheet .section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.pg-question-sheet .section-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 17px;
+  font-weight: 800;
+}
+.pg-question-sheet .section-title:before {
+  content: "";
+  width: 5px;
+  height: 18px;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.pg-question-sheet .section-actions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.pg-question-sheet .summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.pg-question-sheet .summary-item {
+  border-right: 1px solid var(--border);
+  min-height: 72px;
+  display: grid;
+  grid-template-rows: 32px 1fr;
+}
+.pg-question-sheet .summary-item:last-child {
+  border-right: 0;
+}
+.pg-question-sheet .summary-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f9fc;
+  color: #5f6b7f;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-question-sheet .summary-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: var(--primary);
+}
+.pg-question-sheet .summary-value input {
+  width: 80px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  text-align: center;
+  font-weight: 800;
+  color: inherit;
+}
+.pg-question-sheet .question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.pg-question-sheet .question-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+.pg-question-sheet .question-head {
+  display: grid;
+  grid-template-columns: 80px 150px 1fr 100px 150px;
+  align-items: center;
+  background: #f7f9fc;
+  border-bottom: 1px solid var(--border);
+}
+.pg-question-sheet .qcell {
+  padding: 10px;
+  border-right: 1px solid var(--border);
+  font-size: 13px;
+}
+.pg-question-sheet .qcell:last-child {
+  border-right: 0;
+}
+.pg-question-sheet .qno {
+  text-align: center;
+  font-weight: 800;
+}
+.pg-question-sheet .question-head input,
+.pg-question-sheet .question-head select {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  outline: none;
+}
+.pg-question-sheet .question-body {
+  padding: 16px;
+}
+.pg-question-sheet .question-body textarea {
+  width: 100%;
+  min-height: 90px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  resize: vertical;
+  outline: none;
+  line-height: 1.6;
+}
+.pg-question-sheet .options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+.pg-question-sheet .option-item {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  overflow: hidden;
+}
+.pg-question-sheet .option-no {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f9fc;
+  font-weight: 800;
+  color: #5f6b7f;
+}
+.pg-question-sheet .option-item input {
+  width: 100%;
+  border: 0;
+  outline: none;
+  padding: 10px;
+}
+.pg-question-sheet .answer-area {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+.pg-question-sheet .answer-label {
+  background: #f7f9fc;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+}
+.pg-question-sheet .answer-area input {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px;
+  outline: none;
+}
+.pg-question-sheet .question-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 12px;
+}
+.pg-question-sheet .row-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 7px;
+  padding: 6px 9px;
+  font-size: 12px;
+}
+.pg-question-sheet .helper {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pg-question-sheet .footer-status {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 34px;
+  background: #fbfcfe;
+}
+.pg-question-sheet .save-state {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #657286;
+  font-size: 13px;
+}
+.pg-question-sheet .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #b7bfca;
+}
+.pg-question-sheet .dot.saved {
+  background: #1ba366;
+}
+@media (max-width:1000px) {
+  .pg-question-sheet .header-top {
+    grid-template-columns: 1fr;
+  }
+  .pg-question-sheet .approval-wrap {
+    max-width: 520px;
+    margin: auto;
+  }
+  .pg-question-sheet .meta-grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-question-sheet .question-head {
+    grid-template-columns: 70px 130px 1fr 90px;
+  }
+  .pg-question-sheet .question-head .manage-head {
+    display: none;
+  }
+}
+@media (max-width:700px) {
+  .pg-question-sheet .page {
+    padding: 0 8px;
+  }
+  .pg-question-sheet .sheet-header,
+  .pg-question-sheet .section {
+    padding: 20px 15px;
+  }
+  .pg-question-sheet .title-box h1 {
+    font-size: 23px;
+    letter-spacing: 9px;
+  }
+  .pg-question-sheet .meta-item {
+    grid-template-columns: 92px 1fr;
+  }
+  .pg-question-sheet .summary-grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+  .pg-question-sheet .options-grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-question-sheet .answer-area {
+    grid-template-columns: 1fr;
+  }
+  .pg-question-sheet .question-head {
+    grid-template-columns: 60px 110px 1fr 80px;
+  }
+  .pg-question-sheet .footer-status {
+    padding: 14px 15px;
+    flex-direction: column;
+  }
+}
+@media print {
+  .pg-question-sheet {
+    background: #fff;
+  }
+  .pg-question-sheet .page {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  .pg-question-sheet .toolbar,
+  .pg-question-sheet .section-actions,
+  .pg-question-sheet .question-actions,
+  .pg-question-sheet .footer-status,
+  .pg-question-sheet .answer-area {
+    display: none!important;
+  }
+  .pg-question-sheet .sheet {
+    box-shadow: none;
+    border: 0;
+    border-radius: 0;
+  }
+  .pg-question-sheet .sheet-header,
+  .pg-question-sheet .section {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

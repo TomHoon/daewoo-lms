@@ -1,0 +1,216 @@
+/* ScenarioStudent — 원본: scenarioStudent.html
+   모든 선택자는 .pg-scenario-student 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-scenario-student {
+  min-height: 100vh;
+}
+
+.pg-scenario-student,
+.pg-scenario-student * {
+  box-sizing: border-box;
+}
+.pg-scenario-student {
+  margin: 0;
+  font-family: Arial,"Noto Sans KR",sans-serif;
+  background: #f3f6fb;
+  color: #172033;
+}
+.pg-scenario-student button,
+.pg-scenario-student input,
+.pg-scenario-student textarea {
+  font: inherit;
+}
+.pg-scenario-student .page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+.pg-scenario-student .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.pg-scenario-student .header h1 {
+  margin: 0;
+  font-size: 26px;
+}
+.pg-scenario-student .header p {
+  margin: 7px 0 0;
+  color: #71809a;
+  font-size: 14px;
+}
+.pg-scenario-student .badge {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #2f65d9;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-scenario-student .card {
+  background: #fff;
+  border: 1px solid #dfe6f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(38,58,90,.05);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.pg-scenario-student .card-head {
+  padding: 15px 18px;
+  border-bottom: 1px solid #e8edf5;
+  background: #fbfcfe;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pg-scenario-student .card-head h2 {
+  margin: 0;
+  font-size: 17px;
+}
+.pg-scenario-student .card-body {
+  padding: 18px;
+}
+.pg-scenario-student .grid {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 14px;
+}
+.pg-scenario-student .field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: #536178;
+  margin-bottom: 6px;
+}
+.pg-scenario-student input,
+.pg-scenario-student textarea {
+  width: 100%;
+  border: 1px solid #d9e1ec;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  outline: none;
+}
+.pg-scenario-student textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.pg-scenario-student .problem-sheet {
+  border: 1px solid #cbd6e5;
+  background: #fff;
+}
+.pg-scenario-student .sheet-title {
+  text-align: center;
+  font-weight: 800;
+  font-size: 22px;
+  padding: 18px;
+  border-bottom: 1px solid #aebdce;
+}
+.pg-scenario-student .meta-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.pg-scenario-student .meta-table th,
+.pg-scenario-student .meta-table td {
+  border: 1px solid #bfcbd9;
+  padding: 9px;
+}
+.pg-scenario-student .meta-table th {
+  background: #eef7f8;
+  width: 120px;
+}
+.pg-scenario-student .problem-content {
+  padding: 20px;
+  line-height: 1.8;
+  font-size: 14px;
+}
+.pg-scenario-student .problem-content ol {
+  padding-left: 22px;
+}
+.pg-scenario-student .upload-box {
+  border: 2px dashed #b8c6d9;
+  border-radius: 12px;
+  padding: 28px;
+  text-align: center;
+  background: #fbfcff;
+}
+.pg-scenario-student .upload-box strong {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 7px;
+}
+.pg-scenario-student .upload-box p {
+  margin: 0 0 14px;
+  color: #7b879a;
+  font-size: 13px;
+}
+.pg-scenario-student .file-list {
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pg-scenario-student .file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #dfe6f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+}
+.pg-scenario-student .file-name {
+  font-weight: 700;
+}
+.pg-scenario-student .file-meta {
+  font-size: 12px;
+  color: #8995a7;
+}
+.pg-scenario-student .btn {
+  border: 1px solid #d5deeb;
+  background: #fff;
+  color: #32415b;
+  border-radius: 8px;
+  padding: 9px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.pg-scenario-student .btn.primary {
+  background: #2f65d9;
+  border-color: #2f65d9;
+  color: #fff;
+}
+.pg-scenario-student .submit-area {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+.pg-scenario-student .status-chip {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+  background: #fff4df;
+  color: #a46b05;
+}
+@media (max-width:850px) {
+  .pg-scenario-student .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width:560px) {
+  .pg-scenario-student .page {
+    padding: 14px;
+  }
+  .pg-scenario-student .grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-scenario-student .header {
+    flex-direction: column;
+  }
+}

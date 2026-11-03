@@ -1,0 +1,243 @@
+/* ScenarioTeacher — 원본: scenarioTeacher.html
+   모든 선택자는 .pg-scenario-teacher 아래로 스코프되어 다른 페이지와 충돌하지 않습니다. */
+.pg-scenario-teacher {
+  min-height: 100vh;
+}
+
+.pg-scenario-teacher,
+.pg-scenario-teacher * {
+  box-sizing: border-box;
+}
+.pg-scenario-teacher {
+  margin: 0;
+  font-family: Arial,"Noto Sans KR",sans-serif;
+  background: #f3f6fb;
+  color: #172033;
+}
+.pg-scenario-teacher button,
+.pg-scenario-teacher input,
+.pg-scenario-teacher select,
+.pg-scenario-teacher textarea {
+  font: inherit;
+}
+.pg-scenario-teacher .page {
+  max-width: 1450px;
+  margin: 0 auto;
+  padding: 24px;
+}
+.pg-scenario-teacher .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+.pg-scenario-teacher .header h1 {
+  margin: 0;
+  font-size: 26px;
+}
+.pg-scenario-teacher .header p {
+  margin: 7px 0 0;
+  color: #71809a;
+  font-size: 14px;
+}
+.pg-scenario-teacher .badge {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #eef4ff;
+  color: #2f65d9;
+  font-size: 12px;
+  font-weight: 800;
+}
+.pg-scenario-teacher .card {
+  background: #fff;
+  border: 1px solid #dfe6f0;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(38,58,90,.05);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.pg-scenario-teacher .card-head {
+  padding: 15px 18px;
+  border-bottom: 1px solid #e8edf5;
+  background: #fbfcfe;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.pg-scenario-teacher .card-head h2 {
+  margin: 0;
+  font-size: 17px;
+}
+.pg-scenario-teacher .card-body {
+  padding: 18px;
+}
+.pg-scenario-teacher .teacher-layout {
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  gap: 16px;
+}
+.pg-scenario-teacher .student-list {
+  border: 1px solid #dfe6f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.pg-scenario-teacher .student-item {
+  padding: 13px 14px;
+  border-bottom: 1px solid #edf1f6;
+  cursor: pointer;
+  background: #fff;
+}
+.pg-scenario-teacher .student-item:last-child {
+  border-bottom: 0;
+}
+.pg-scenario-teacher .student-item.active {
+  background: #eef4ff;
+}
+.pg-scenario-teacher .student-item strong {
+  display: block;
+}
+.pg-scenario-teacher .student-item span {
+  font-size: 12px;
+  color: #7c899c;
+}
+.pg-scenario-teacher .file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.pg-scenario-teacher .file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #dfe6f0;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+}
+.pg-scenario-teacher .file-name {
+  font-weight: 700;
+}
+.pg-scenario-teacher .file-meta {
+  font-size: 12px;
+  color: #8995a7;
+}
+.pg-scenario-teacher .btn {
+  border: 1px solid #d5deeb;
+  background: #fff;
+  color: #32415b;
+  border-radius: 8px;
+  padding: 9px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.pg-scenario-teacher .btn.success {
+  background: #15956b;
+  border-color: #15956b;
+  color: #fff;
+}
+.pg-scenario-teacher .field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: #536178;
+  margin-bottom: 6px;
+}
+.pg-scenario-teacher input,
+.pg-scenario-teacher select,
+.pg-scenario-teacher textarea {
+  width: 100%;
+  border: 1px solid #d9e1ec;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  outline: none;
+}
+.pg-scenario-teacher textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+.pg-scenario-teacher .score-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.pg-scenario-teacher .score-table th,
+.pg-scenario-teacher .score-table td {
+  border: 1px solid #dfe6f0;
+  padding: 9px;
+  vertical-align: middle;
+}
+.pg-scenario-teacher .score-table th {
+  background: #f6f8fc;
+}
+.pg-scenario-teacher .score-input {
+  width: 90px;
+}
+.pg-scenario-teacher .total-box {
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #f7f9fc;
+}
+.pg-scenario-teacher .total-box strong {
+  font-size: 22px;
+  color: #2f65d9;
+}
+.pg-scenario-teacher .feedback-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.pg-scenario-teacher .grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 14px;
+}
+.pg-scenario-teacher .submit-area {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+.pg-scenario-teacher .status-chip {
+  display: inline-flex;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.pg-scenario-teacher .status-chip.done {
+  background: #e8f7ef;
+  color: #168a61;
+}
+.pg-scenario-teacher .status-chip.wait {
+  background: #fff4df;
+  color: #a46b05;
+}
+@media (max-width:1000px) {
+  .pg-scenario-teacher .teacher-layout {
+    grid-template-columns: 1fr;
+  }
+  .pg-scenario-teacher .feedback-grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-scenario-teacher .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (max-width:650px) {
+  .pg-scenario-teacher .page {
+    padding: 14px;
+  }
+  .pg-scenario-teacher .grid {
+    grid-template-columns: 1fr;
+  }
+  .pg-scenario-teacher .header {
+    flex-direction: column;
+  }
+}
